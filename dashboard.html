@@ -45,6 +45,11 @@
       <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 mb-4 flex flex-col sm:flex-row gap-3">
         <input type="text" id="search-input" placeholder="Suche nach Kundenname oder Adresse..." oninput="applyFilters()"
           class="flex-1 border-slate-200 border rounded-xl p-3 text-sm bg-slate-50/50">
+        <select id="type-filter" onchange="applyFilters()" class="border-slate-200 border rounded-xl p-3 text-sm bg-slate-50/50">
+          <option value="">Alle Typen</option>
+          <option value="inbetriebnahme">Inbetriebnahme</option>
+          <option value="dichtigkeit">Dichtigkeitsprüfung</option>
+        </select>
         <input type="date" id="date-filter" oninput="applyFilters()"
           class="border-slate-200 border rounded-xl p-3 text-sm bg-slate-50/50">
         <button onclick="clearFilters()" class="text-sm text-slate-500 hover:text-slate-700 px-3 py-2 whitespace-nowrap">
@@ -60,10 +65,11 @@
           <thead>
             <tr class="border-b border-slate-200 text-left text-xs text-slate-500 uppercase">
               <th class="p-3">Datum</th>
+              <th class="p-3">Typ</th>
               <th class="p-3">Kunde</th>
               <th class="p-3">Adresse</th>
               <th class="p-3">Techniker</th>
-              <th class="p-3">Anlagentyp</th>
+              <th class="p-3">Details</th>
               <th class="p-3"></th>
             </tr>
           </thead>
@@ -74,7 +80,7 @@
       <!-- Karten-Liste (Mobil) -->
       <div id="protocol-card-list" class="sm:hidden space-y-3"></div>
 
-      <p id="empty-state" class="hidden text-center text-slate-400 py-12">Keine Protokolle gefunden.</p>
+      <p id="empty-state" class="hidden text-center text-slate-400 py-12">Keine Einträge gefunden.</p>
     </div>
 
   </main>
@@ -85,7 +91,7 @@
   const SUPABASE_ANON_KEY = 'sb_publishable_KlrmVMrzvmosZXDXbgs7Kg_sP5iwfGX';
   const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  let allProtocols = [];
+  let allItems = [];
   let companyInfo = null;
 
   function showState(stateId) {
@@ -109,17 +115,40 @@
 
     companyInfo = profile.companies;
 
-    const { data: protocols, error: protocolsError } = await supabaseClient
-      .from('protocols')
-      .select('*, technician:profiles(full_name)')
-      .order('created_at', { ascending: false });
+    const [protocolsRes, leakChecksRes] = await Promise.all([
+      supabaseClient.from('protocols').select('*, technician:profiles(full_name)').order('created_at', { ascending: false }),
+      supabaseClient.from('leak_checks').select('*, technician:profiles(full_name)').order('created_at', { ascending: false }),
+    ]);
 
-    if (protocolsError) {
-      console.error('Protokolle konnten nicht geladen werden:', protocolsError.message);
-      allProtocols = [];
-    } else {
-      allProtocols = protocols || [];
-    }
+    const protocols = protocolsRes.error ? [] : (protocolsRes.data || []);
+    if (protocolsRes.error) console.error('Protokolle konnten nicht geladen werden:', protocolsRes.error.message);
+    const leakChecks = leakChecksRes.error ? [] : (leakChecksRes.data || []);
+    if (leakChecksRes.error) console.error('Dichtigkeitsprüfungen konnten nicht geladen werden:', leakChecksRes.error.message);
+
+    const protocolItems = protocols.map(p => ({
+      id: p.id,
+      type: 'inbetriebnahme',
+      typeLabel: 'Inbetriebnahme',
+      customer_name: p.customer_name,
+      installation_address: p.installation_address,
+      technician_name: (p.technician && p.technician.full_name) || '—',
+      detail: p.unit_type || '—',
+      created_at: p.created_at,
+      raw: p,
+    }));
+    const leakItems = leakChecks.map(l => ({
+      id: l.id,
+      type: 'dichtigkeit',
+      typeLabel: 'Dichtigkeitsprüfung',
+      customer_name: l.customer_name,
+      installation_address: l.installation_address,
+      technician_name: (l.technician && l.technician.full_name) || '—',
+      detail: l.system_identifier || l.refrigerant || '—',
+      created_at: l.created_at,
+      raw: l,
+    }));
+
+    allItems = [...protocolItems, ...leakItems].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
     showState('state-content');
     applyFilters();
@@ -129,19 +158,22 @@
   function clearFilters() {
     document.getElementById('search-input').value = '';
     document.getElementById('date-filter').value = '';
+    document.getElementById('type-filter').value = '';
     applyFilters();
   }
 
   function applyFilters() {
     const search = document.getElementById('search-input').value.trim().toLowerCase();
     const dateFilter = document.getElementById('date-filter').value; // yyyy-mm-dd
+    const typeFilter = document.getElementById('type-filter').value;
 
-    const filtered = allProtocols.filter(p => {
+    const filtered = allItems.filter(item => {
       const matchesSearch = !search ||
-        (p.customer_name || '').toLowerCase().includes(search) ||
-        (p.installation_address || '').toLowerCase().includes(search);
-      const matchesDate = !dateFilter || (p.created_at || '').slice(0, 10) === dateFilter;
-      return matchesSearch && matchesDate;
+        (item.customer_name || '').toLowerCase().includes(search) ||
+        (item.installation_address || '').toLowerCase().includes(search);
+      const matchesDate = !dateFilter || (item.created_at || '').slice(0, 10) === dateFilter;
+      const matchesType = !typeFilter || item.type === typeFilter;
+      return matchesSearch && matchesDate && matchesType;
     });
 
     renderProtocols(filtered);
@@ -158,37 +190,48 @@
     const emptyState = document.getElementById('empty-state');
     const resultCount = document.getElementById('result-count');
 
-    resultCount.textContent = `${list.length} Protokoll${list.length === 1 ? '' : 'e'}`;
+    resultCount.textContent = `${list.length} Eintrag${list.length === 1 ? '' : 'e'}`;
     emptyState.classList.toggle('hidden', list.length > 0);
 
-    tbody.innerHTML = list.map(p => `
+    function badge(item) {
+      const isLeak = item.type === 'dichtigkeit';
+      const cls = isLeak ? 'bg-amber-100 text-amber-700' : 'bg-blue-100 text-blue-700';
+      return `<span class="inline-block px-2 py-0.5 rounded-full text-xs font-medium ${cls}">${item.typeLabel}</span>`;
+    }
+    function downloadHandler(item) {
+      return item.type === 'dichtigkeit' ? `downloadLeakCheckPdf('${item.id}')` : `downloadProtocolPdf('${item.id}')`;
+    }
+
+    tbody.innerHTML = list.map(item => `
       <tr class="border-b border-slate-100 last:border-0 hover:bg-slate-50">
-        <td class="p-3 whitespace-nowrap text-slate-500">${formatDate(p.created_at)}</td>
-        <td class="p-3 font-medium text-slate-800">${p.customer_name || '—'}</td>
-        <td class="p-3 text-slate-500">${p.installation_address || '—'}</td>
-        <td class="p-3 text-slate-500">${(p.technician && p.technician.full_name) || '—'}</td>
-        <td class="p-3 text-slate-500">${p.unit_type || '—'}</td>
+        <td class="p-3 whitespace-nowrap text-slate-500">${formatDate(item.created_at)}</td>
+        <td class="p-3">${badge(item)}</td>
+        <td class="p-3 font-medium text-slate-800">${item.customer_name || '—'}</td>
+        <td class="p-3 text-slate-500">${item.installation_address || '—'}</td>
+        <td class="p-3 text-slate-500">${item.technician_name}</td>
+        <td class="p-3 text-slate-500">${item.detail}</td>
         <td class="p-3 text-right">
-          <button data-protocol-id="${p.id}" onclick="downloadProtocolPdf('${p.id}')" class="text-blue-600 hover:underline text-xs font-medium whitespace-nowrap">
+          <button data-item-id="${item.id}" onclick="${downloadHandler(item)}" class="text-blue-600 hover:underline text-xs font-medium whitespace-nowrap">
             📄 PDF herunterladen
           </button>
         </td>
       </tr>
     `).join('');
 
-    cardList.innerHTML = list.map(p => `
+    cardList.innerHTML = list.map(item => `
       <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4">
         <div class="flex justify-between items-start mb-2">
           <div>
-            <div class="font-semibold text-slate-800">${p.customer_name || '—'}</div>
-            <div class="text-xs text-slate-500">${p.installation_address || '—'}</div>
+            <div class="flex items-center gap-2 mb-1">${badge(item)}</div>
+            <div class="font-semibold text-slate-800">${item.customer_name || '—'}</div>
+            <div class="text-xs text-slate-500">${item.installation_address || '—'}</div>
           </div>
-          <div class="text-xs text-slate-400 whitespace-nowrap">${formatDate(p.created_at)}</div>
+          <div class="text-xs text-slate-400 whitespace-nowrap">${formatDate(item.created_at)}</div>
         </div>
         <div class="text-xs text-slate-500 mb-3">
-          ${(p.technician && p.technician.full_name) || '—'} · ${p.unit_type || '—'}
+          ${item.technician_name} · ${item.detail}
         </div>
-        <button data-protocol-id="${p.id}" onclick="downloadProtocolPdf('${p.id}')" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-medium py-2 rounded-lg">
+        <button data-item-id="${item.id}" onclick="${downloadHandler(item)}" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-medium py-2 rounded-lg">
           📄 PDF herunterladen
         </button>
       </div>
@@ -241,10 +284,11 @@
   }
 
   async function downloadProtocolPdf(protocolId) {
-    const record = allProtocols.find(p => p.id === protocolId);
-    if (!record) return;
+    const item = allItems.find(i => i.id === protocolId && i.type === 'inbetriebnahme');
+    if (!item) return;
+    const record = item.raw;
 
-    const btns = document.querySelectorAll(`[data-protocol-id="${protocolId}"]`);
+    const btns = document.querySelectorAll(`[data-item-id="${protocolId}"]`);
     const originalLabels = [];
     btns.forEach(b => { originalLabels.push(b.innerHTML); b.disabled = true; b.innerHTML = '⏳ Lädt...'; });
 
@@ -404,6 +448,168 @@
       doc.text('Techniker', techX, y + sigHeightMm + 5);
 
       doc.save(`Inbetriebnahme_${record.customer_name || 'Protokoll'}.pdf`);
+    } finally {
+      btns.forEach((b, i) => { b.disabled = false; b.innerHTML = originalLabels[i]; });
+    }
+  }
+
+  async function downloadLeakCheckPdf(leakCheckId) {
+    const item = allItems.find(i => i.id === leakCheckId && i.type === 'dichtigkeit');
+    if (!item) return;
+    const record = item.raw;
+
+    const btns = document.querySelectorAll(`[data-item-id="${leakCheckId}"]`);
+    const originalLabels = [];
+    btns.forEach(b => { originalLabels.push(b.innerHTML); b.disabled = true; b.innerHTML = '⏳ Lädt...'; });
+
+    try {
+      const [photoDataUrl, logoDataUrl] = await Promise.all([
+        loadProtocolPhoto(record.photo_url),
+        (companyInfo && companyInfo.logo_url) ? urlToDataUrl(companyInfo.logo_url) : Promise.resolve(null),
+      ]);
+
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
+
+      const marginX = 10;
+      const marginTop = 12;
+      const pageWidth = 210;
+      const contentWidth = pageWidth - marginX * 2;
+      let y = marginTop;
+
+      const companyName = (companyInfo && companyInfo.company_name) || 'Dichtigkeitsprüfung';
+      const companyAddress = (companyInfo && companyInfo.address) || 'Nach F-Gase-Verordnung';
+      const textX = marginX + (logoDataUrl ? 20 : 0);
+
+      if (logoDataUrl) {
+        try { doc.addImage(logoDataUrl, detectImageFormat(logoDataUrl), marginX, y, 16, 16); } catch (e) { console.error('Logo-Fehler:', e); }
+      }
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(15);
+      doc.setTextColor(15, 23, 42);
+      doc.text(pdfSafe(companyName), textX, y + 6);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(9);
+      doc.setTextColor(100, 116, 139);
+      doc.text(pdfSafe(companyAddress), textX, y + 11);
+
+      const shortId = 'DP-' + new Date(record.created_at).getFullYear() + '-' + record.id.slice(0, 4).toUpperCase();
+      doc.setFontSize(9);
+      doc.text(shortId, pageWidth - marginX, y + 4, { align: 'right' });
+      doc.text(formatDate(record.created_at), pageWidth - marginX, y + 9, { align: 'right' });
+
+      y += 20;
+      doc.setDrawColor(15, 23, 42);
+      doc.setLineWidth(0.6);
+      doc.line(marginX, y, pageWidth - marginX, y);
+      y += 8;
+
+      function sectionHeading(title) {
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(11);
+        doc.setTextColor(180, 83, 9);
+        doc.text(title, marginX, y);
+        doc.setDrawColor(203, 213, 225);
+        doc.setLineWidth(0.2);
+        doc.line(marginX, y + 1.5, pageWidth - marginX, y + 1.5);
+        y += 7;
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(9.5);
+        doc.setTextColor(30, 41, 59);
+      }
+      function fieldLine(label, value, xOffset) {
+        doc.setFont('helvetica', 'bold');
+        doc.text(pdfSafe(label), marginX + xOffset, y);
+        const labelWidth = doc.getTextWidth(label + ' ');
+        doc.setFont('helvetica', 'normal');
+        doc.text(pdfSafe(value == null || value === '' ? '—' : value), marginX + xOffset + labelWidth, y);
+      }
+
+      const halfWidth = contentWidth / 2;
+
+      sectionHeading('1. Kunde & Anlagenkennzeichnung');
+      fieldLine('Kunde:', record.customer_name, 0);
+      fieldLine('Adresse:', record.installation_address, halfWidth);
+      y += 6;
+      fieldLine('Techniker:', (record.technician && record.technician.full_name) || '—', 0);
+      fieldLine('Anlage:', record.system_identifier, halfWidth);
+      y += 10;
+
+      sectionHeading('2. Kältemittel & Füllmenge');
+      const chargeKg = parseFloat(record.charge_kg) || 0;
+      const gwp = GWP_TABLE[record.refrigerant] || 0;
+      const co2eTonnes = (chargeKg * gwp) / 1000;
+      let interval = 'Kein regelmäßiges Prüfintervall erforderlich (< 5 t CO2e)';
+      if (co2eTonnes >= 500) interval = 'Prüfintervall: alle 3 Monate (>= 500 t CO2e)';
+      else if (co2eTonnes >= 50) interval = 'Prüfintervall: alle 6 Monate (>= 50 t CO2e)';
+      else if (co2eTonnes >= 5) interval = 'Prüfintervall: jährlich (>= 5 t CO2e)';
+
+      fieldLine('Kältemittel:', record.refrigerant, 0);
+      fieldLine('Füllmenge:', chargeKg.toFixed(2) + ' kg', halfWidth);
+      y += 6;
+      fieldLine('CO2-Aequivalent:', co2eTonnes.toFixed(2) + ' t CO2e', 0);
+      y += 5;
+      doc.setFontSize(8.5);
+      doc.setTextColor(100, 116, 139);
+      const nextDueText = record.next_check_due ? ('Fällig: ' + new Date(record.next_check_due).toLocaleDateString('de-DE')) : '';
+      const intervalLines = doc.splitTextToSize(pdfSafe(interval + ' ' + nextDueText), contentWidth);
+      doc.text(intervalLines, marginX, y);
+      y += intervalLines.length * 4 + 6;
+      doc.setTextColor(30, 41, 59);
+
+      sectionHeading('3. Prüfmethode & Ergebnis');
+      fieldLine('Prüfmethode:', record.check_method, 0);
+      fieldLine('Leckage festgestellt:', record.leak_detected ? 'Ja' : 'Nein', halfWidth);
+      y += 6;
+      if (record.leak_detected && record.leak_description) {
+        const descLines = doc.splitTextToSize(pdfSafe('Beschreibung: ' + record.leak_description), contentWidth);
+        doc.text(descLines, marginX, y);
+        y += descLines.length * 4.5 + 4;
+      }
+      y += 4;
+
+      sectionHeading('4. Fotodokumentation');
+      const photoBoxW = 80;
+      const photoBoxH = 45;
+      if (photoDataUrl) {
+        try { doc.addImage(photoDataUrl, detectImageFormat(photoDataUrl), marginX, y, photoBoxW, photoBoxH, undefined, 'FAST'); }
+        catch (e) { console.error('Foto-Fehler:', e); }
+      } else {
+        doc.setFontSize(8.5);
+        doc.setTextColor(148, 163, 184);
+        doc.text('Kein Foto', marginX, y + 6);
+      }
+      y += photoBoxH + 10;
+
+      const pageHeight = 297;
+      const bottomMargin = 15;
+      if (y + 40 > pageHeight - bottomMargin) {
+        doc.addPage();
+        y = marginTop;
+      }
+
+      sectionHeading('5. Abnahme & Unterschriften');
+      const sigWidthMm = (contentWidth - 6) / 2;
+      const sigHeightMm = 22;
+
+      if (record.signature_customer_png_base64) {
+        doc.addImage(record.signature_customer_png_base64, 'PNG', marginX, y, sigWidthMm, sigHeightMm);
+      }
+      doc.setDrawColor(0, 0, 0);
+      doc.setLineWidth(0.3);
+      doc.line(marginX, y + sigHeightMm + 1, marginX + sigWidthMm, y + sigHeightMm + 1);
+      doc.setFontSize(8);
+      doc.setTextColor(148, 163, 184);
+      doc.text('Kunde / Betreiber', marginX, y + sigHeightMm + 5);
+
+      const techX = marginX + sigWidthMm + 6;
+      if (record.signature_technician_png_base64) {
+        doc.addImage(record.signature_technician_png_base64, 'PNG', techX, y, sigWidthMm, sigHeightMm);
+      }
+      doc.line(techX, y + sigHeightMm + 1, techX + sigWidthMm, y + sigHeightMm + 1);
+      doc.text('Techniker', techX, y + sigHeightMm + 5);
+
+      doc.save(`Dichtigkeitspruefung_${record.customer_name || 'Protokoll'}.pdf`);
     } finally {
       btns.forEach((b, i) => { b.disabled = false; b.innerHTML = originalLabels[i]; });
     }
