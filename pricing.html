@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Preise — klima-protokoll.de</title>
+<meta name="theme-color" content="#0f172a">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
+</head>
+<body class="bg-slate-100 min-h-screen flex flex-col">
+
+  <header class="bg-slate-900 text-white px-4 py-4 sm:px-6 flex items-center justify-between shadow-md">
+    <h1 class="text-base sm:text-lg font-semibold">klima-protokoll.de</h1>
+    <a href="index.html" class="text-sm text-slate-300 hover:text-white px-3 py-2 rounded-lg hover:bg-slate-800 transition">← Zur App</a>
+  </header>
+
+  <main class="flex-1 max-w-5xl mx-auto px-4 py-12 w-full">
+    <h1 class="text-3xl font-bold text-slate-900 text-center mb-2">Preise</h1>
+    <p class="text-slate-500 text-center mb-10">30 Tage kostenlos testen, danach monatlich kündbar.</p>
+
+    <div id="checkout-error" class="hidden max-w-md mx-auto mb-6 bg-rose-50 border border-rose-200 text-rose-700 text-sm rounded-xl p-4 text-center"></div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex flex-col">
+        <h2 class="text-lg font-semibold text-slate-800">Solo</h2>
+        <p class="text-3xl font-bold text-slate-900 mt-2">29 € <span class="text-sm font-normal text-slate-400">/ Monat</span></p>
+        <p class="text-sm text-slate-500 mt-2 flex-1">Für Einzelunternehmer:innen und Ein-Personen-Betriebe.</p>
+        <button onclick="startCheckout('PRICE_ID_SOLO', this)" class="mt-6 w-full bg-slate-800 hover:bg-slate-900 text-white font-medium py-3 rounded-xl transition">
+          30 Tage kostenlos testen
+        </button>
+      </div>
+
+      <div class="bg-white rounded-2xl shadow-md border-2 border-blue-600 p-6 flex flex-col relative">
+        <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-xs font-semibold px-3 py-1 rounded-full">Beliebt</span>
+        <h2 class="text-lg font-semibold text-slate-800">Kleine Betriebe</h2>
+        <p class="text-3xl font-bold text-slate-900 mt-2">59 € <span class="text-sm font-normal text-slate-400">/ Monat</span></p>
+        <p class="text-sm text-slate-500 mt-2 flex-1">Für Betriebe mit mehreren Technikern.</p>
+        <button onclick="startCheckout('PRICE_ID_KLEIN', this)" class="mt-6 w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-xl transition">
+          30 Tage kostenlos testen
+        </button>
+      </div>
+
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex flex-col">
+        <h2 class="text-lg font-semibold text-slate-800">Mittelstand</h2>
+        <p class="text-3xl font-bold text-slate-900 mt-2">99 € <span class="text-sm font-normal text-slate-400">/ Monat</span></p>
+        <p class="text-sm text-slate-500 mt-2 flex-1">Für größere Fachbetriebe mit vielen Baustellen.</p>
+        <button onclick="startCheckout('PRICE_ID_MITTELSTAND', this)" class="mt-6 w-full bg-slate-800 hover:bg-slate-900 text-white font-medium py-3 rounded-xl transition">
+          30 Tage kostenlos testen
+        </button>
+      </div>
+
+    </div>
+
+    <p class="text-center text-xs text-slate-400 mt-8">
+      Alle Preise sind Endpreise. Gemäß § 19 UStG wird keine Umsatzsteuer erhoben und ausgewiesen.
+    </p>
+  </main>
+
+  <footer class="text-center text-xs text-slate-400 py-6">
+    <a href="index.html" class="hover:underline">Zur App</a> ·
+    <a href="impressum.html" class="hover:underline">Impressum</a> ·
+    <a href="datenschutz.html" class="hover:underline">Datenschutz</a> ·
+    <a href="avv.html" class="hover:underline">AVV</a>
+  </footer>
+
+<script>
+  // TODO: identische Werte wie in index.html eintragen
+  const SUPABASE_URL = 'https://hirqybbwgjtwdlqzdmsr.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_KlrmVMrzvmosZXDXbgs7Kg_sP5iwfGX';
+  const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  async function startCheckout(priceId, btn) {
+    const errorBox = document.getElementById('checkout-error');
+    errorBox.classList.add('hidden');
+
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    if (!session) {
+      window.location.href = 'index.html';
+      return;
+    }
+
+    const { data: profile } = await supabaseClient
+      .from('profiles')
+      .select('company_id')
+      .eq('id', session.user.id)
+      .single();
+
+    if (!profile || !profile.company_id) {
+      errorBox.textContent = 'Bitte zuerst in der App eine Firma anlegen, bevor du ein Abo startest.';
+      errorBox.classList.remove('hidden');
+      return;
+    }
+
+    btn.disabled = true;
+    const originalText = btn.textContent;
+    btn.textContent = 'Lädt...';
+
+    try {
+      const res = await fetch('/api/create-checkout-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          priceId,
+          companyId: profile.company_id,
+          customerEmail: session.user.email,
+        }),
+      });
+      const data = await res.json();
+
+      if (!res.ok || !data.url) {
+        throw new Error(data.error || 'Checkout konnte nicht gestartet werden.');
+      }
+      window.location.href = data.url;
+    } catch (err) {
+      errorBox.textContent = err.message;
+      errorBox.classList.remove('hidden');
+      btn.disabled = false;
+      btn.textContent = originalText;
+    }
+  }
+</script>
+
+</body>
+</html>
