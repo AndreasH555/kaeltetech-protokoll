@@ -169,8 +169,25 @@
       </div>
     </section>
 
+    <!-- -------- VIEW: PAYWALL (Testphase abgelaufen, kein aktives Abo) -------- -->
+    <section id="view-paywall" class="hidden">
+      <div class="max-w-sm mx-auto bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sm:p-8 mt-6 text-center">
+        <p class="text-4xl mb-3">⏳</p>
+        <h2 class="text-lg font-semibold text-slate-800 mb-2">Testphase abgelaufen</h2>
+        <p class="text-sm text-slate-500 mb-6">
+          Die kostenlose 30-Tage-Testphase deiner Firma ist beendet. Bitte wähle einen Tarif, um weiter
+          Protokolle zu erstellen.
+        </p>
+        <a href="pricing.html" class="block w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-3 rounded-xl transition mb-3">
+          Tarif wählen
+        </a>
+        <button onclick="handleLogout()" class="text-sm text-slate-400 hover:text-slate-600">Abmelden</button>
+      </div>
+    </section>
+
     <!-- -------- VIEW: HOME / AUSWAHL -------- -->
     <section id="view-home" class="hidden space-y-4">
+      <div id="trial-banner" class="hidden bg-amber-50 border border-amber-200 text-amber-800 text-xs rounded-xl p-3 text-center"></div>
       <div class="mb-3">
         <h2 class="text-lg font-bold text-slate-800">Inbetriebnahmeschein &amp; F-Gase-Nachweis</h2>
         <p class="text-xs text-slate-500">für Kälte-, Klima- &amp; Wärmepumpenanlagen gemäß Verordnung (EU) 2024/573</p>
@@ -636,6 +653,7 @@
   const views = {
     login: document.getElementById('view-login'),
     onboarding: document.getElementById('view-onboarding'),
+    paywall: document.getElementById('view-paywall'),
     home: document.getElementById('view-home'),
     inbetriebnahme: document.getElementById('view-inbetriebnahme'),
     dichtigkeit: document.getElementById('view-dichtigkeit'),
@@ -644,6 +662,7 @@
   const viewLabels = {
     login: 'Anmelden',
     onboarding: 'Firma anlegen',
+    paywall: 'Testphase abgelaufen',
     home: 'Übersicht',
     inbetriebnahme: 'Inbetriebnahme',
     dichtigkeit: 'Dichtigkeitsprüfung',
@@ -658,10 +677,10 @@
       el.classList.toggle('hidden', key !== viewKey);
     });
     currentViewLabel.textContent = viewLabels[viewKey] || 'Übersicht';
-    // Zurück-Button nur innerhalb der eigentlichen App sinnvoll, nicht bei Login/Onboarding
-    const inApp = viewKey !== 'login' && viewKey !== 'onboarding';
+    // Zurück-Button nur innerhalb der eigentlichen App sinnvoll, nicht bei Login/Onboarding/Paywall
+    const inApp = viewKey !== 'login' && viewKey !== 'onboarding' && viewKey !== 'paywall';
     btnHome.classList.toggle('hidden', viewKey === 'home' || !inApp);
-    btnLogout.classList.toggle('hidden', !inApp);
+    btnLogout.classList.toggle('hidden', viewKey === 'login');
     AppState.currentView = viewKey;
     window.scrollTo({ top: 0, behavior: 'instant' });
   }
@@ -992,7 +1011,7 @@
 
     const { data: profile, error } = await supabaseClient
       .from('profiles')
-      .select('id, company_id, full_name, cert_number, role, companies(company_name, logo_url, address, tax_id)')
+      .select('id, company_id, full_name, cert_number, role, companies(company_name, logo_url, address, tax_id, subscription_status, trial_ends_at)')
       .eq('id', session.user.id)
       .single();
 
@@ -1018,9 +1037,32 @@
 
     if (!profile.company_id) {
       navigateTo('onboarding');
-    } else {
-      navigateTo('home');
+      return;
     }
+
+    // Zugriffssperre: aktives Abo ODER laufende Testphase erforderlich.
+    // Greift unabhängig davon, ob Stripe schon aktiviert ist — die
+    // 30-Tage-Frist wird bereits bei Firmengründung in der DB gesetzt.
+    const company = profile.companies;
+    const status = company && company.subscription_status;
+    const trialActive = company && company.trial_ends_at && new Date(company.trial_ends_at) > new Date();
+    const hasAccess = status === 'active' || status === 'trialing' && trialActive;
+
+    if (!hasAccess) {
+      navigateTo('paywall');
+      return;
+    }
+
+    const trialBanner = document.getElementById('trial-banner');
+    if (status === 'trialing' && trialActive) {
+      const daysLeft = Math.ceil((new Date(company.trial_ends_at) - new Date()) / (1000 * 60 * 60 * 24));
+      trialBanner.textContent = `Noch ${daysLeft} Tag${daysLeft === 1 ? '' : 'e'} kostenlose Testphase.`;
+      trialBanner.classList.remove('hidden');
+    } else {
+      trialBanner.classList.add('hidden');
+    }
+
+    navigateTo('home');
   }
 
   // Reagiert auf Login/Logout/Session-Wiederherstellung (z.B. nach Seiten-Neuladen)
