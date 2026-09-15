@@ -30,7 +30,7 @@ export default async function handler(req, res) {
   params.append('mode', 'subscription');
   params.append('line_items[0][price]', priceId);
   params.append('line_items[0][quantity]', '1');
-  params.append('subscription_data[trial_period_days]', '30');
+  params.append('subscription_data[trial_period_days]', '14');
   params.append('subscription_data[metadata][company_id]', companyId);
   params.append('client_reference_id', companyId);
   params.append('metadata[company_id]', companyId);
