@@ -21,12 +21,12 @@
       extend: {
         colors: {
           brand: {
-            50: '#eff6ff',
-            100: '#dbeafe',
-            500: '#2563eb',
-            600: '#1d4ed8',
-            700: '#1e40af',
-            900: '#1e3a8a',
+            50: '#f8fafc',
+            100: '#f1f5f9',
+            500: '#475569',
+            600: '#334155',
+            700: '#1e293b',
+            900: '#0f172a',
           }
         }
       }
@@ -47,7 +47,7 @@
   /* Sanfter Fokus-Ring statt Standard-Browser-Outline */
   input:focus, select:focus, textarea:focus {
     outline: none;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.35);
+    box-shadow: 0 0 0 3px rgba(71, 85, 105, 0.35);
   }
 </style>
 <script>
@@ -66,7 +66,7 @@
         ❄️
       </div>
       <div>
-        <h1 class="text-base sm:text-lg font-semibold leading-tight">KälteTech Protokoll</h1>
+        <h1 class="text-base sm:text-lg font-semibold leading-tight">KlimaProtokoll</h1>
         <p class="text-xs text-slate-400 leading-tight" id="current-view-label">Übersicht</p>
       </div>
     </div>
@@ -246,7 +246,7 @@
             </div>
           </div>
           <div class="text-right shrink-0">
-            <span class="bg-blue-600/30 border border-blue-400/30 text-blue-300 text-xs px-3 py-1 rounded-full font-mono" id="protocol-id"></span>
+            <span class="bg-slate-600/30 border border-slate-400/30 text-slate-300 text-xs px-3 py-1 rounded-full font-mono" id="protocol-id"></span>
             <p class="text-xs text-slate-400 mt-2" id="current-date"></p>
           </div>
         </div>
@@ -336,7 +336,7 @@
               </label>
             </div>
 
-            <div class="mt-4 p-4 bg-blue-50/60 border border-blue-100 rounded-xl flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="mt-4 p-4 bg-slate-50/60 border border-slate-100 rounded-xl flex flex-col md:flex-row justify-between items-center gap-4">
               <div>
                 <p class="text-sm font-semibold text-slate-800">Leitungslänge &amp; Zusatzfüllung</p>
                 <p class="text-xs text-slate-500">20 g / Meter ab 5 m Werkslänge</p>
@@ -693,8 +693,8 @@
 
   // ===================== PWA MANIFEST (inline generiert) =====================
   const manifest = {
-    name: "KälteTech Protokoll",
-    short_name: "KälteTech",
+    name: "KlimaProtokoll",
+    short_name: "KlimaProtokoll",
     start_url: ".",
     display: "standalone",
     background_color: "#f1f5f9",
@@ -911,10 +911,13 @@
       return;
     }
 
+    const selectedPlan = localStorage.getItem('klimaprotokoll_selected_plan') || null;
+
     const { error } = await supabaseClient.rpc('create_company_and_assign_admin', {
       p_company_name: name,
       p_address: address || null,
       p_tax_id: taxId || null,
+      p_plan_tier: selectedPlan,
     });
 
     if (error) {
@@ -923,6 +926,7 @@
       return;
     }
 
+    localStorage.removeItem('klimaprotokoll_selected_plan');
     await loadCurrentUserContext();
     navigateTo('home');
   }
@@ -1064,6 +1068,17 @@
 
     navigateTo('home');
   }
+
+  // Merkt sich einen von der Landingpage mitgegebenen Tarif (?plan=solo etc.),
+  // damit er beim Anlegen der Firma mitgespeichert werden kann — überlebt
+  // auch den Umweg über die E-Mail-Bestätigung, da localStorage genutzt wird.
+  (function rememberSelectedPlan() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const plan = urlParams.get('plan');
+    if (plan) {
+      localStorage.setItem('klimaprotokoll_selected_plan', plan);
+    }
+  })();
 
   // Reagiert auf Login/Logout/Session-Wiederherstellung (z.B. nach Seiten-Neuladen)
   supabaseClient.auth.onAuthStateChange((_event, _session) => {
@@ -1291,7 +1306,7 @@
     function sectionHeading(title) {
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(11);
-      doc.setTextColor(29, 78, 216);
+      doc.setTextColor(30, 41, 59);
       doc.text(title, marginX, y);
       doc.setDrawColor(203, 213, 225);
       doc.setLineWidth(0.2);
