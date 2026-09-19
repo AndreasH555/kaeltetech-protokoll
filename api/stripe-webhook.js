@@ -81,7 +81,7 @@ export default async function handler(req, res) {
           await updateCompany(companyId, {
             stripe_customer_id: session.customer,
             stripe_subscription_id: session.subscription,
-            subscription_status: 'trialing',
+            subscription_status: 'active', // kein Stripe-Trial mehr, Zahlung ist sofort erfolgt
           });
         }
         break;
