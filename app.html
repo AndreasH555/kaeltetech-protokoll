@@ -898,6 +898,14 @@
     navigateTo('login');
   }
 
+  // Ordnet den auf der Landingpage gewählten Tarif der echten Stripe-Price-ID zu.
+  const PLAN_PRICE_IDS = {
+    solo: 'price_1UHPJeKMfZ9jETe2UyiFiMJd',
+    klein: 'price_1UHPLJKMfZ9jETe2BrYsk9V8',
+    mittelstand: 'price_1UHPMiKMfZ9jETe2JnEb0pd4',
+    gross: 'price_1UHPQVKMfZ9jETe2pZe6Nmgk',
+  };
+
   async function handleCreateCompany() {
     const name = document.getElementById('onboard-company-name').value.trim();
     const address = document.getElementById('onboard-address').value.trim();
@@ -911,9 +919,10 @@
       return;
     }
 
-    const selectedPlan = localStorage.getItem('klimaprotokoll_selected_plan') || null;
+    const selectedPlan = localStorage.getItem('klimaprotokoll_selected_plan') || 'solo'; // Fallback, falls kein Tarif mitgegeben wurde
+    const priceId = PLAN_PRICE_IDS[selectedPlan] || PLAN_PRICE_IDS.solo;
 
-    const { error } = await supabaseClient.rpc('create_company_and_assign_admin', {
+    const { data: companyId, error } = await supabaseClient.rpc('create_company_and_assign_admin', {
       p_company_name: name,
       p_address: address || null,
       p_tax_id: taxId || null,
@@ -927,8 +936,26 @@
     }
 
     localStorage.removeItem('klimaprotokoll_selected_plan');
-    await loadCurrentUserContext();
-    navigateTo('home');
+
+    // Direkt weiter zu Stripe: Karte hinterlegen, Stripe verwaltet die
+    // 14 Tage Testphase selbst. Ohne abgeschlossenen Checkout bleibt die
+    // Firma auf subscription_status='none' und landet beim nächsten
+    // Login auf der Sperr-Seite mit Link zu pricing.html als Rückfallebene.
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    try {
+      const res = await fetch('/api/create-checkout-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ priceId, companyId, customerEmail: session.user.email }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.url) throw new Error(data.error || 'Checkout konnte nicht gestartet werden.');
+      window.location.href = data.url;
+    } catch (err) {
+      errorEl.textContent = 'Firma wurde angelegt, aber die Weiterleitung zur Bezahlung ist fehlgeschlagen: ' + err.message + ' Du kannst es über die Preisseite erneut versuchen.';
+      errorEl.classList.remove('hidden');
+      await loadCurrentUserContext();
+    }
   }
 
   function setOnboardMode(mode) {
@@ -1050,7 +1077,12 @@
     const company = profile.companies;
     const status = company && company.subscription_status;
     const trialActive = company && company.trial_ends_at && new Date(company.trial_ends_at) > new Date();
-    const hasAccess = status === 'active' || status === 'trialing' && trialActive;
+    // 'trialing' allein reicht für Zugriff: Stripe hat den Checkout bereits
+    // bestätigt (checkout.session.completed) — trial_ends_at kommt oft erst
+    // kurz danach über einen zweiten Webhook (subscription.created) nach.
+    // Ohne diese Lockerung könnte direkt nach erfolgreicher Zahlung kurz
+    // fälschlich die Sperr-Seite erscheinen.
+    const hasAccess = status === 'active' || status === 'trialing';
 
     if (!hasAccess) {
       navigateTo('paywall');
