@@ -30,15 +30,15 @@ export default async function handler(req, res) {
   params.append('mode', 'subscription');
   params.append('line_items[0][price]', priceId);
   params.append('line_items[0][quantity]', '1');
-  // Kein eigenes Stripe-Trial mehr: Die 14 Tage kostenlose Testphase laufen
-  // bereits über unsere Datenbank (companies.trial_ends_at). Wer den
-  // Checkout durchläuft, zahlt ab sofort — sonst gäbe es zwei Testphasen
-  // hintereinander.
+  // Stripe verwaltet jetzt die 14-Tage-Testphase komplett selbst (Karte wird
+  // sofort hinterlegt, erste Abbuchung erst nach Ablauf des Trials, außer der
+  // Nutzer kündigt vorher). Keine parallele Trial-Logik mehr in der eigenen DB.
+  params.append('subscription_data[trial_period_days]', '14');
   params.append('subscription_data[metadata][company_id]', companyId);
   params.append('client_reference_id', companyId);
   params.append('metadata[company_id]', companyId);
-  params.append('success_url', `${baseUrl}/settings.html?checkout=success`);
-  params.append('cancel_url', `${baseUrl}/pricing.html?checkout=cancelled`);
+  params.append('success_url', `${baseUrl}/app.html?checkout=success`);
+  params.append('cancel_url', `${baseUrl}/app.html?checkout=cancelled`);
   if (customerEmail) params.append('customer_email', customerEmail);
 
   try {
