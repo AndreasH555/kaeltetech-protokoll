@@ -81,11 +81,12 @@ export default async function handler(req, res) {
           await updateCompany(companyId, {
             stripe_customer_id: session.customer,
             stripe_subscription_id: session.subscription,
-            subscription_status: 'active', // kein Stripe-Trial mehr, Zahlung ist sofort erfolgt
+            subscription_status: 'trialing', // Stripe verwaltet das Trial jetzt selbst
           });
         }
         break;
       }
+      case 'customer.subscription.created':
       case 'customer.subscription.updated':
       case 'customer.subscription.deleted': {
         const sub = event.data.object;
