@@ -173,12 +173,12 @@
     <section id="view-paywall" class="hidden">
       <div class="max-w-sm mx-auto bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sm:p-8 mt-6 text-center">
         <p class="text-4xl mb-3">⏳</p>
-        <h2 class="text-lg font-semibold text-slate-800 mb-2">Testphase abgelaufen</h2>
-        <p class="text-sm text-slate-500 mb-6">
-          Die kostenlose 30-Tage-Testphase deiner Firma ist beendet. Bitte wähle einen Tarif, um weiter
+        <h2 id="paywall-title" class="text-lg font-semibold text-slate-800 mb-2">Kein aktives Abo</h2>
+        <p id="paywall-text" class="text-sm text-slate-500 mb-6">
+          Für deine Firma ist aktuell kein aktives Abo oder keine laufende Testphase hinterlegt. Bitte wähle einen Tarif, um weiter
           Protokolle zu erstellen.
         </p>
-        <a href="pricing.html" class="block w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-3 rounded-xl transition mb-3">
+        <a id="paywall-link" href="pricing.html" class="block w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-3 rounded-xl transition mb-3">
           Tarif wählen
         </a>
         <button onclick="handleLogout()" class="text-sm text-slate-400 hover:text-slate-600">Abmelden</button>
@@ -662,7 +662,7 @@
   const viewLabels = {
     login: 'Anmelden',
     onboarding: 'Firma anlegen',
-    paywall: 'Testphase abgelaufen',
+    paywall: 'Zugang',
     home: 'Übersicht',
     inbetriebnahme: 'Inbetriebnahme',
     dichtigkeit: 'Dichtigkeitsprüfung',
@@ -1084,9 +1084,36 @@
     // fälschlich die Sperr-Seite erscheinen.
     const hasAccess = status === 'active' || status === 'trialing';
 
+    // Direkt nach dem Stripe-Checkout (?checkout=success) kann der Webhook den
+    // Status noch nicht gesetzt haben. Dann kurz warten und erneut prüfen,
+    // statt fälschlich die Sperrseite zu zeigen (max. ca. 40 Sekunden).
+    const returnedFromCheckout = new URLSearchParams(window.location.search).get('checkout') === 'success';
+    const paywallTitle = document.getElementById('paywall-title');
+    const paywallText = document.getElementById('paywall-text');
+    const paywallLink = document.getElementById('paywall-link');
+
+    if (!hasAccess && returnedFromCheckout && checkoutPollCount < 20) {
+      checkoutPollCount++;
+      paywallTitle.textContent = 'Zahlung erfolgreich';
+      paywallText.textContent = 'Dein Zugang wird gerade freigeschaltet. Das dauert nur wenige Sekunden …';
+      paywallLink.classList.add('hidden');
+      navigateTo('paywall');
+      clearTimeout(checkoutPollTimer);
+      checkoutPollTimer = setTimeout(loadCurrentUserContext, 2000);
+      return;
+    }
+
     if (!hasAccess) {
+      paywallTitle.textContent = 'Kein aktives Abo';
+      paywallText.textContent = 'Für deine Firma ist aktuell kein aktives Abo oder keine laufende Testphase hinterlegt. Bitte wähle einen Tarif, um weiter Protokolle zu erstellen.';
+      paywallLink.classList.remove('hidden');
       navigateTo('paywall');
       return;
+    }
+
+    // Zugang vorhanden: ?checkout=... aus der Adresszeile entfernen
+    if (window.location.search.includes('checkout=')) {
+      history.replaceState(null, '', window.location.pathname);
     }
 
     const trialBanner = document.getElementById('trial-banner');
@@ -1111,6 +1138,9 @@
       localStorage.setItem('klimaprotokoll_selected_plan', plan);
     }
   })();
+
+  var checkoutPollCount = 0;
+  var checkoutPollTimer = null;
 
   // Reagiert auf Login/Logout/Session-Wiederherstellung (z.B. nach Seiten-Neuladen)
   supabaseClient.auth.onAuthStateChange((_event, _session) => {
