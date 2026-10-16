@@ -101,6 +101,14 @@
           </div>
         </div>
 
+        <label id="auth-consent-wrap" class="hidden mt-4 flex items-start gap-2 text-xs text-slate-600 leading-snug cursor-pointer">
+          <input type="checkbox" id="auth-consent" class="mt-0.5 h-4 w-4 shrink-0">
+          <span>
+            Ich habe die <a href="datenschutz.html" target="_blank" class="underline">Datenschutzerklärung</a> gelesen und
+            schließe für meine Firma den <a href="avv.html" target="_blank" class="underline">Auftragsverarbeitungsvertrag (AVV)</a> ab.
+          </span>
+        </label>
+
         <p id="auth-error" class="text-xs text-rose-600 mt-3 hidden"></p>
 
         <button id="auth-submit-btn" onclick="handleAuthSubmit()" class="w-full mt-5 bg-brand-600 hover:bg-brand-700 text-white font-bold py-3 rounded-xl transition">
@@ -858,6 +866,7 @@
     document.getElementById('auth-toggle-text').textContent = authMode === 'login' ? 'Noch kein Konto?' : 'Schon registriert?';
     document.getElementById('auth-toggle-btn').textContent = authMode === 'login' ? 'Registrieren' : 'Anmelden';
     document.getElementById('auth-error').classList.add('hidden');
+    document.getElementById('auth-consent-wrap').classList.toggle('hidden', authMode !== 'signup');
   }
 
   async function handleAuthSubmit() {
@@ -872,9 +881,22 @@
       return;
     }
 
+    if (authMode === 'signup' && !document.getElementById('auth-consent').checked) {
+      errorEl.classList.remove('text-emerald-600');
+      errorEl.classList.add('text-rose-600');
+      errorEl.textContent = 'Bitte stimme der Datenschutzerklärung und dem AVV zu.';
+      errorEl.classList.remove('hidden');
+      return;
+    }
+
     const { error } = authMode === 'login'
       ? await supabaseClient.auth.signInWithPassword({ email, password })
-      : await supabaseClient.auth.signUp({ email, password });
+      : await supabaseClient.auth.signUp({
+          email,
+          password,
+          // Zeitpunkt der Zustimmung zum AVV wird am Nutzer gespeichert (Nachweis)
+          options: { data: { avv_accepted_at: new Date().toISOString() } }
+        });
 
     if (error) {
       errorEl.textContent = error.message;
