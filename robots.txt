@@ -1,8 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /app.html
-Disallow: /dashboard.html
-Disallow: /settings.html
-Disallow: /api/
 
-Sitemap: https://klima-protokoll.de/sitemap.xml
+Sitemap: https://www.bienen-kompass.de/sitemap.xml
