@@ -3,2467 +3,308 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bienenkompass – Der Leitfaden für Imker-Anfänger</title>
-<meta name="description" content="Bienenkompass begleitet Imker-Anfänger Schritt für Schritt: vom ersten Bienenvolk über die richtige Grundausstattung bis zur Honigernte. Mit Nachschlagewerk und KI-Unterstützung bei akuten Fragen.">
-<meta name="keywords" content="Imker Anfänger, Imkerei lernen, Bienenvolk, Imker App, Bienenhaltung, erste Bienenvölker, Imkerei Leitfaden">
-<link rel="canonical" href="https://www.bienen-kompass.de/">
-<meta name="google-site-verification" content="o4-twdhI34zyfEUDS8I-StFZ9MxOdj1jV0fJ05uLM44" />
-
-<meta property="og:type" content="website">
-<meta property="og:title" content="Bienenkompass – Der Leitfaden für Imker-Anfänger">
-<meta property="og:description" content="Vom ersten Bienenvolk bis zur Ernte – Schritt für Schritt begleitet. Kostenloser Einstieg für Imker-Anfänger.">
-<meta property="og:url" content="https://www.bienen-kompass.de/">
-<meta property="og:locale" content="de_DE">
-
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Bienenkompass – Der Leitfaden für Imker-Anfänger">
-<meta name="twitter:description" content="Vom ersten Bienenvolk bis zur Ernte – Schritt für Schritt begleitet.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐝</text></svg>">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<title>klima-protokoll.de — Digitale F-Gas-Protokolle für Kälte-, Klima- & Wärmepumpenbetriebe</title>
+<meta name="description" content="Inbetriebnahmeprotokolle und F-Gase-Dichtigkeitsprüfungen direkt auf der Baustelle erfassen, digital unterschreiben, als PDF exportieren. 14 Tage kostenlos testen.">
+<meta name="theme-color" content="#0f172a">
+<meta name="google-site-verification" content="PnVGU25uZc9jth0XJccfJVO9TeBTlaFzRRoFbDm8HRQ" />
+<script src="https://cdn.tailwindcss.com"></script>
 <style>
-  :root {
-    --hive-black: #221A12;
-    --hive-black-soft: #362A1C;
-    --honey: #E8A33D;
-    --honey-deep: #B97A1E;
-    --wax: #F6ECD6;
-    --wax-dim: #EDE0C2;
-    --propolis: #6B4226;
-    --sage: #7C8A5E;
-    --sage-deep: #55603D;
-    --alert: #B84C24;
-    --font-display: 'Fraunces', serif;
-    --font-body: 'Inter', sans-serif;
+  .demo-slide {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    pointer-events: none;
   }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    font-family: var(--font-body);
-    background: var(--wax);
-    color: var(--hive-black);
-    -webkit-font-smoothing: antialiased;
-  }
-  .app {
-    max-width: 480px;
-    margin: 0 auto;
-    min-height: 100vh;
-    background: var(--wax);
-    display: flex;
-    flex-direction: column;
-  }
-
-  /* Header */
-  header {
-    background: var(--hive-black);
-    color: var(--wax);
-    padding: 28px 24px 22px;
-    position: relative;
-    overflow: hidden;
-  }
-  header::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    opacity: 0.5;
-    background-image:
-      linear-gradient(30deg, var(--honey) 12%, transparent 12.5%, transparent 87%, var(--honey) 87.5%, var(--honey)),
-      linear-gradient(150deg, var(--honey) 12%, transparent 12.5%, transparent 87%, var(--honey) 87.5%, var(--honey)),
-      linear-gradient(30deg, var(--honey) 12%, transparent 12.5%, transparent 87%, var(--honey) 87.5%, var(--honey)),
-      linear-gradient(150deg, var(--honey) 12%, transparent 12.5%, transparent 87%, var(--honey) 87.5%, var(--honey)),
-      linear-gradient(60deg, var(--honey-deep) 25%, transparent 25.5%, transparent 75%, var(--honey-deep) 75%, var(--honey-deep)),
-      linear-gradient(60deg, var(--honey-deep) 25%, transparent 25.5%, transparent 75%, var(--honey-deep) 75%, var(--honey-deep));
-    background-size: 34px 60px;
-    background-position: 0 0, 0 0, 17px 30px, 17px 30px, 0 0, 17px 30px;
-    -webkit-mask-image: radial-gradient(ellipse 420px 220px at top right, black, transparent 75%);
-    mask-image: radial-gradient(ellipse 420px 220px at top right, black, transparent 75%);
-    filter: opacity(0.14);
-  }
-  .header-top { display: flex; align-items: center; gap: 10px; position: relative; z-index: 1; }
-  .header-top svg { flex-shrink: 0; }
-  .account-btn {
-    margin-left: auto; position: relative; z-index: 1;
-    background: rgba(246,236,214,0.12); border: none; border-radius: 20px;
-    color: var(--wax); font-family: var(--font-body); font-size: 12px; font-weight: 600;
-    padding: 7px 13px; cursor: pointer; display: flex; align-items: center; gap: 5px;
-  }
-
-  /* Account / Login */
-  .auth-tabs { display: flex; gap: 8px; margin-bottom: 18px; }
-  .auth-tab {
-    flex: 1; padding: 10px; border-radius: 10px; border: 1px solid var(--wax-dim);
-    background: #fff; font-family: var(--font-body); font-size: 13px; font-weight: 600;
-    color: var(--propolis); cursor: pointer;
-  }
-  .auth-tab.active { background: var(--hive-black); color: var(--wax); border-color: var(--hive-black); }
-  .auth-field { margin-bottom: 12px; }
-  .auth-field label { display: block; font-size: 12px; font-weight: 600; color: var(--propolis); margin-bottom: 5px; }
-  .auth-field input {
-    width: 100%; padding: 11px 13px; border-radius: 10px; border: 1px solid var(--wax-dim);
-    font-family: var(--font-body); font-size: 14px; box-sizing: border-box;
-  }
-  .auth-submit {
-    width: 100%; padding: 12px; border-radius: 10px; border: none;
-    background: var(--honey); color: var(--hive-black); font-family: var(--font-body);
-    font-weight: 700; font-size: 14px; cursor: pointer; margin-top: 4px;
-  }
-  .auth-submit:disabled { opacity: 0.6; }
-  .auth-msg { font-size: 12.5px; margin-top: 10px; padding: 10px 12px; border-radius: 8px; }
-  .auth-msg.error { background: #FBEAE0; color: #6B3319; }
-  .auth-msg.success { background: #EAF2E4; color: #3D5A2A; }
-  .account-loggedin { text-align: center; padding: 24px 0; }
-  .account-loggedin .avatar {
-    width: 56px; height: 56px; border-radius: 50%; background: var(--honey);
-    display: flex; align-items: center; justify-content: center; margin: 0 auto 14px;
-    font-size: 22px; color: var(--hive-black); font-weight: 700;
-  }
-  .account-loggedin .email { font-weight: 600; font-size: 15px; margin-bottom: 4px; }
-  .account-loggedin .since { font-size: 12.5px; color: var(--propolis); opacity: 0.7; margin-bottom: 20px; }
-  .logout-btn {
-    background: none; border: 1px solid var(--wax-dim); border-radius: 10px;
-    padding: 10px 18px; font-family: var(--font-body); font-weight: 600; font-size: 13px;
-    color: var(--propolis); cursor: pointer;
-  }
-  .complete-btn {
-    width: 100%; margin-top: 24px; padding: 14px; border-radius: 12px; border: none;
-    background: var(--honey); color: var(--hive-black); font-family: var(--font-body);
-    font-weight: 700; font-size: 14.5px; cursor: pointer;
-  }
-  .complete-btn.done { background: var(--sage); color: #fff; }
-  .complete-hint { text-align: center; font-size: 12px; color: var(--propolis); opacity: 0.7; margin-top: 8px; }
-
-  .legal-links { display: flex; justify-content: center; gap: 18px; margin-top: 36px; padding-top: 20px; border-top: 1px solid var(--wax-dim); }
-  .legal-link { background: none; border: none; font-family: var(--font-body); font-size: 12px; color: var(--propolis); opacity: 0.7; cursor: pointer; text-decoration: underline; }
-  .legal-text { font-size: 13px; line-height: 1.7; color: var(--propolis); }
-  .legal-text p { margin: 0 0 16px; }
-  .legal-text ul { margin: 0 0 16px; padding-left: 18px; }
-  .legal-text li { margin-bottom: 6px; }
-  .legal-text a { color: var(--honey-deep); }
-  .legal-note { font-size: 11.5px; opacity: 0.65; font-style: italic; }
-
-  .cookie-banner {
-    position: fixed; left: 16px; right: 16px; bottom: 16px; z-index: 500;
-    max-width: 400px; margin: 0 auto;
-    background: var(--hive-black); color: var(--wax);
-    border-radius: 14px; padding: 16px 18px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
-    display: flex; flex-direction: column; gap: 10px;
-  }
-  .cookie-banner p { margin: 0; font-size: 12.5px; line-height: 1.5; color: rgba(246,236,214,0.85); }
-  .cookie-banner .actions { display: flex; gap: 10px; }
-  .cookie-banner button {
-    flex: 1; padding: 9px; border-radius: 8px; border: none;
-    font-family: var(--font-body); font-weight: 600; font-size: 12.5px; cursor: pointer;
-  }
-  .cookie-banner .accept-btn { background: var(--honey); color: var(--hive-black); }
-  .cookie-banner .info-btn { background: rgba(246,236,214,0.12); color: var(--wax); }
-
-  /* Imkerbegleiter (Maskottchen) */
-  #mascotWrap {
-    position: fixed; right: 14px; bottom: 14px; z-index: 400;
-    display: flex; align-items: flex-end; gap: 10px;
-    max-width: calc(100% - 28px);
-    transition: bottom 0.25s ease;
-  }
-  #mascotBubble {
-    background: #fff; border: 1px solid var(--wax-dim); border-radius: 14px;
-    padding: 10px 13px; font-size: 12.5px; line-height: 1.45; color: var(--hive-black);
-    max-width: 210px; box-shadow: 0 6px 18px rgba(34,26,18,0.15);
-    position: relative;
-  }
-  #mascotBubble::after {
-    content: ''; position: absolute; right: -6px; bottom: 14px;
-    width: 0; height: 0;
-    border-top: 6px solid transparent; border-bottom: 6px solid transparent;
-    border-left: 7px solid #fff;
-  }
-  #mascotAvatarBtn {
-    width: 52px; height: 52px; border-radius: 50%; border: 2px solid var(--honey);
-    background: #fff; padding: 3px; cursor: pointer; flex-shrink: 0;
-    box-shadow: 0 6px 16px rgba(34,26,18,0.2);
-    animation: mascotBob 3s ease-in-out infinite;
-  }
-  #mascotAvatarBtn img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
-  @keyframes mascotBob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
-  #mascotWrap.collapsed #mascotBubble { display: none; }
-  #mascotText.mascot-clickable { color: var(--honey-deep); font-weight: 600; cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
-  .mascot-close { position: absolute; top: -6px; right: -6px; width: 18px; height: 18px; border-radius: 50%; background: var(--hive-black); color: var(--wax); border: none; font-size: 10px; cursor: pointer; line-height: 1; }
-
-  .eyebrow {
-    font-size: 12px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--honey);
-    margin: 0 0 6px;
-    font-weight: 600;
-    position: relative;
-    z-index: 1;
-  }
-  h1.brand {
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: 28px;
-    margin: 0;
-  }
-  header p.tagline {
-    margin: 8px 0 0;
-    font-size: 14px;
-    color: rgba(246,236,214,0.7);
-    max-width: 300px;
-    position: relative;
-    z-index: 1;
-  }
-
-  /* Nav */
-  nav.tabs {
-    display: flex;
-    background: var(--wax);
-    border-bottom: 1px solid var(--wax-dim);
-    position: sticky;
-    top: 0;
-    z-index: 10;
-  }
-  nav.tabs button {
-    flex: 1;
-    padding: 14px 6px 18px;
-    background: none;
-    border: none;
-    font-family: var(--font-body);
-    font-size: 12.5px;
-    font-weight: 600;
-    color: var(--propolis);
-    opacity: 0.55;
-    cursor: pointer;
-    transition: all 0.15s ease;
-    position: relative;
-  }
-  nav.tabs button::after {
-    content: '';
-    position: absolute;
-    bottom: 6px; left: 50%;
-    width: 7px; height: 7px;
-    background: transparent;
-    clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0% 50%);
-    transform: translateX(-50%) scale(0);
-    transition: transform 0.15s ease;
-  }
-  nav.tabs button.active {
+  .demo-slide.active {
     opacity: 1;
-    color: var(--hive-black);
   }
-  nav.tabs button.active::after {
-    background: var(--honey);
-    transform: translateX(-50%) scale(1);
+  .signature-path {
+    stroke-dasharray: 400;
+    stroke-dashoffset: 400;
   }
-
-  main { flex: 1; padding: 24px; padding-bottom: 40px; }
-  .view { display: none; }
-  .view.active { display: block; }
-
-  h2.section-title {
-    font-family: var(--font-display);
-    font-size: 20px;
-    font-weight: 600;
-    margin: 0 0 4px;
+  .demo-slide.active .signature-path {
+    animation: drawSignature 1.4s ease-out forwards 0.3s;
   }
-  p.section-sub {
-    font-size: 13.5px;
-    color: var(--propolis);
-    opacity: 0.75;
-    margin: 0 0 20px;
+  @keyframes drawSignature {
+    to { stroke-dashoffset: 0; }
   }
-
-  /* Übersicht */
-  .progress-card {
-    background: var(--hive-black);
-    color: var(--wax);
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 20px;
-    position: relative;
-    overflow: hidden;
-  }
-  .progress-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(30deg, var(--honey) 12%, transparent 12.5%, transparent 87%, var(--honey) 87.5%, var(--honey)),
-      linear-gradient(150deg, var(--honey) 12%, transparent 12.5%, transparent 87%, var(--honey) 87.5%, var(--honey)),
-      linear-gradient(30deg, var(--honey) 12%, transparent 12.5%, transparent 87%, var(--honey) 87.5%, var(--honey)),
-      linear-gradient(150deg, var(--honey) 12%, transparent 12.5%, transparent 87%, var(--honey) 87.5%, var(--honey)),
-      linear-gradient(60deg, var(--honey-deep) 25%, transparent 25.5%, transparent 75%, var(--honey-deep) 75%, var(--honey-deep)),
-      linear-gradient(60deg, var(--honey-deep) 25%, transparent 25.5%, transparent 75%, var(--honey-deep) 75%, var(--honey-deep));
-    background-size: 28px 49px;
-    background-position: 0 0, 0 0, 14px 24.5px, 14px 24.5px, 0 0, 14px 24.5px;
-    opacity: 0.08;
-  }
-  .progress-card > * { position: relative; z-index: 1; }
-  .progress-card .label { font-size: 12px; color: var(--honey); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
-  .progress-card .big { font-family: var(--font-display); font-size: 26px; margin: 6px 0 12px; }
-  .bar-track { height: 6px; background: rgba(246,236,214,0.15); border-radius: 4px; overflow: hidden; }
-  .bar-fill { height: 100%; background: var(--honey); border-radius: 4px; }
-
-  .quick-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
-  .quick-card {
-    background: #fff;
-    border: 1px solid var(--wax-dim);
-    border-radius: 14px;
-    padding: 16px;
-    cursor: pointer;
-    transition: transform 0.12s ease, border-color 0.12s ease;
-  }
-  .quick-card:active { transform: scale(0.97); border-color: var(--honey); }
-  .quick-card .icon { font-size: 20px; margin-bottom: 8px; display: block; }
-  .quick-card .t { font-weight: 600; font-size: 14px; margin-bottom: 2px; }
-  .quick-card .s { font-size: 12px; color: var(--propolis); opacity: 0.75; }
-
-  .alert-box {
-    background: #FBEAE0;
-    border: 1px solid #EBC0AA;
-    border-radius: 14px;
-    padding: 14px 16px;
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
-  }
-  .alert-box .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--alert); margin-top: 5px; flex-shrink: 0; }
-  .alert-box .txt { font-size: 13px; line-height: 1.5; color: #6B3319; }
-  .alert-box .txt b { display: block; margin-bottom: 2px; font-size: 13.5px; }
-
-  .free-banner {
-    background: var(--sage);
-    color: #fff;
-    border-radius: 14px;
-    padding: 14px 16px;
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
-    margin-bottom: 20px;
-  }
-  .free-banner .icon { font-size: 18px; flex-shrink: 0; }
-  .free-banner .txt { font-size: 13px; line-height: 1.5; }
-  .free-banner .txt b { display: block; margin-bottom: 2px; font-size: 13.5px; }
-
-  /* Gesperrte Inhalte (Freemium) */
-  .locked { opacity: 0.6; position: relative; cursor: pointer; }
-  .locked .lock-badge {
-    position: absolute; top: 12px; right: 12px;
-    width: 26px; height: 26px; border-radius: 50%;
-    background: var(--hive-black); color: var(--wax);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 12px; z-index: 2;
-  }
-  .hex-card.locked .lock-badge { top: 10px; right: 10px; width: 22px; height: 22px; font-size: 10px; }
-  .locked-nav-tab { opacity: 0.45; }
-
-  .upgrade-backdrop { position: fixed; inset: 0; background: rgba(60,40,10,0.55); z-index: 9000; display: none; align-items: center; justify-content: center; padding: 16px; }
-  .upgrade-backdrop.open { display: flex; }
-  .upgrade-box { background: #fff8e6; border-radius: 18px; max-width: 400px; width: 100%; padding: 24px 20px; box-shadow: 0 12px 40px rgba(0,0,0,0.3); position: relative; max-height: 90vh; overflow-y: auto; }
-  .upgrade-box h3 { margin: 0 0 6px; font-size: 20px; }
-  .upgrade-box .up-price { font-size: 30px; font-weight: 800; margin: 10px 0 2px; }
-  .upgrade-box .up-price s { font-size: 16px; font-weight: 500; opacity: 0.55; margin-left: 6px; }
-  .upgrade-box ul { padding-left: 20px; font-size: 14px; line-height: 1.6; margin: 10px 0; }
-  .upgrade-box .up-small { font-size: 11.5px; opacity: 0.7; line-height: 1.5; margin-top: 10px; }
-  .upgrade-box .up-btn { display: block; width: 100%; border: 0; border-radius: 12px; padding: 14px; font-size: 16px; font-weight: 700; background: #f5a623; color: #3b2a08; cursor: pointer; margin-top: 12px; }
-  .upgrade-box .up-close { position: absolute; top: 8px; right: 12px; background: none; border: 0; font-size: 26px; cursor: pointer; color: #3b2a08; }
-  .premium-badge { display: inline-block; background: #f5a623; color: #3b2a08; font-weight: 700; font-size: 12px; padding: 3px 10px; border-radius: 99px; margin-top: 6px; }
-  .locked-overlay-msg {
-    background: #fff; border: 1px solid var(--wax-dim); border-radius: 14px;
-    padding: 24px 20px; text-align: center; margin-top: 20px;
-  }
-  .locked-overlay-msg .lock-icon { font-size: 30px; margin-bottom: 10px; }
-  .locked-overlay-msg .title { font-weight: 700; font-size: 15px; margin-bottom: 6px; }
-  .locked-overlay-msg .desc { font-size: 13px; color: var(--propolis); line-height: 1.5; }
-
-  /* Kurs */
-  .week-step {
-    display: flex;
-    gap: 14px;
-    padding: 16px 0;
-    border-bottom: 1px solid var(--wax-dim);
-  }
-  .week-step:last-child { border-bottom: none; }
-  .step-marker {
-    width: 30px; height: 30px; border-radius: 50%;
-    background: var(--wax-dim);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 12px; font-weight: 600; color: var(--propolis);
-    flex-shrink: 0;
-  }
-  .week-step.done .step-marker { background: var(--sage); color: white; }
-  .week-step.current .step-marker { background: var(--honey); color: var(--hive-black); }
-  .step-body .t { font-weight: 600; font-size: 14.5px; margin-bottom: 3px; }
-  .step-body .s { font-size: 12.5px; color: var(--propolis); opacity: 0.75; line-height: 1.4; }
-  .step-tag {
-    display: inline-block;
-    margin-top: 6px;
-    font-size: 10.5px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    padding: 3px 8px;
-    border-radius: 6px;
-    background: var(--wax-dim);
-    color: var(--propolis);
-  }
-  .week-step.current .step-tag { background: var(--honey); color: var(--hive-black); }
-
-  /* Nachschlagewerk */
-  .hex-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-  }
-  .hex-card {
-    background: #fff;
-    border: 1px solid var(--wax-dim);
-    border-radius: 14px;
-    padding: 16px 14px;
-    cursor: pointer;
-    transition: border-color 0.15s ease, transform 0.12s ease;
-  }
-  .hex-card:hover { border-color: var(--honey); }
-  .hex-card:active { transform: scale(0.97); }
-  .hex-card .icon {
-    width: 36px; height: 36px;
-    background: var(--wax);
-    clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0% 50%);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 16px;
-    margin-bottom: 10px;
-  }
-  .hex-card .t { font-weight: 600; font-size: 13.5px; margin-bottom: 3px; }
-  .hex-card .s { font-size: 11.5px; color: var(--propolis); opacity: 0.7; line-height: 1.4; }
-
-  /* Chat */
-  .chat-thread { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
-  .msg { max-width: 82%; padding: 11px 14px; border-radius: 14px; font-size: 13.5px; line-height: 1.5; }
-  .msg.bot { background: #fff; border: 1px solid var(--wax-dim); align-self: flex-start; border-bottom-left-radius: 4px; }
-  .msg.user { background: var(--hive-black); color: var(--wax); align-self: flex-end; border-bottom-right-radius: 4px; }
-  .chat-input-row {
-    display: flex; gap: 8px;
-    background: #fff;
-    border: 1px solid var(--wax-dim);
-    border-radius: 12px;
-    padding: 6px 6px 6px 14px;
-  }
-  .chat-input-row input {
-    flex: 1; border: none; outline: none; font-family: var(--font-body);
-    font-size: 13.5px; background: transparent;
-  }
-  .chat-input-row button {
-    background: var(--honey); border: none; border-radius: 8px;
-    padding: 9px 14px; font-weight: 600; font-size: 13px; cursor: pointer;
-    color: var(--hive-black);
-  }
-  .suggestion-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
-  .suggestion-chip {
-    font-size: 12px; padding: 7px 12px; border-radius: 20px;
-    background: var(--wax-dim); color: var(--propolis); border: none; cursor: pointer;
-    font-family: var(--font-body); font-weight: 500;
-  }
-
-  /* Lektionsdetail */
-  .back-btn {
-    background: none; border: none; padding: 0;
-    font-family: var(--font-body); font-size: 13px; font-weight: 600;
-    color: var(--propolis); cursor: pointer; margin-bottom: 16px;
-    display: flex; align-items: center; gap: 4px;
-  }
-  .lesson-intro { font-size: 13.5px; line-height: 1.6; color: var(--propolis); margin-bottom: 24px; }
-  .wheel-wrap { display: flex; justify-content: center; margin-bottom: 24px; }
-  .wheel-legend { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
-  .phase-card {
-    background: #fff; border: 1px solid var(--wax-dim); border-radius: 12px;
-    padding: 13px 15px; display: flex; gap: 12px;
-  }
-  .phase-swatch { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; margin-top: 4px; }
-  .phase-body .months { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--propolis); opacity: 0.7; }
-  .phase-body .name { font-weight: 600; font-size: 14px; margin: 2px 0 4px; }
-  .phase-body .desc { font-size: 12.5px; color: var(--propolis); opacity: 0.85; line-height: 1.5; }
-  .quiz-item {
-    background: #fff; border: 1px solid var(--wax-dim); border-radius: 12px;
-    padding: 13px 15px; margin-bottom: 10px;
-  }
-  .quiz-item summary { font-size: 13.5px; font-weight: 600; cursor: pointer; }
-  .quiz-item .answer { font-size: 13px; color: var(--propolis); margin-top: 8px; line-height: 1.5; }
-
-  /* Rahmenaufbau-Diagramme */
-  .legend-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
-  .legend-chip { display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--propolis); }
-  .legend-swatch { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
-  .box-label { font-size: 12px; font-weight: 600; color: var(--propolis); margin: 0 0 8px; text-transform: uppercase; letter-spacing: 0.04em; }
-  .frame-row { display: flex; gap: 3px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 4px; }
-  .frame { width: 26px; height: 58px; border-radius: 4px; flex-shrink: 0; }
-  .frame-note { font-size: 13px; line-height: 1.6; color: var(--propolis); background: #fff; border: 1px solid var(--wax-dim); border-radius: 12px; padding: 14px 16px; margin-top: 4px; }
-
-  /* Mini-Animationsszenen */
-  .phase-scene { background: var(--wax); border-radius: 10px; margin: 10px 0 4px; overflow: hidden; }
-  .scene-caption { font-size: 11px; color: var(--propolis); opacity: 0.7; text-align: center; margin-top: 2px; }
-
-  @keyframes floatY { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
-  @keyframes pulseS { 0%,100% { transform: scale(1); } 50% { transform: scale(1.12); } }
-  @keyframes fadeInOut { 0%,100% { opacity: 0.15; } 50% { opacity: 1; } }
-  @keyframes riseFall { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(70px); opacity: 0; } }
-  @keyframes flyRight { 0% { transform: translate(0,0); } 45% { transform: translate(140px,-6px); } 50% { transform: translate(140px,-6px); } 95% { transform: translate(0,0); } 100% { transform: translate(0,0); } }
-  @keyframes orbit1 { 0% { transform: rotate(0deg) translateX(46px) rotate(0deg); } 100% { transform: rotate(360deg) translateX(46px) rotate(-360deg); } }
-  @keyframes orbit2 { 0% { transform: rotate(120deg) translateX(46px) rotate(-120deg); } 100% { transform: rotate(480deg) translateX(46px) rotate(-480deg); } }
-  @keyframes orbit3 { 0% { transform: rotate(240deg) translateX(46px) rotate(-240deg); } 100% { transform: rotate(600deg) translateX(46px) rotate(-600deg); } }
-  @keyframes growBar { 0%,15% { height: 4px; } 60%,100% { height: 34px; } }
-  .anim-sun { animation: floatY 3s ease-in-out infinite; }
-  .anim-egg { animation: fadeInOut 3.6s ease-in-out infinite; }
-  .anim-bar { animation: growBar 4s ease-in-out infinite; }
-  .anim-orbit1 { animation: orbit1 4.5s linear infinite; }
-  .anim-orbit2 { animation: orbit2 4.5s linear infinite; }
-  .anim-orbit3 { animation: orbit3 4.5s linear infinite; }
-  .anim-crown { animation: pulseS 2.2s ease-in-out infinite; }
-  .anim-flyer { animation: flyRight 4s ease-in-out infinite; }
-  .anim-honey { animation: growBar 5s ease-in-out infinite; }
-  .anim-leaf1 { animation: riseFall 3.2s linear infinite; animation-delay: 0s; }
-  .anim-leaf2 { animation: riseFall 3.2s linear infinite; animation-delay: 1s; }
-  .anim-leaf3 { animation: riseFall 3.2s linear infinite; animation-delay: 2s; }
-  .anim-pollenbee { animation: flyRight 3.6s ease-in-out infinite; }
-  .anim-snow1 { animation: riseFall 3s linear infinite; animation-delay: 0s; }
-  .anim-snow2 { animation: riseFall 3s linear infinite; animation-delay: 1s; }
-  .anim-snow3 { animation: riseFall 3s linear infinite; animation-delay: 2s; }
-  .anim-cluster { animation: pulseS 1.6s ease-in-out infinite; }
-
-  @keyframes wingFlap { 0%,100% { transform: scaleY(1); } 50% { transform: scaleY(0.35); } }
-  .bee-wing { animation: wingFlap 0.18s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
-  @keyframes dripLong { 0% { transform: translateY(0); opacity: 1; } 85% { opacity: 1; } 100% { transform: translateY(30px); opacity: 0; } }
-  @keyframes dripShort { 0% { transform: translateY(0); opacity: 1; } 85% { opacity: 1; } 100% { transform: translateY(16px); opacity: 0; } }
-  .anim-drip-long { animation: dripLong 1.6s ease-in infinite; }
-  .anim-drip-short { animation: dripShort 1.1s ease-in infinite; animation-delay: 0.4s; }
-
-  /* Willkommens-Intro */
-  #introSplash {
-    position: fixed; inset: 0; z-index: 999;
-    background: var(--hive-black);
-    display: flex; align-items: center; justify-content: center;
-    flex-direction: column;
-    overflow: hidden;
-    animation: introFadeOut 0.6s ease 5.2s forwards;
-  }
-  #introSplash.closing { animation: introFadeOut 0.5s ease forwards; }
-  @keyframes introFadeOut { to { opacity: 0; visibility: hidden; pointer-events: none; } }
-  #introSplash .intro-honeycomb {
-    position: absolute; inset: 0; opacity: 0.06;
-    background-image:
-      linear-gradient(30deg, var(--honey) 12%, transparent 12.5%, transparent 87%, var(--honey) 87.5%, var(--honey)),
-      linear-gradient(150deg, var(--honey) 12%, transparent 12.5%, transparent 87%, var(--honey) 87.5%, var(--honey)),
-      linear-gradient(30deg, var(--honey) 12%, transparent 12.5%, transparent 87%, var(--honey) 87.5%, var(--honey)),
-      linear-gradient(150deg, var(--honey) 12%, transparent 12.5%, transparent 87%, var(--honey) 87.5%, var(--honey)),
-      linear-gradient(60deg, var(--honey-deep) 25%, transparent 25.5%, transparent 75%, var(--honey-deep) 75%, var(--honey-deep)),
-      linear-gradient(60deg, var(--honey-deep) 25%, transparent 25.5%, transparent 75%, var(--honey-deep) 75%, var(--honey-deep));
-    background-size: 34px 60px;
-    background-position: 0 0, 0 0, 17px 30px, 17px 30px, 0 0, 17px 30px;
-  }
-  .intro-close {
-    position: absolute; top: 18px; right: 18px; z-index: 2;
-    background: rgba(246,236,214,0.12); border: none; border-radius: 20px;
-    color: var(--wax); font-family: var(--font-body); font-size: 12.5px; font-weight: 600;
-    padding: 8px 14px; cursor: pointer;
-  }
-  .intro-hive-scene { position: relative; width: 220px; height: 200px; z-index: 1; }
-  @keyframes beeFlyIn {
-    0% { transform: translate(0, 70px) scale(0.4); opacity: 0; }
-    55% { transform: translate(-8px, -10px) scale(1.15); opacity: 1; }
-    75% { transform: translate(6px, -2px) scale(1); }
-    100% { transform: translate(0, -6px) scale(1.05); }
-  }
-  @keyframes beeHover { 0%,100% { transform: translate(0,-6px) scale(1.05); } 50% { transform: translate(0,-12px) scale(1.05); } }
-  .intro-bee { animation: beeFlyIn 1.4s ease-out forwards, beeHover 1.8s ease-in-out 1.4s infinite; }
-  .intro-welcome { text-align: center; margin-top: 14px; position: relative; z-index: 1; }
-  .intro-welcome svg { overflow: visible; }
-  .intro-welcome-text {
-    font-family: var(--font-display); font-weight: 600; font-size: 26px;
-    fill: var(--honey); opacity: 0;
-    animation: introTextIn 0.6s ease 1.3s forwards;
-  }
-  @keyframes introTextIn { to { opacity: 1; } }
-  .intro-drip { animation: dripLong 1.8s ease-in infinite; opacity: 0; }
-  .intro-drip.d1 { animation-delay: 2s; }
-  .intro-drip.d2 { animation-delay: 2.3s; }
-  .intro-drip.d3 { animation-delay: 2.6s; }
-  .intro-sub { font-size: 13px; color: rgba(246,236,214,0.65); margin-top: 8px; opacity: 0; animation: introTextIn 0.6s ease 1.9s forwards; }
-
-  /* Equipment-Kapitel */
-  .equip-item { background: #fff; border: 1px solid var(--wax-dim); border-radius: 14px; padding: 16px; margin-bottom: 14px; }
-  .equip-item .equip-title { font-weight: 600; font-size: 14.5px; margin-bottom: 3px; }
-  .equip-item .equip-desc { font-size: 12.5px; color: var(--propolis); opacity: 0.75; margin-bottom: 12px; line-height: 1.4; }
-  .equip-tiers { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .equip-tier { border-radius: 10px; padding: 10px 11px; }
-  .equip-tier.anfaenger { background: var(--wax); }
-  .equip-tier.profi { background: #F3E7D0; }
-  .equip-tier .tier-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--propolis); margin-bottom: 4px; }
-  .equip-tier .tier-name { font-size: 12.5px; font-weight: 600; margin-bottom: 6px; line-height: 1.35; }
-  .equip-tier a { font-size: 11.5px; color: var(--honey-deep); text-decoration: none; font-weight: 600; }
-  .equip-tier a:hover { text-decoration: underline; }
-  .equip-item { position: relative; }
-  .equip-item.locked { opacity: 0.55; cursor: default; }
-  .equip-item.locked .equip-tier a { pointer-events: none; }
-  .equip-item.locked .lock-badge { position: absolute; top: 14px; right: 14px; width: 26px; height: 26px; border-radius: 50%; background: var(--hive-black); color: var(--wax); display: flex; align-items: center; justify-content: center; font-size: 12px; z-index: 2; }
-
-  /* Reine Text-Lektion */
-  .lesson-block { display: flex; gap: 14px; margin-bottom: 20px; }
-  .lesson-block .num { width: 28px; height: 28px; border-radius: 50%; background: var(--honey); color: var(--hive-black); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; flex-shrink: 0; }
-  .lesson-block .lb-title { font-weight: 600; font-size: 14.5px; margin-bottom: 5px; }
-  .lesson-block .lb-text { font-size: 13px; line-height: 1.6; color: var(--propolis); }
-  .lesson-block .lb-text ul { margin: 6px 0 0; padding-left: 18px; }
-  .lesson-block .lb-text li { margin-bottom: 3px; }
 </style>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
 </head>
-<body>
-<svg style="position:absolute; width:0; height:0;" aria-hidden="true">
-  <defs>
-    <symbol id="bee-icon" viewBox="-10 -9 20 18">
-      <ellipse cx="-3" cy="0" rx="4" ry="4.5" fill="#221A12"></ellipse>
-      <ellipse cx="2.5" cy="0" rx="5" ry="4.5" fill="#F0C46C"></ellipse>
-      <rect x="-1" y="-4.5" width="1.6" height="9" fill="#221A12"></rect>
-      <rect x="2.5" y="-4.5" width="1.6" height="9" fill="#221A12"></rect>
-      <ellipse cx="-2" cy="-6" rx="5" ry="2.6" fill="#fff" opacity="0.6" class="bee-wing"></ellipse>
-      <ellipse cx="3.5" cy="-6" rx="5" ry="2.6" fill="#fff" opacity="0.6" class="bee-wing"></ellipse>
-    </symbol>
-  </defs>
-</svg>
-<div class="app">
+<body class="bg-white text-slate-800">
 
-<div id="mascotWrap">
-  <div id="mascotBubble">
-    <button class="mascot-close" onclick="toggleMascot()">✕</button>
-    <span id="mascotText">Willkommen! Schau dir am besten zuerst Schritt 1 an 🐝</span>
-  </div>
-  <button id="mascotAvatarBtn" onclick="toggleMascot()">
-    <img src="bee-mascot.png" alt="Dein Imkerbegleiter">
-  </button>
-</div>
-
-<div class="cookie-banner" id="cookieBanner" style="display:none;">
-  <p>Wir verwenden nur technisch notwendige Cookies für Login und Anmeldung – keine Tracking- oder Werbe-Cookies. Mehr dazu in unserer <span style="text-decoration:underline; cursor:pointer;" onclick="showView('datenschutz'); document.getElementById('cookieBanner').style.display='none';">Datenschutzerklärung</span>.</p>
-  <div class="actions">
-    <button class="accept-btn" onclick="acceptCookieNotice()">Verstanden</button>
-  </div>
-</div>
-
-<div id="introSplash">
-  <div class="intro-honeycomb"></div>
-  <button class="intro-close" onclick="closeIntro()">Schließen ✕</button>
-
-  <div class="intro-hive-scene">
-    <svg width="220" height="200" viewBox="0 0 220 200" aria-hidden="true">
-      <rect x="70" y="130" width="80" height="60" rx="8" fill="#362A1C"></rect>
-      <ellipse cx="110" cy="130" rx="40" ry="10" fill="#221A12"></ellipse>
-      <rect x="98" y="150" width="24" height="24" rx="3" fill="#0F0B08"></rect>
-      <g class="intro-bee" style="transform-origin: 110px 105px;">
-        <use href="#bee-icon" x="98" y="93" width="26" height="24"></use>
-      </g>
-    </svg>
-  </div>
-
-  <div class="intro-welcome">
-    <svg width="280" height="70" viewBox="0 0 280 70" aria-hidden="true">
-      <text x="140" y="34" text-anchor="middle" class="intro-welcome-text">Herzlich willkommen</text>
-      <path class="intro-drip d1" d="M75,38 c3,5 3,9 0,12 c-3,-3 -3,-7 0,-12 Z" fill="#E8A33D"></path>
-      <path class="intro-drip d2" d="M140,40 c3,5 3,9 0,12 c-3,-3 -3,-7 0,-12 Z" fill="#E8A33D"></path>
-      <path class="intro-drip d3" d="M205,38 c3,5 3,9 0,12 c-3,-3 -3,-7 0,-12 Z" fill="#E8A33D"></path>
-    </svg>
-    <p class="intro-sub">Dein Imker-Begleiter freut sich, dich zu sehen</p>
-  </div>
-</div>
-
-  <header>
-    <p class="eyebrow">Dein Imker-Begleiter</p>
-    <div class="header-top">
-      <svg width="30" height="27" viewBox="-10 -9 20 18" aria-hidden="true">
-        <use href="#bee-icon"></use>
-      </svg>
-      <h1 class="brand">Bienenkompass</h1>
-      <button class="account-btn" id="accountBtn" onclick="showView('account')">👤 Anmelden</button>
+  <!-- ===================== HEADER / NAV ===================== -->
+  <header class="border-b border-slate-100 sticky top-0 bg-white/90 backdrop-blur z-30">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <div class="w-9 h-9 rounded-lg bg-slate-600 flex items-center justify-center text-lg">❄️</div>
+        <span class="font-bold text-slate-900">klima-protokoll.de</span>
+      </div>
+      <nav class="hidden sm:flex items-center gap-6 text-sm font-medium text-slate-600">
+        <a href="#features" class="hover:text-slate-900">Funktionen</a>
+        <a href="#pricing" class="hover:text-slate-900">Preise</a>
+        <a href="blog.html" class="hover:text-slate-900">Blog</a>
+      </nav>
+      <a href="#pricing" class="bg-slate-900 hover:bg-slate-800 text-white text-sm font-medium px-4 py-2 rounded-lg transition">
+        Jetzt starten
+      </a>
     </div>
-    <p class="tagline">Vom ersten Volk bis zur Ernte – Schritt für Schritt begleitet.</p>
   </header>
 
-  <nav class="tabs">
-    <button class="active" data-view="uebersicht">Übersicht</button>
-    <button data-view="kurs">Kurs</button>
-    <button data-view="nachschlagen">Nachschlagen</button>
-    <button data-view="chat" id="chatNavBtn">Frag mich</button>
-  </nav>
+  <!-- ===================== HERO ===================== -->
+  <section class="max-w-4xl mx-auto px-4 sm:px-6 pt-16 pb-14 text-center">
+    <h1 class="text-4xl sm:text-5xl font-extrabold text-slate-900 leading-tight">
+      Schluss mit Papierkram.<br>
+      <span class="text-slate-600">F-Gas-Protokolle in 2 Minuten</span> auf der Baustelle.
+    </h1>
+    <p class="mt-5 text-lg text-slate-500 max-w-2xl mx-auto">
+      Inbetriebnahme und Dichtigkeitsprüfung direkt am Tablet erfassen, Kunde und Techniker unterschreiben digital,
+      fertig ist ein normkonformes PDF – mit eigenem Firmenlogo, ohne Zettelwirtschaft.
+    </p>
+    <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
+      <a href="#pricing" class="bg-slate-600 hover:bg-slate-700 text-white font-bold px-8 py-4 rounded-xl shadow-lg transition text-base w-full sm:w-auto">
+        Tarif wählen &amp; 14 Tage kostenlos testen
+      </a>
+    </div>
+    <p class="mt-3 text-xs text-slate-400">14 Tage kostenlos · erste Abbuchung erst danach · jederzeit kündbar</p>
+  </section>
 
-  <main>
+  <!-- ===================== ABLAUF-DEMO (animiertes Mockup) ===================== -->
+  <section class="max-w-4xl mx-auto px-4 sm:px-6 pb-16">
+    <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 text-center mb-2">So läuft's ab</h2>
+    <p class="text-slate-500 text-center mb-8">Vom Login bis zum fertigen PDF – in unter 5 Minuten.</p>
 
-    <section class="view active" id="uebersicht">
-      <div class="free-banner">
-        <span class="icon">🐝</span>
-        <div class="txt">
-          <b>Kostenloser Einstieg</b>
-          Du erhältst hier zunächst den kostenlosen Bienenkompass mit Schritt 1 und dem Thema "Schwarmzeit". Mit Abschluss des Abos erhältst du vollen Zugriff auf den kompletten Kurs, das gesamte Nachschlagewerk und den KI-Chat.
+    <!-- "Gerät"-Rahmen -->
+    <div class="max-w-md mx-auto bg-slate-900 rounded-3xl p-3 shadow-2xl">
+      <div class="bg-slate-100 rounded-2xl overflow-hidden relative" style="height: 380px;">
+
+        <!-- Slide 1: Registrieren -->
+        <div class="demo-slide absolute inset-0 p-5 flex flex-col" data-slide="0">
+          <div class="bg-white rounded-2xl shadow-sm p-5 mt-8 max-w-xs mx-auto w-full">
+            <p class="text-center font-semibold text-slate-800 mb-4 text-sm">Registrieren</p>
+            <div class="h-9 bg-slate-100 rounded-lg mb-3"></div>
+            <div class="h-9 bg-slate-100 rounded-lg mb-4"></div>
+            <div class="h-10 bg-slate-600 rounded-lg"></div>
+          </div>
         </div>
-      </div>
 
-      <div class="progress-card">
-        <div class="label">Dein Fortschritt</div>
-        <div class="big" id="progressText">Schritt 0 von 5</div>
-        <div class="bar-track"><div class="bar-fill" id="progressBarFill" style="width: 0%;"></div></div>
-      </div>
-
-      <div class="quick-grid">
-        <div class="quick-card" onclick="showView('kurs')">
-          <span class="icon">📖</span>
-          <div class="t">Weiter lernen</div>
-          <div class="s">Erste Durchsicht</div>
+        <!-- Slide 2: Firma anlegen -->
+        <div class="demo-slide absolute inset-0 p-5 flex flex-col" data-slide="1">
+          <div class="bg-white rounded-2xl shadow-sm p-5 mt-8 max-w-xs mx-auto w-full">
+            <p class="text-center font-semibold text-slate-800 mb-4 text-sm">Firma anlegen</p>
+            <div class="h-9 bg-slate-100 rounded-lg mb-3"></div>
+            <div class="h-9 bg-slate-100 rounded-lg mb-4"></div>
+            <div class="h-10 bg-slate-600 rounded-lg"></div>
+          </div>
         </div>
-        <div class="quick-card" onclick="showView('chat')">
-          <span class="icon">💬</span>
-          <div class="t">Frage stellen</div>
-          <div class="s">Akutes Problem?</div>
-        </div>
-      </div>
 
-      <div class="alert-box">
-        <div class="dot"></div>
-        <div class="txt">
-          <b>Saisonaler Hinweis</b>
-          Ende August ist Zeit für die Varroa-Kontrolle. Schau im Nachschlagewerk unter "Krankheiten" nach.
-        </div>
-      </div>
-
-      <div class="legal-links">
-        <button class="legal-link" onclick="showView('impressum')">Impressum</button>
-        <button class="legal-link" onclick="showView('datenschutz')">Datenschutzerklärung</button>
-      </div>
-    </section>
-
-    <section class="view" id="kurs">
-      <h2 class="section-title">Dein Lernpfad</h2>
-      <p class="section-sub">Ein fester Kurs für den Einstieg, Schritt für Schritt.</p>
-
-      <div class="week-step" id="stepCard-schritt1" onclick="showView('lesson-schritt1')" style="cursor: pointer;">
-        <div class="step-marker" id="stepMarker-schritt1">1</div>
-        <div class="step-body">
-          <div class="t">Schritt 1 – Grundausstattung</div>
-          <div class="s">Schutzkleidung, Smoker, Beute: was du wirklich brauchst.</div>
-        </div>
-      </div>
-      <div class="week-step" id="stepCard-schritt2" onclick="showView('lesson-woche2')" style="cursor: pointer;">
-        <div class="step-marker" id="stepMarker-schritt2">2</div>
-        <div class="step-body">
-          <div class="t">Schritt 2 – Das Bienenjahr verstehen</div>
-          <div class="s">Wie ein Volk durchs Jahr lebt, und wo du gerade stehst.</div>
-        </div>
-      </div>
-      <div class="week-step" id="stepCard-schritt3" onclick="showView('lesson-schritt3')" style="cursor: pointer;">
-        <div class="step-marker" id="stepMarker-schritt3">3</div>
-        <div class="step-body">
-          <div class="t">Schritt 3 – Die erste Durchsicht</div>
-          <div class="s">Ruhig öffnen, Waben lesen, die Königin erkennen.</div>
-          <span class="step-tag" style="background:none; color:var(--propolis); opacity:0.7;">Passt am besten: Frühjahr</span>
-        </div>
-      </div>
-      <div class="week-step" id="stepCard-schritt4" onclick="showView('lesson-schritt4')" style="cursor: pointer;">
-        <div class="step-marker" id="stepMarker-schritt4">4</div>
-        <div class="step-body">
-          <div class="t">Schritt 4 – Erweitern und Raum geben</div>
-          <div class="s">Wann ein Volk mehr Platz braucht und wie du erweiterst.</div>
-          <span class="step-tag" style="background:none; color:var(--propolis); opacity:0.7;">Passt am besten: Frühjahr/Frühsommer</span>
-        </div>
-      </div>
-      <div class="week-step" id="stepCard-schritt5" onclick="showView('lesson-schritt5')" style="cursor: pointer;">
-        <div class="step-marker" id="stepMarker-schritt5">5</div>
-        <div class="step-body">
-          <div class="t">Schritt 5 – Schwarmzeit erkennen</div>
-          <div class="s">Weiselzellen deuten und richtig reagieren.</div>
-          <span class="step-tag" style="background:none; color:var(--propolis); opacity:0.7;">Passt am besten: Mai/Juni</span>
-        </div>
-      </div>
-    </section>
-
-    <section class="view" id="lesson-woche2">
-      <button class="back-btn" onclick="showView('kurs')">← Zurück zum Kurs</button>
-      <h2 class="section-title">Schritt 2 – Das Bienenjahr verstehen</h2>
-      <p class="lesson-intro">Ein Bienenvolk ist nie gleich groß. Es wächst im Frühjahr auf mehrere Zehntausend Tiere an und schrumpft im Winter auf einen kleinen Kern zusammen. Wenn du weißt, in welcher Phase dein Volk gerade steckt, verstehst du auch, was gerade zu tun ist. Die Monate gelten für Mitteleuropa – je nach Wetterjahr kann sich alles um 1–2 Wochen verschieben.</p>
-
-      <div class="wheel-wrap">
-        <svg width="260" height="260" viewBox="0 0 300 300" role="img" aria-label="Kreisdiagramm des Bienenjahres mit fünf Phasen">
-          <path d="M150,150 L150,30 A120,120 0 0,1 264.1,112.9 Z" fill="#7C8A5E"></path>
-          <path d="M150,150 L264.1,112.9 A120,120 0 0,1 220.6,247.1 Z" fill="#E8A33D"></path>
-          <path d="M150,150 L220.6,247.1 A120,120 0 0,1 79.4,247.1 Z" fill="#B97A1E"></path>
-          <path d="M150,150 L79.4,247.1 A120,120 0 0,1 35.9,112.9 Z" fill="#6B4226"></path>
-          <path d="M150,150 L35.9,112.9 A120,120 0 0,1 150,30 Z" fill="#362A1C"></path>
-          <circle cx="150" cy="150" r="44" fill="#F6ECD6"></circle>
-          <text x="150" y="146" text-anchor="middle" font-family="Fraunces, serif" font-size="13" font-weight="600" fill="#221A12">Das</text>
-          <text x="150" y="163" text-anchor="middle" font-family="Fraunces, serif" font-size="13" font-weight="600" fill="#221A12">Bienenjahr</text>
-        </svg>
-      </div>
-
-      <div class="wheel-legend">
-        <div class="phase-card">
-          <div class="phase-swatch" style="background:#7C8A5E;"></div>
-          <div class="phase-body">
-            <div class="months">März – Mai</div>
-            <div class="name">Frühjahr: Aufbauphase</div>
-            <div class="desc">Steigende Temperaturen kurbeln die Legetätigkeit der Königin an, das Volk wächst rasant. Gib rechtzeitig Raum, aber störe das Brutnest nicht mit kalten Leerwaben.</div>
-            <div class="phase-scene">
-              <svg width="100%" height="110" viewBox="0 0 260 110" role="img" aria-label="Animation: Frühling, Sonne steigt, Königin legt Eier, Volk wächst">
-                <circle cx="40" cy="55" r="16" fill="#E8A33D" class="anim-sun"></circle>
-                <g class="anim-sun">
-                  <line x1="40" y1="30" x2="40" y2="22" stroke="#E8A33D" stroke-width="2"></line>
-                  <line x1="18" y1="55" x2="10" y2="55" stroke="#E8A33D" stroke-width="2"></line>
-                  <line x1="24" y1="39" x2="18" y2="33" stroke="#E8A33D" stroke-width="2"></line>
-                </g>
-                <polygon points="150,25 168,36 168,58 150,69 132,58 132,36" fill="#EDE6D2" stroke="#D8CFB0"></polygon>
-                <circle cx="150" cy="47" r="6" fill="#8B4A2B" class="anim-egg"></circle>
-                <rect x="220" y="50" width="10" height="34" rx="2" fill="#EDE6D2" stroke="#D8CFB0"></rect>
-                <rect x="220" y="80" width="10" height="4" rx="2" fill="#8B4A2B" class="anim-bar"></rect>
-              </svg>
-              <p class="scene-caption">Wärme steigt, Königin legt, Brutnest wächst</p>
+        <!-- Slide 3: Formular ausfüllen -->
+        <div class="demo-slide absolute inset-0 p-5" data-slide="2">
+          <div class="bg-white rounded-2xl shadow-sm p-4 mt-4">
+            <p class="font-semibold text-slate-800 mb-3 text-sm">Inbetriebnahme</p>
+            <div class="space-y-2">
+              <div class="h-3 bg-slate-100 rounded w-1/3"></div>
+              <div class="h-8 bg-slate-100 rounded-lg"></div>
+              <div class="h-3 bg-slate-100 rounded w-1/2 mt-3"></div>
+              <div class="h-8 bg-slate-100 rounded-lg"></div>
+              <div class="h-3 bg-amber-100 rounded w-2/3 mt-3"></div>
+              <div class="h-8 bg-amber-50 border border-amber-200 rounded-lg"></div>
             </div>
-            <button class="back-btn" style="margin: 4px 0 0;" onclick="showView('frames-fruehjahr')">Rahmenaufbau ansehen →</button>
           </div>
         </div>
-        <div class="phase-card">
-          <div class="phase-swatch" style="background:#E8A33D;"></div>
-          <div class="phase-body">
-            <div class="months">Mai – Juni</div>
-            <div class="name">Frühsommer: Höchststand & Schwarmzeit</div>
-            <div class="desc">Das Volk erreicht seine größte Stärke – und damit das höchste Schwarmrisiko. Kontrolliere alle 7 bis 9 Tage auf Weiselzellen und setze den Honigraum auf.</div>
-            <div class="phase-scene">
-              <svg width="100%" height="110" viewBox="0 0 260 110" role="img" aria-label="Animation: Drei Bienen umkreisen dicht gedrängt die Königin, Volk auf Höchststand">
-                <polygon points="130,20 148,31 148,53 130,64 112,53 112,31" fill="#EDE6D2" stroke="#D8CFB0"></polygon>
-                <path d="M130,38 l3,-6 h6 l3,6 l-3,6 h-6 z" fill="#E8A33D" class="anim-crown"></path>
-                <g class="anim-orbit1" style="transform-origin: 130px 42px;">
-                  <use href="#bee-icon" x="-9" y="-8" width="18" height="16"></use>
-                </g>
-                <g class="anim-orbit2" style="transform-origin: 130px 42px;">
-                  <use href="#bee-icon" x="-9" y="-8" width="18" height="16"></use>
-                </g>
-                <g class="anim-orbit3" style="transform-origin: 130px 42px;">
-                  <use href="#bee-icon" x="-9" y="-8" width="18" height="16"></use>
-                </g>
+
+        <!-- Slide 4: Unterschrift -->
+        <div class="demo-slide absolute inset-0 p-5" data-slide="3">
+          <div class="bg-white rounded-2xl shadow-sm p-4 mt-6">
+            <p class="font-semibold text-slate-800 mb-3 text-sm">Digitale Unterschrift</p>
+            <div class="bg-slate-50 border border-slate-200 rounded-xl h-28 flex items-center justify-center">
+              <svg viewBox="0 0 200 60" class="w-40 h-14">
+                <path d="M10,45 C30,10 40,50 60,25 S90,45 110,20 S140,50 160,15 S180,35 190,25"
+                  fill="none" stroke="#334155" stroke-width="3" stroke-linecap="round"
+                  class="signature-path" />
               </svg>
-              <p class="scene-caption">Drei Bienen kreisen eng um die Königin – kaum noch Platz im Nest</p>
             </div>
-            <button class="back-btn" style="margin: 4px 0 0;" onclick="showView('frames-fruehsommer')">Rahmenaufbau ansehen →</button>
+            <p class="text-xs text-slate-400 mt-2 text-center">Kunde &amp; Techniker unterschreiben direkt am Tablet</p>
           </div>
         </div>
-        <div class="phase-card">
-          <div class="phase-swatch" style="background:#B97A1E;"></div>
-          <div class="phase-body">
-            <div class="months">Juni – August</div>
-            <div class="name">Sommer: Ernte & Pflege</div>
-            <div class="desc">Die Haupttracht läuft, erste Honigwaben werden reif. Parallel startet die Kontrolle auf Varroa-Befall.</div>
-            <div class="phase-scene">
-              <svg width="100%" height="110" viewBox="0 0 260 110" role="img" aria-label="Animation: Biene fliegt zwischen Blume und Bienenstock, Honig tropft in ein Glas">
-                <g transform="translate(20,55)">
-                  <circle r="10" fill="#E8A33D"></circle>
-                  <circle cy="-13" r="4" fill="#7C8A5E"></circle>
-                  <circle cx="7" cy="-8" r="4" fill="#7C8A5E"></circle>
-                  <circle cx="-7" cy="-8" r="4" fill="#7C8A5E"></circle>
-                  <circle cx="-6" cy="8" r="4" fill="#7C8A5E"></circle>
-                </g>
-                <g class="anim-flyer">
-                  <use href="#bee-icon" x="12" y="47" width="18" height="16"></use>
-                </g>
-                <rect x="190" y="30" width="34" height="40" rx="4" fill="none" stroke="#6B4226" stroke-width="2"></rect>
-                <rect x="192" y="34" width="30" height="34" fill="#F0C46C" class="anim-honey"></rect>
-                <path d="M207,26 c3,4 3,7 0,9 c-3,-2 -3,-5 0,-9 Z" fill="#E8A33D" class="anim-drip-long"></path>
-              </svg>
-              <p class="scene-caption">Biene sammelt Nektar, Honig tropft ins Glas</p>
-            </div>
-            <button class="back-btn" style="margin: 4px 0 0;" onclick="showView('frames-sommer')">Rahmenaufbau ansehen →</button>
+
+        <!-- Slide 5: PDF fertig -->
+        <div class="demo-slide absolute inset-0 p-5 flex flex-col items-center justify-center" data-slide="4">
+          <div class="w-20 h-24 bg-white rounded-lg shadow-md border border-slate-200 flex items-center justify-center mb-4">
+            <span class="text-3xl">📄</span>
           </div>
+          <p class="font-semibold text-slate-800 text-sm">PDF erstellt</p>
+          <p class="text-emerald-600 text-xs mt-1">✓ Automatisch archiviert</p>
         </div>
-        <div class="phase-card">
-          <div class="phase-swatch" style="background:#6B4226;"></div>
-          <div class="phase-body">
-            <div class="months">August – Oktober</div>
-            <div class="name">Spätsommer/Herbst: Einwinterung</div>
-            <div class="desc">Das Volk zieht langlebige Winterbienen auf. Jetzt fütterst du Zuckersirup zu und behandelst gegen Varroa.</div>
-            <div class="phase-scene">
-              <svg width="100%" height="128" viewBox="0 0 260 128" role="img" aria-label="Animation: Zuckersirup tropft aus einem Futtergefäß in den Bienenstock, daneben eine Varroamilbe als Käfer dargestellt">
-                <ellipse cx="45" cy="12" rx="6" ry="9" fill="#B97A1E" class="anim-leaf1" opacity="0.6"></ellipse>
 
-                <path d="M110,10 h40 l-6,20 h-28 Z" fill="#F5EFD9" stroke="#6B4226" stroke-width="2"></path>
-                <rect x="126" y="30" width="8" height="12" fill="#F5EFD9" stroke="#6B4226" stroke-width="1.5"></rect>
-                <text x="130" y="8" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" font-weight="600" fill="#6B4226">Zuckersirup</text>
-                <path d="M130,42 c3,4 3,7 0,9 c-3,-2 -3,-5 0,-9 Z" fill="#E8A33D" class="anim-drip-short"></path>
-
-                <rect x="95" y="52" width="70" height="55" rx="6" fill="#EDE6D2" stroke="#D8CFB0" stroke-width="2"></rect>
-                <rect x="122" y="97" width="16" height="10" fill="#221A12"></rect>
-                <rect x="146" y="60" width="12" height="40" fill="none" stroke="#6B4226" stroke-width="1.5"></rect>
-                <rect x="146" y="80" width="12" height="20" fill="#F0C46C" class="anim-honey" style="animation-duration:5s;"></rect>
-                <text x="152" y="112" text-anchor="middle" font-family="Inter, sans-serif" font-size="8" font-weight="600" fill="#6B4226">Futter</text>
-
-                <g transform="translate(212,80)" class="anim-crown">
-                  <ellipse rx="8" ry="6" fill="#A83232"></ellipse>
-                  <line x1="-10" y1="-4" x2="-5" y2="-1" stroke="#5C1C1C" stroke-width="1.5"></line>
-                  <line x1="-11" y1="0" x2="-5" y2="0" stroke="#5C1C1C" stroke-width="1.5"></line>
-                  <line x1="-10" y1="4" x2="-5" y2="1" stroke="#5C1C1C" stroke-width="1.5"></line>
-                  <line x1="10" y1="-4" x2="5" y2="-1" stroke="#5C1C1C" stroke-width="1.5"></line>
-                  <line x1="11" y1="0" x2="5" y2="0" stroke="#5C1C1C" stroke-width="1.5"></line>
-                  <line x1="10" y1="4" x2="5" y2="1" stroke="#5C1C1C" stroke-width="1.5"></line>
-                </g>
-                <text x="212" y="100" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" font-weight="700" fill="#A83232">Varroa</text>
-              </svg>
-              <p class="scene-caption">Zuckersirup tropft ins Volk, während gegen die Varroamilbe (rot) behandelt wird</p>
-            </div>
-            <button class="back-btn" style="margin: 4px 0 0;" onclick="showView('frames-herbst')">Rahmenaufbau ansehen →</button>
-          </div>
-        </div>
-        <div class="phase-card">
-          <div class="phase-swatch" style="background:#362A1C;"></div>
-          <div class="phase-body">
-            <div class="months">November – Februar</div>
-            <div class="name">Winter: Ruhephase</div>
-            <div class="desc">Die Bienen bilden eine Wintertraube und halten sich durch Muskelzittern warm. Öffne die Beute so wenig wie möglich.</div>
-            <div class="phase-scene">
-              <svg width="100%" height="110" viewBox="0 0 260 110" role="img" aria-label="Animation: Schnee fällt, Bienen bilden eine kompakte, warme Traube im Stock">
-                <rect x="90" y="25" width="80" height="60" rx="6" fill="#EDE6D2" stroke="#D8CFB0"></rect>
-                <circle cx="60" cy="0" r="3" fill="#B4C7D9" class="anim-snow1"></circle>
-                <circle cx="130" cy="0" r="3" fill="#B4C7D9" class="anim-snow2"></circle>
-                <circle cx="190" cy="0" r="3" fill="#B4C7D9" class="anim-snow3"></circle>
-                <g class="anim-cluster" style="transform-origin: 130px 55px;">
-                  <circle cx="130" cy="55" r="17" fill="#362A1C"></circle>
-                  <circle cx="120" cy="47" r="8" fill="#362A1C"></circle>
-                  <circle cx="141" cy="47" r="8" fill="#362A1C"></circle>
-                  <circle cx="117" cy="62" r="8" fill="#362A1C"></circle>
-                  <circle cx="143" cy="62" r="8" fill="#362A1C"></circle>
-                  <circle cx="130" cy="66" r="8" fill="#362A1C"></circle>
-                  <circle cx="130" cy="55" r="8" fill="#4A3823"></circle>
-                </g>
-              </svg>
-              <p class="scene-caption">Bienen ballen sich zur kompakten Traube und wärmen sich gemeinsam</p>
-            </div>
-            <button class="back-btn" style="margin: 4px 0 0;" onclick="showView('frames-winter')">Rahmenaufbau ansehen →</button>
-          </div>
-        </div>
-      </div>
-
-      <h2 class="section-title" style="font-size:16px;">Kurzcheck</h2>
-      <details class="quiz-item">
-        <summary>In welcher Phase ist das Schwarmrisiko am höchsten?</summary>
-        <div class="answer">Im Frühsommer (Mai–Juni), wenn das Volk seine Maximalgröße erreicht hat.</div>
-      </details>
-      <details class="quiz-item">
-        <summary>Was ist im Winter die wichtigste Regel?</summary>
-        <div class="answer">Das Volk möglichst in Ruhe lassen – die Wintertraube reguliert sich selbst.</div>
-      </details>
-      <details class="quiz-item">
-        <summary>Wann beginnt typischerweise die Varroa-Kontrolle?</summary>
-        <div class="answer">Im Sommer, parallel zur Haupttracht und ersten Honigernte.</div>
-      </details>
-      <button class="complete-btn" id="completeBtn-schritt2" onclick="markStepComplete('schritt2')">Als abgeschlossen markieren</button>
-      <p class="complete-hint">Melde dich an, damit dein Fortschritt gespeichert wird.</p>
-    </section>
-
-    <section class="view" id="frames-fruehjahr">
-      <button class="back-btn" onclick="showView('lesson-woche2')">← Zurück zum Bienenjahr</button>
-      <h2 class="section-title">Rahmenaufbau: Frühjahr</h2>
-      <p class="lesson-intro">So sieht der Brutraum eines normal arbeitenden Wirtschaftsvolkes im Frühjahr aus, vereinfacht dargestellt. Die genaue Verteilung schwankt je nach Volk und Witterung.</p>
-      <div class="legend-row">
-        <div class="legend-chip"><div class="legend-swatch" style="background:#F0C46C;"></div>Futter/Honig</div>
-        <div class="legend-chip"><div class="legend-swatch" style="background:#C99A2E;"></div>Pollen</div>
-        <div class="legend-chip"><div class="legend-swatch" style="background:#8B4A2B;"></div>Brut</div>
-        <div class="legend-chip"><div class="legend-swatch" style="background:#EDE6D2; border:1px solid #D8CFB0;"></div>Leerwabe/Mittelwand</div>
-      </div>
-      <p class="box-label">Brutraum (10 Rähmchen)</p>
-      <div class="frame-row">
-        <div class="frame" style="background:#F0C46C;"></div>
-        <div class="frame" style="background:#C99A2E;"></div>
-        <div class="frame" style="background:#8B4A2B;"></div>
-        <div class="frame" style="background:#8B4A2B;"></div>
-        <div class="frame" style="background:#8B4A2B;"></div>
-        <div class="frame" style="background:#8B4A2B;"></div>
-        <div class="frame" style="background:#8B4A2B;"></div>
-        <div class="frame" style="background:#C99A2E;"></div>
-        <div class="frame" style="background:#F0C46C;"></div>
-        <div class="frame" style="background:#EDE6D2; border:1px solid #D8CFB0;"></div>
-      </div>
-      <div class="frame-note">Das Brutnest sitzt zentral und wächst von Woche zu Woche. Links und rechts davon liegt der Futterkranz aus Pollen- und Futterwaben, der die Ammenbienen versorgt. Am Rand hängst du bei Bedarf eine Leerwabe oder Mittelwand dazu – aber nie mitten ins Brutnest, sondern immer außen am Rand.</div>
-    </section>
-
-    <section class="view" id="frames-fruehsommer">
-      <button class="back-btn" onclick="showView('lesson-woche2')">← Zurück zum Bienenjahr</button>
-      <h2 class="section-title">Rahmenaufbau: Frühsommer / Schwarmzeit</h2>
-      <p class="lesson-intro">Jetzt ist das Volk auf Maximalgröße, und der Honigraum kommt oben über den Brutraum hinzu – getrennt durch ein Absperrgitter, das die Königin am Eierlegen im Honigraum hindert.</p>
-      <div class="legend-row">
-        <div class="legend-chip"><div class="legend-swatch" style="background:#F0C46C;"></div>Futter/Honig</div>
-        <div class="legend-chip"><div class="legend-swatch" style="background:#C99A2E;"></div>Pollen</div>
-        <div class="legend-chip"><div class="legend-swatch" style="background:#8B4A2B;"></div>Brut</div>
-      </div>
-      <p class="box-label">Honigraum (reine Honigwaben, über Absperrgitter)</p>
-      <div class="frame-row">
-        <div class="frame" style="background:#F0C46C;"></div>
-        <div class="frame" style="background:#F0C46C;"></div>
-        <div class="frame" style="background:#F0C46C;"></div>
-        <div class="frame" style="background:#F0C46C;"></div>
-        <div class="frame" style="background:#F0C46C;"></div>
-        <div class="frame" style="background:#F0C46C;"></div>
-        <div class="frame" style="background:#F0C46C;"></div>
-        <div class="frame" style="background:#F0C46C;"></div>
-        <div class="frame" style="background:#F0C46C;"></div>
-        <div class="frame" style="background:#F0C46C;"></div>
-      </div>
-      <p class="box-label">Brutraum (voll besetzt)</p>
-      <div class="frame-row">
-        <div class="frame" style="background:#F0C46C;"></div>
-        <div class="frame" style="background:#C99A2E;"></div>
-        <div class="frame" style="background:#8B4A2B;"></div>
-        <div class="frame" style="background:#8B4A2B;"></div>
-        <div class="frame" style="background:#8B4A2B;"></div>
-        <div class="frame" style="background:#8B4A2B;"></div>
-        <div class="frame" style="background:#8B4A2B;"></div>
-        <div class="frame" style="background:#8B4A2B;"></div>
-        <div class="frame" style="background:#C99A2E;"></div>
-        <div class="frame" style="background:#F0C46C;"></div>
-      </div>
-      <div class="frame-note">Der Brutraum ist jetzt bis auf den schmalen Futterkranz komplett mit Brut belegt – genau das erzeugt den Raummangel, der zur Schwarmstimmung führt. Kontrolliere die Wabenunterkanten alle 7 bis 9 Tage auf Weiselzellen.</div>
-    </section>
-
-    <section class="view" id="frames-sommer">
-      <button class="back-btn" onclick="showView('lesson-woche2')">← Zurück zum Bienenjahr</button>
-      <h2 class="section-title">Rahmenaufbau: Sommer</h2>
-      <p class="lesson-intro">Zur Haupttracht sitzen oft zwei Honigräume auf dem Brutraum, während das Brutnest schon leicht kleiner wird.</p>
-      <div class="legend-row">
-        <div class="legend-chip"><div class="legend-swatch" style="background:#F0C46C;"></div>Futter/Honig</div>
-        <div class="legend-chip"><div class="legend-swatch" style="background:#C99A2E;"></div>Pollen</div>
-        <div class="legend-chip"><div class="legend-swatch" style="background:#8B4A2B;"></div>Brut</div>
-        <div class="legend-chip"><div class="legend-swatch" style="background:#EDE6D2; border:1px solid #D8CFB0;"></div>Leerwabe/Mittelwand</div>
-      </div>
-      <p class="box-label">2. Honigraum</p>
-      <div class="frame-row">
-        <div class="frame" style="background:#F0C46C;"></div><div class="frame" style="background:#F0C46C;"></div><div class="frame" style="background:#F0C46C;"></div><div class="frame" style="background:#F0C46C;"></div><div class="frame" style="background:#F0C46C;"></div><div class="frame" style="background:#F0C46C;"></div><div class="frame" style="background:#F0C46C;"></div><div class="frame" style="background:#F0C46C;"></div><div class="frame" style="background:#F0C46C;"></div><div class="frame" style="background:#F0C46C;"></div>
-      </div>
-      <p class="box-label">1. Honigraum</p>
-      <div class="frame-row">
-        <div class="frame" style="background:#F0C46C;"></div><div class="frame" style="background:#F0C46C;"></div><div class="frame" style="background:#F0C46C;"></div><div class="frame" style="background:#F0C46C;"></div><div class="frame" style="background:#F0C46C;"></div><div class="frame" style="background:#F0C46C;"></div><div class="frame" style="background:#F0C46C;"></div><div class="frame" style="background:#F0C46C;"></div><div class="frame" style="background:#F0C46C;"></div><div class="frame" style="background:#F0C46C;"></div>
-      </div>
-      <p class="box-label">Brutraum (leicht abnehmend)</p>
-      <div class="frame-row">
-        <div class="frame" style="background:#F0C46C;"></div>
-        <div class="frame" style="background:#C99A2E;"></div>
-        <div class="frame" style="background:#8B4A2B;"></div>
-        <div class="frame" style="background:#8B4A2B;"></div>
-        <div class="frame" style="background:#8B4A2B;"></div>
-        <div class="frame" style="background:#8B4A2B;"></div>
-        <div class="frame" style="background:#8B4A2B;"></div>
-        <div class="frame" style="background:#C99A2E;"></div>
-        <div class="frame" style="background:#F0C46C;"></div>
-        <div class="frame" style="background:#EDE6D2; border:1px solid #D8CFB0;"></div>
-      </div>
-      <div class="frame-note">Sind die Honigwaben zu mindestens zwei Dritteln verdeckelt, kannst du ernten. Lass dabei immer einen halb gefüllten Futterkranz im untersten Honigraum als Reserve für das Volk zurück.</div>
-    </section>
-
-    <section class="view" id="frames-herbst">
-      <button class="back-btn" onclick="showView('lesson-woche2')">← Zurück zum Bienenjahr</button>
-      <h2 class="section-title">Rahmenaufbau: Spätsommer / Herbst</h2>
-      <p class="lesson-intro">Die Honigräume sind bereits abgeerntet. Das Volk wird jetzt gezielt mit Futter für den Winter versorgt, während das Brutnest schrumpft.</p>
-      <div class="legend-row">
-        <div class="legend-chip"><div class="legend-swatch" style="background:#F0C46C;"></div>Futter/Honig</div>
-        <div class="legend-chip"><div class="legend-swatch" style="background:#C99A2E;"></div>Pollen</div>
-        <div class="legend-chip"><div class="legend-swatch" style="background:#8B4A2B;"></div>Brut</div>
-      </div>
-      <p class="box-label">Brutraum (Einwinterung)</p>
-      <div class="frame-row">
-        <div class="frame" style="background:#F0C46C;"></div>
-        <div class="frame" style="background:#F0C46C;"></div>
-        <div class="frame" style="background:#C99A2E;"></div>
-        <div class="frame" style="background:#8B4A2B;"></div>
-        <div class="frame" style="background:#8B4A2B;"></div>
-        <div class="frame" style="background:#8B4A2B;"></div>
-        <div class="frame" style="background:#C99A2E;"></div>
-        <div class="frame" style="background:#F0C46C;"></div>
-        <div class="frame" style="background:#F0C46C;"></div>
-        <div class="frame" style="background:#F0C46C;"></div>
-      </div>
-      <div class="frame-note">Die Futterwaben nehmen sichtbar zu – Ziel sind je nach Beutengröße rund 15 bis 20 kg Winterfutter im Volk. Das Brutnest ist kleiner, weil die Königin ihre Legetätigkeit reduziert. Jetzt erfolgt außerdem die Hauptbehandlung gegen die Varroamilbe.</div>
-    </section>
-
-    <section class="view" id="frames-winter">
-      <button class="back-btn" onclick="showView('lesson-woche2')">← Zurück zum Bienenjahr</button>
-      <h2 class="section-title">Rahmenaufbau: Winter</h2>
-      <p class="lesson-intro">Das Volk zieht sich zur Wintertraube zusammen. Nur ein Teil der Waben ist überhaupt noch von Bienen besetzt.</p>
-      <div class="legend-row">
-        <div class="legend-chip"><div class="legend-swatch" style="background:#F0C46C;"></div>Futter/Honig</div>
-        <div class="legend-chip"><div class="legend-swatch" style="background:#362A1C;"></div>Wintertraube</div>
-      </div>
-      <p class="box-label">Brutraum (Winterruhe)</p>
-      <div class="frame-row">
-        <div class="frame" style="background:#F0C46C;"></div>
-        <div class="frame" style="background:#F0C46C;"></div>
-        <div class="frame" style="background:#F0C46C;"></div>
-        <div class="frame" style="background:#362A1C;"></div>
-        <div class="frame" style="background:#362A1C;"></div>
-        <div class="frame" style="background:#362A1C;"></div>
-        <div class="frame" style="background:#F0C46C;"></div>
-        <div class="frame" style="background:#F0C46C;"></div>
-        <div class="frame" style="background:#F0C46C;"></div>
-        <div class="frame" style="background:#F0C46C;"></div>
-      </div>
-      <div class="frame-note">Die Traube sitzt mittig zwischen den Futterwaben und wandert im Laufe des Winters langsam nach oben und zur Seite, um an neue Vorräte zu gelangen. Störe das Volk in dieser Zeit so wenig wie möglich – jedes Öffnen kostet wertvolle Wärme.</div>
-    </section>
-
-    <section class="view" id="lesson-schritt1">
-      <button class="back-btn" onclick="showView('kurs')">← Zurück zum Kurs</button>
-      <h2 class="section-title">Schritt 1 – Deine Grundausstattung</h2>
-      <p class="lesson-intro">Alle Werkzeuge, die du für den Einstieg brauchst, im Überblick. Preis spielt hier erstmal keine Rolle – wichtiger ist der Unterschied zwischen Einsteiger- und Profi-Qualität. Erweitertes Equipment wie Honigschleuder oder Absperrgitter kommt erst später, wenn dein Volk wächst.</p>
-
-      <div class="equip-item">
-        <div class="equip-title">1. Schutzjacke mit Schleier</div>
-        <div class="equip-desc">Schützt Gesicht und Oberkörper – das Wichtigste zuerst.</div>
-        <div class="equip-tiers">
-          <div class="equip-tier anfaenger">
-            <div class="tier-label">Anfänger (kostengünstig)</div>
-            <div class="tier-name">Schutzhemd mit Hut-Schleier-Kombi</div>
-            <a href="https://www.holtermann-shop.de/schutzbekleidung/schutzhemden/" target="_blank" rel="noopener">Bei Holtermann ansehen →</a>
-          </div>
-          <div class="equip-tier profi">
-            <div class="tier-label">Profi (höherpreisig)</div>
-            <div class="tier-name">Premium-Bekleidung, robustere Verarbeitung</div>
-            <a href="https://www.bienen-ruck.de/imkereibedarf/imkerkleidung/premium-bekleidung/" target="_blank" rel="noopener">Bei Bienen-Ruck ansehen →</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="equip-item" id="equipItem-2">
-        <div class="equip-title">2. Smoker (Rauchgerät)</div>
-        <div class="equip-desc">Beruhigt die Bienen bei der Arbeit am Volk.</div>
-        <div class="equip-tiers">
-          <div class="equip-tier anfaenger">
-            <div class="tier-label">Anfänger (kostengünstig)</div>
-            <div class="tier-name">Einfacher Smoker im Sortiment</div>
-            <a href="https://www.biene24.de/produkt-kategorie/smoker-imker-bienen/" target="_blank" rel="noopener">Bei Biene24 ansehen →</a>
-          </div>
-          <div class="equip-tier profi">
-            <div class="tier-label">Profi (höherpreisig)</div>
-            <div class="tier-name">Edelstahl mit Lederblasebalg</div>
-            <a href="https://www.bienen-ruck.de/imkereibedarf/smoker-und-bienenabwehr/" target="_blank" rel="noopener">Bei Bienen-Ruck ansehen →</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="equip-item" id="equipItem-3">
-        <div class="equip-title">3. Stockmeißel</div>
-        <div class="equip-desc">Zum Öffnen der Beute und Lösen der Rähmchen.</div>
-        <div class="equip-tiers">
-          <div class="equip-tier anfaenger">
-            <div class="tier-label">Anfänger (kostengünstig)</div>
-            <div class="tier-name">Einfacher Stockmeißel im Sortiment</div>
-            <a href="https://www.biene24.de/produkt-kategorie/werkzeug-imker-bienen/" target="_blank" rel="noopener">Bei Biene24 ansehen →</a>
-          </div>
-          <div class="equip-tier profi">
-            <div class="tier-label">Profi (höherpreisig)</div>
-            <div class="tier-name">Gehärteter Edelstahl/Federstahl</div>
-            <a href="https://www.bienen-ruck.de/imkershop/imkerwerkzeuge/stockmeissel-co./" target="_blank" rel="noopener">Bei Bienen-Ruck ansehen →</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="equip-item" id="equipItem-4">
-        <div class="equip-title">4. Bienenbesen</div>
-        <div class="equip-desc">Zum sanften Abkehren von Bienen von der Wabe.</div>
-        <div class="equip-tiers">
-          <div class="equip-tier anfaenger">
-            <div class="tier-label">Anfänger (kostengünstig)</div>
-            <div class="tier-name">Einfacher Besen im Werkzeug-Sortiment</div>
-            <a href="https://www.biene24.de/produkt-kategorie/werkzeug-imker-bienen/" target="_blank" rel="noopener">Bei Biene24 ansehen →</a>
-          </div>
-          <div class="equip-tier profi">
-            <div class="tier-label">Profi (höherpreisig)</div>
-            <div class="tier-name">Weiches Ross- oder Perlonhaar</div>
-            <a href="https://www.bienen-ruck.de/imkershop/imkerwerkzeuge/bienenbesen/" target="_blank" rel="noopener">Bei Bienen-Ruck ansehen →</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="equip-item" id="equipItem-5">
-        <div class="equip-title">5. Imkerhandschuhe</div>
-        <div class="equip-desc">Schutz für die Hände, besonders am Anfang.</div>
-        <div class="equip-tiers">
-          <div class="equip-tier anfaenger">
-            <div class="tier-label">Anfänger (kostengünstig)</div>
-            <div class="tier-name">Einfache Schutzkleidung im Sortiment</div>
-            <a href="https://thehoneyfactory.de/shop/" target="_blank" rel="noopener">Bei The HoneyFactory ansehen →</a>
-          </div>
-          <div class="equip-tier profi">
-            <div class="tier-label">Profi (höherpreisig)</div>
-            <div class="tier-name">Rindsleder mit Stoffstulpen</div>
-            <a href="https://www.bienen-ruck.de/imkershop/imkerkleidung-wbr-bienenabwehr/handschuhe/" target="_blank" rel="noopener">Bei Bienen-Ruck ansehen →</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="equip-item" id="equipItem-6">
-        <div class="equip-title">6. Bienenbeute</div>
-        <div class="equip-desc">Der Bienenstock selbst, inklusive Rähmchen.</div>
-        <div class="equip-tiers">
-          <div class="equip-tier anfaenger">
-            <div class="tier-label">Anfänger (kostengünstig)</div>
-            <div class="tier-name">Holzbeuten in verschiedenen Maßen</div>
-            <a href="https://www.biene24.de/produkt-kategorie/bienenbeuten-holzbeuten/" target="_blank" rel="noopener">Bei Biene24 ansehen →</a>
-          </div>
-          <div class="equip-tier profi">
-            <div class="tier-label">Profi (höherpreisig)</div>
-            <div class="tier-name">Fachhandel-Sortiment, größere Auswahl</div>
-            <a href="https://thehoneyfactory.de/shop/" target="_blank" rel="noopener">Bei The HoneyFactory ansehen →</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="equip-item" id="equipItem-7">
-        <div class="equip-title">7. Komplett-Starterset (Alternative zur Einzelbeschaffung)</div>
-        <div class="equip-desc">Alle Werkzeuge und Schutzkleidung in einem Paket – praktisch für den schnellen Einstieg.</div>
-        <div class="equip-tiers">
-          <div class="equip-tier anfaenger">
-            <div class="tier-label">Anfänger (kostengünstig)</div>
-            <div class="tier-name">Startersets für Jungimker</div>
-            <a href="https://www.holtermann-shop.de/startersets/" target="_blank" rel="noopener">Bei Holtermann ansehen →</a>
-          </div>
-          <div class="equip-tier profi">
-            <div class="tier-label">Profi (höherpreisig)</div>
-            <div class="tier-name">Umfangreichere Startersets</div>
-            <a href="https://thehoneyfactory.de/shop/" target="_blank" rel="noopener">Bei The HoneyFactory ansehen →</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="frame-note">Hinweis: Die Links führen dich zu den passenden Kategorie-Seiten der jeweiligen Fachhändler (Holtermann, Biene24, Bienen-Ruck, The HoneyFactory), nicht zu einzelnen Produkten – so bleiben sie auch dann korrekt, wenn sich einzelne Artikel oder Preise ändern. Schau dich dort in Ruhe um und vergleiche die aktuellen Angebote.</div>
-      <button class="complete-btn" id="completeBtn-schritt1" onclick="markStepComplete('schritt1')">Als abgeschlossen markieren</button>
-      <p class="complete-hint">Melde dich an, damit dein Fortschritt gespeichert wird.</p>
-    </section>
-
-    <section class="view" id="lesson-schritt3">
-      <button class="back-btn" onclick="showView('kurs')">← Zurück zum Kurs</button>
-      <h2 class="section-title">Schritt 3 – Die erste Durchsicht</h2>
-      <p class="lesson-intro">Der erste Blick ins offene Volk ist für die meisten Einsteiger der aufregendste Moment. Mit der richtigen Vorbereitung und ein wenig Ruhe geht dabei nichts schief.</p>
-
-      <div class="lesson-block">
-        <div class="num">1</div>
-        <div>
-          <div class="lb-title">Vorbereitung</div>
-          <div class="lb-text">
-            Wähle einen warmen, windstillen Tag ohne Regen – ideal sind 18 °C oder mehr. Die beste Tageszeit ist später Vormittag bis früher Nachmittag, wenn viele Flugbienen unterwegs und das Volk entspannter ist.
-            <ul>
-              <li>Smoker rechtzeitig anzünden und ruhig glimmen lassen</li>
-              <li>Schutzkleidung vollständig anlegen, auch wenn du dich sicher fühlst</li>
-              <li>Werkzeug (Stockmeißel, Besen) griffbereit neben die Beute legen</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <div class="lesson-block">
-        <div class="num">2</div>
-        <div>
-          <div class="lb-title">Die Beute ruhig öffnen</div>
-          <div class="lb-text">
-            Gib vor dem Öffnen ein bis zwei sanfte Rauchstöße vor das Flugloch, warte kurz, und wiederhole das unter dem Deckel. Hebe den Deckel langsam an – hastige Bewegungen machen die Bienen nervös, nicht der Rauch oder deine Anwesenheit an sich.
-          </div>
-        </div>
-      </div>
-
-      <div class="lesson-block">
-        <div class="num">3</div>
-        <div>
-          <div class="lb-title">Waben lesen lernen</div>
-          <div class="lb-text">
-            Ziehe die Rähmchen einzeln und langsam heraus. Du wirst verschiedene Zellinhalte sehen: verdeckelte Brut (gewölbter, hellbrauner Deckel), offene Brut (weiße Larven), Eier (winzig, stehen aufrecht am Zellgrund), Pollen (bunt, glänzend) und Honig (mit hellem Wachsdeckel). Ein geschlossenes, lückenloses Brutbild ist ein gutes Zeichen für eine gesunde Königin.
-          </div>
-        </div>
-      </div>
-
-      <div class="lesson-block">
-        <div class="num">4</div>
-        <div>
-          <div class="lb-title">Die Königin erkennen</div>
-          <div class="lb-text">
-            Die Königin ist größer und länglicher als die Arbeiterinnen und bewegt sich meist ruhiger, oft umringt von einem "Hofstaat" aus Arbeiterinnen. Als Einsteiger musst du sie nicht zwingend selbst finden: Frische Eier – jeweils eines pro Zelle, senkrecht stehend – zeigen dir zuverlässig, dass sie vor Kurzem da war und gut legt.
-          </div>
-        </div>
-      </div>
-
-      <div class="lesson-block">
-        <div class="num">5</div>
-        <div>
-          <div class="lb-title">Richtig wieder schließen</div>
-          <div class="lb-text">
-            Setze die Rähmchen in der ursprünglichen Reihenfolge und Ausrichtung zurück, ohne Bienen zu quetschen. Als Faustregel gilt: Halte das Volk nicht länger als 10 bis 15 Minuten offen, damit es nicht auskühlt und der Tagesablauf der Bienen möglichst wenig gestört wird.
-          </div>
-        </div>
-      </div>
-
-      <h2 class="section-title" style="font-size:16px;">Kurzcheck</h2>
-      <details class="quiz-item">
-        <summary>Woran erkennst du zuverlässig, dass eine Königin im Volk aktiv ist, auch ohne sie selbst zu sehen?</summary>
-        <div class="answer">An frischen Eiern – einem pro Zelle, senkrecht stehend am Zellgrund.</div>
-      </details>
-      <details class="quiz-item">
-        <summary>Wie lange sollte eine Durchsicht maximal dauern?</summary>
-        <div class="answer">Als Faustregel etwa 10 bis 15 Minuten, damit das Volk nicht auskühlt.</div>
-      </details>
-      <details class="quiz-item">
-        <summary>Wann solltest du am besten eine Durchsicht machen?</summary>
-        <div class="answer">An einem warmen, windstillen Tag, später Vormittag bis früher Nachmittag.</div>
-      </details>
-      <button class="complete-btn" id="completeBtn-schritt3" onclick="markStepComplete('schritt3')">Als abgeschlossen markieren</button>
-      <p class="complete-hint">Melde dich an, damit dein Fortschritt gespeichert wird.</p>
-    </section>
-
-    <section class="view" id="lesson-schritt4">
-      <button class="back-btn" onclick="showView('kurs')">← Zurück zum Kurs</button>
-      <h2 class="section-title">Schritt 4 – Erweitern und Raum geben</h2>
-      <p class="lesson-intro">Genug Platz zur richtigen Zeit ist eine der wichtigsten Stellschrauben, die du als Imker in der Hand hast – und einer der häufigsten Anfängerfehler passiert genau hier.</p>
-
-      <div class="lesson-block">
-        <div class="num">1</div>
-        <div>
-          <div class="lb-title">Warum Raum geben so wichtig ist</div>
-          <div class="lb-text">
-            Zu wenig Platz ist einer der Hauptauslöser für Schwarmstimmung – das Volk fühlt sich beengt und bereitet sich darauf vor, mit der alten Königin auszuziehen. Zu viel Platz auf einmal ist aber genauso ein Problem: Das Volk kann die zusätzliche Fläche nicht warm halten und gegen Eindringlinge wie Wachsmotten verteidigen.
-          </div>
-        </div>
-      </div>
-
-      <div class="lesson-block">
-        <div class="num">2</div>
-        <div>
-          <div class="lb-title">Woran du erkennst, dass Raum fehlt</div>
-          <div class="lb-text">
-            <ul>
-              <li>Bienen "bärteln" vorm Flugloch – eine dichte Traube sitzt außen am Stock, auch wenn es nicht besonders heiß ist</li>
-              <li>Die Wabengassen sind voll besetzt, kaum noch Bewegungsfreiheit zwischen den Rähmchen</li>
-              <li>Baurahmen oder Randwaben werden auffällig schnell ausgebaut</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <div class="lesson-block">
-        <div class="num">3</div>
-        <div>
-          <div class="lb-title">Zwei Arten von Erweiterung</div>
-          <div class="lb-text">
-            <strong>Brutraum erweitern:</strong> Du hängst zusätzliche Rähmchen mit Mittelwänden seitlich ein, wenn das Brutnest selbst wächst.<br><br>
-            <strong>Honigraum aufsetzen:</strong> Ein separater Kasten kommt oben drauf, meist getrennt durch ein Absperrgitter, sobald Trachtbeginn und ein bereits volles Brutnest zusammenfallen.
-          </div>
-        </div>
-      </div>
-
-      <div class="lesson-block">
-        <div class="num">4</div>
-        <div>
-          <div class="lb-title">So gehst du beim Erweitern vor</div>
-          <div class="lb-text">
-            Hänge neue Waben immer am Rand ein, nie mitten ins Brutnest – das würde die Brut auskühlen. Erweitere Wabe für Wabe statt alles auf einmal, besonders bei noch kleineren Völkern. Kontrolliere nach 1 bis 2 Wochen, ob die neuen Waben angenommen und ausgebaut werden, bevor du weiter erweiterst.
-          </div>
-        </div>
-      </div>
-
-      <div class="lesson-block">
-        <div class="num">5</div>
-        <div>
-          <div class="lb-title">Typischer Fehler von Einsteigern</div>
-          <div class="lb-text">
-            Am häufigsten wird zu spät erweitert – das Volk sitzt bereits eng, und die Schwarmstimmung hat schon begonnen, bevor der Imker reagiert. Das Gegenteil kommt aber auch vor: zu früh oder zu viel Raum auf einmal, sodass ein noch kleines Volk die Fläche nicht bewachen und warm halten kann.
-          </div>
-        </div>
-      </div>
-
-      <h2 class="section-title" style="font-size:16px;">Kurzcheck</h2>
-      <details class="quiz-item">
-        <summary>Woran erkennst du, dass ein Volk mehr Raum braucht?</summary>
-        <div class="answer">Zum Beispiel am "Bärteln" vor dem Flugloch, vollen Wabengassen oder schnell ausgebauten Randwaben.</div>
-      </details>
-      <details class="quiz-item">
-        <summary>Wo hängst du eine neue Wabe ein – mitten ins Brutnest oder am Rand?</summary>
-        <div class="answer">Immer am Rand, nie mitten ins Brutnest, sonst kühlt die Brut aus.</div>
-      </details>
-      <details class="quiz-item">
-        <summary>Was ist der häufigste Erweiterungsfehler bei Einsteigern?</summary>
-        <div class="answer">Zu spät erweitern – das Volk sitzt schon eng und die Schwarmstimmung hat bereits begonnen.</div>
-      </details>
-      <button class="complete-btn" id="completeBtn-schritt4" onclick="markStepComplete('schritt4')">Als abgeschlossen markieren</button>
-      <p class="complete-hint">Melde dich an, damit dein Fortschritt gespeichert wird.</p>
-    </section>
-
-    <section class="view" id="lesson-schritt5">
-      <button class="back-btn" onclick="showView('kurs')">← Zurück zum Kurs</button>
-      <h2 class="section-title">Schritt 5 – Schwarmzeit erkennen</h2>
-      <p class="lesson-intro">Die Schwarmzeit ist der Moment im Jahr, in dem regelmäßige Kontrolle am wichtigsten ist. Wenn du weißt, worauf du achten musst, verlierst du kaum ein Volk.</p>
-
-      <div class="lesson-block">
-        <div class="num">1</div>
-        <div>
-          <div class="lb-title">Was Schwarmstimmung eigentlich ist</div>
-          <div class="lb-text">
-            Schwarmstimmung ist der natürliche Vermehrungstrieb des Volkes: Die alte Königin zieht mit einem großen Teil der Bienen aus, um ein neues Zuhause zu suchen. Im ursprünglichen Stock bleibt eine neu heranwachsende Königin zurück. Das ist kein Fehler von dir als Imker, sondern ganz normales Bienenverhalten – meist aber unerwünscht, weil dein Volk dadurch stark geschwächt wird und weniger Honig bringt.
-          </div>
-        </div>
-      </div>
-
-      <div class="lesson-block">
-        <div class="num">2</div>
-        <div>
-          <div class="lb-title">Die eindeutigen Warnzeichen</div>
-          <div class="lb-text">
-            <ul>
-              <li>Weiselzellen an der Wabenunterkante – das sicherste und eindeutigste Anzeichen</li>
-              <li>Die Königin legt spürbar weniger Eier</li>
-              <li>Das Volk bärtelt vermehrt vor dem Flugloch und wirkt insgesamt unruhiger</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <div class="lesson-block">
-        <div class="num">3</div>
-        <div>
-          <div class="lb-title">Wie du Weiselzellen kontrollierst</div>
-          <div class="lb-text">
-            Kontrolliere während der Schwarmzeit alle 7 bis 9 Tage gezielt danach. Kippe dazu die Rähmchen leicht und schau direkt auf die Wabenunterkante – dort sitzen Weiselzellen am häufigsten, seltener auch mitten in der Wabenfläche.
-          </div>
-        </div>
-      </div>
-
-      <div class="lesson-block">
-        <div class="num">4</div>
-        <div>
-          <div class="lb-title">Was tun, wenn du Weiselzellen findest?</div>
-          <div class="lb-text">
-            Es gibt mehrere anerkannte Techniken, um jetzt zu reagieren, etwa einen Ableger zu bilden oder gezielt Zellen zu brechen – das ist aber ein eigenes, fortgeschritteneres Thema für sich. Als Einsteiger ist das Wichtigste: nicht in Panik geraten. Wende dich an einen erfahrenen Imker oder deinen örtlichen Imkerverein, bevor du selbst eingreifst.
-          </div>
-        </div>
-      </div>
-
-      <div class="lesson-block">
-        <div class="num">5</div>
-        <div>
-          <div class="lb-title">Was, wenn der Schwarm schon weg ist?</div>
-          <div class="lb-text">
-            Kein Grund zur Sorge: Ein abgegangener Schwarm setzt sich meist erstmal in der Nähe als dichte Traube an einem Ast oder ähnlichem ab, bevor er weiterzieht. In dieser Zeit lässt er sich oft noch einfangen – auch hier hilft dir im Zweifel dein Imkerverein weiter.
-          </div>
-        </div>
-      </div>
-
-      <h2 class="section-title" style="font-size:16px;">Kurzcheck</h2>
-      <details class="quiz-item">
-        <summary>Was ist das sicherste Anzeichen für Schwarmstimmung?</summary>
-        <div class="answer">Weiselzellen an der Wabenunterkante.</div>
-      </details>
-      <details class="quiz-item">
-        <summary>In welchem Rhythmus solltest du während der Schwarmzeit kontrollieren?</summary>
-        <div class="answer">Alle 7 bis 9 Tage.</div>
-      </details>
-      <details class="quiz-item">
-        <summary>Was solltest du als Einsteiger tun, wenn du Weiselzellen findest?</summary>
-        <div class="answer">Ruhig bleiben und einen erfahrenen Imker oder Imkerverein kontaktieren, statt sofort selbst einzugreifen.</div>
-      </details>
-      <button class="complete-btn" id="completeBtn-schritt5" onclick="markStepComplete('schritt5')">Als abgeschlossen markieren</button>
-      <p class="complete-hint">Melde dich an, damit dein Fortschritt gespeichert wird.</p>
-    </section>
-
-    <div class="upgrade-backdrop" id="upgradeModal" onclick="if(event.target===this)closeUpgradeModal()">
-      <div class="upgrade-box">
-        <button class="up-close" onclick="closeUpgradeModal()" aria-label="Schließen">×</button>
-        <div id="upgradeContent"></div>
       </div>
     </div>
 
-    <section class="view" id="account">
-      <button class="back-btn" onclick="showView('uebersicht')">← Zurück</button>
-      <h2 class="section-title">Dein Konto</h2>
+    <!-- Schritt-Beschriftung, synchron zum aktiven Slide -->
+    <div class="flex justify-center gap-2 mt-5">
+      <span class="demo-dot w-2 h-2 rounded-full bg-slate-300" data-dot="0"></span>
+      <span class="demo-dot w-2 h-2 rounded-full bg-slate-300" data-dot="1"></span>
+      <span class="demo-dot w-2 h-2 rounded-full bg-slate-300" data-dot="2"></span>
+      <span class="demo-dot w-2 h-2 rounded-full bg-slate-300" data-dot="3"></span>
+      <span class="demo-dot w-2 h-2 rounded-full bg-slate-300" data-dot="4"></span>
+    </div>
+    <p id="demo-caption" class="text-center text-sm text-slate-500 mt-2 h-5">Registrieren</p>
+  </section>
 
-      <div id="authForm">
-        <p class="section-sub">Melde dich an, um deinen Fortschritt zu speichern.</p>
-        <div class="auth-tabs">
-          <button class="auth-tab active" id="tabLogin" onclick="switchAuthTab('login')">Anmelden</button>
-          <button class="auth-tab" id="tabSignup" onclick="switchAuthTab('signup')">Registrieren</button>
+  <!-- ===================== VORHER / NACHHER ===================== -->
+  <section class="bg-slate-50 py-16">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6">
+      <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 text-center mb-10">Schluss mit dem Zettelchaos im Kundendienst</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div class="bg-white rounded-2xl border border-slate-200 p-6">
+          <p class="text-sm font-semibold text-slate-400 uppercase mb-4">Ohne klima-protokoll.de</p>
+          <ul class="space-y-3 text-sm text-slate-600">
+            <li class="flex gap-2"><span class="text-rose-500">✕</span> Handschriftliche Zettel, die im Auto verloren gehen</li>
+            <li class="flex gap-2"><span class="text-rose-500">✕</span> Abends im Büro alles nochmal abtippen</li>
+            <li class="flex gap-2"><span class="text-rose-500">✕</span> Unleserliche Unterschriften, verwackelte Handy-Fotos</li>
+            <li class="flex gap-2"><span class="text-rose-500">✕</span> Keine Übersicht, welche Anlage wann geprüft wurde</li>
+          </ul>
         </div>
-        <div class="auth-field">
-          <label>E-Mail</label>
-          <input type="email" id="authEmail" placeholder="du@beispiel.de" />
-        </div>
-        <div class="auth-field">
-          <label>Passwort</label>
-          <input type="password" id="authPassword" placeholder="Mindestens 6 Zeichen" />
-        </div>
-        <button class="auth-submit" id="authSubmitBtn" onclick="handleAuthSubmit()">Anmelden</button>
-        <div id="authMsg"></div>
-      </div>
-
-      <div id="accountLoggedIn" class="account-loggedin" style="display:none;">
-        <div class="avatar" id="avatarInitial">?</div>
-        <div class="email" id="loggedInEmail"></div>
-        <div class="since">Angemeldet bei Bienenkompass</div>
-        <div id="accountPremiumStatus" style="margin:10px 0;"></div>
-        <button class="logout-btn" onclick="handleLogout()">Abmelden</button>
-      </div>
-
-      <div class="legal-links">
-        <button class="legal-link" onclick="showView('impressum')">Impressum</button>
-        <button class="legal-link" onclick="showView('datenschutz')">Datenschutzerklärung</button>
-        <button class="legal-link" onclick="showView('agb')">AGB &amp; Widerruf</button>
-      </div>
-    </section>
-
-    <section class="view" id="impressum">
-      <button class="back-btn" onclick="showView('account')">← Zurück</button>
-      <h2 class="section-title">Impressum</h2>
-      <div class="legal-text">
-        <p><strong>Angaben gemäß § 5 DDG (Digitale-Dienste-Gesetz)</strong></p>
-        <p>Andreas Harms<br>
-        Buschweiher 8<br>
-        41238 Mönchengladbach<br>
-        Deutschland</p>
-
-        <p><strong>Kontakt</strong><br>
-        E-Mail: an.ha@etik.com</p>
-
-        <p><strong>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</strong><br>
-        Andreas Harms (Anschrift wie oben)</p>
-
-        <p><strong>Umsatzsteuer</strong><br>Gemäß § 19 UStG (Kleinunternehmerregelung) wird keine Umsatzsteuer berechnet und ausgewiesen.</p>
-
-        <p><strong>Streitschlichtung</strong><br>
-        Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener">ec.europa.eu/consumers/odr</a>. Wir sind nicht verpflichtet und nicht bereit, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
-      </div>
-    </section>
-
-    <section class="view" id="agb">
-      <button class="back-btn" onclick="showView('account')">← Zurück</button>
-      <h2 class="section-title">AGB &amp; Widerrufsbelehrung</h2>
-      <div class="legal-text">
-        <p><strong>1. Anbieter und Gegenstand</strong><br>
-        Anbieter ist Andreas Harms, Buschweiher 8, 41238 Mönchengladbach (siehe Impressum). Gegenstand ist der digitale „Bienenkompass Saisonpass“: der Zugang zu allen Kursschritten, der Themen-Bibliothek und dem KI-Chat für eine Imkersaison.</p>
-
-        <p><strong>2. Preis und Zahlung</strong><br>
-        Der Saisonpass kostet 24,95 €. Wer innerhalb von 7 Tagen nach seiner Registrierung kauft, zahlt 18,95 €. Es handelt sich um einen Einmalpreis ohne automatische Verlängerung. Gemäß § 19 UStG wird keine Umsatzsteuer ausgewiesen. Die Zahlung erfolgt über den Zahlungsdienstleister Stripe.</p>
-
-        <p><strong>3. Laufzeit</strong><br>
-        Der Zugang gilt für eine Imkersaison, bis zum 31. Oktober des Jahres des Kaufs.</p>
-
-        <p><strong>4. Widerrufsrecht</strong><br>
-        Du hast das Recht, binnen 14 Tagen ohne Angabe von Gründen diesen Vertrag zu widerrufen. Die Widerrufsfrist beträgt 14 Tage ab dem Tag des Vertragsschlusses. Um dein Widerrufsrecht auszuüben, musst du uns (Andreas Harms, Buschweiher 8, 41238 Mönchengladbach, E-Mail: an.ha@etik.com) mittels einer eindeutigen Erklärung über deinen Entschluss, den Vertrag zu widerrufen, informieren. Zur Wahrung der Frist reicht es, dass du die Mitteilung vor Ablauf der Frist absendest.</p>
-
-        <p><strong>5. Vorzeitiges Erlöschen des Widerrufsrechts bei digitalen Inhalten</strong><br>
-        Wenn du ausdrücklich zustimmst, dass wir mit der Ausführung des Vertrags vor Ablauf der Widerrufsfrist beginnen, und bestätigst, dass du dadurch dein Widerrufsrecht verlierst, sobald der Zugang freigeschaltet ist, erlischt dein Widerrufsrecht mit der Freischaltung (§ 356 Abs. 5 BGB). Diese Zustimmung gibst du vor dem Kauf ab.</p>
-
-        <p><strong>6. Streitschlichtung</strong><br>
-        Wir sind nicht verpflichtet und nicht bereit, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
-
-        <p class="legal-note">Stand: Oktober 2026.</p>
-      </div>
-    </section>
-
-    <section class="view" id="datenschutz">
-      <button class="back-btn" onclick="showView('account')">← Zurück</button>
-      <h2 class="section-title">Datenschutzerklärung</h2>
-      <div class="legal-text">
-        <p><strong>1. Verantwortlicher</strong><br>
-        Andreas Harms, Buschweiher 8, 41238 Mönchengladbach, E-Mail: an.ha@etik.com</p>
-
-        <p><strong>2. Erhobene Daten</strong><br>
-        Bei der Registrierung erheben wir deine E-Mail-Adresse und ein verschlüsseltes Passwort. Zusätzlich speichern wir deinen Lernfortschritt in unserem Kurs (welche Schritte du abgeschlossen hast), sobald du angemeldet bist. Wenn du den Saisonpass kaufst, speichern wir außerdem, dass und wann du bezahlt hast, um dein Konto freizuschalten (Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO, Vertragserfüllung). Rechnungsdaten bewahren wir im Rahmen gesetzlicher Aufbewahrungspflichten auf.</p>
-
-        <p><strong>3. Zweck der Verarbeitung</strong><br>
-        Diese Daten werden ausschließlich benötigt, um dir ein Nutzerkonto bereitzustellen, deinen Lernfortschritt zu speichern und dir bei Bedarf Kontobezogene E-Mails (z.B. Bestätigungslinks) zuzusenden.</p>
-
-        <p><strong>4. Auftragsverarbeiter / Drittanbieter</strong><br>
-        Zur Bereitstellung der App nutzen wir folgende Dienstleister als Auftragsverarbeiter:</p>
-        <ul>
-          <li><strong>Supabase</strong> (Datenbank, Nutzerkonten, Serverstandort EU/Frankfurt)</li>
-          <li><strong>Vercel</strong> (Hosting der Webseite und der Server-Funktionen)</li>
-          <li><strong>Stripe</strong> (Zahlungsabwicklung beim Kauf des Saisonpasses; Stripe verarbeitet dabei Zahlungsdaten und deine E-Mail-Adresse in eigener Verantwortung. Wir selbst erhalten keine Kartendaten, sondern nur die Information, dass die Zahlung erfolgt ist.)</li>
-          <li><strong>Resend</strong> (Versand von Konto-E-Mails wie Bestätigungslinks)</li>
-          <li><strong>OpenRouter</strong> (Verarbeitung deiner Chat-Anfragen im Bereich "Frag mich" durch ein KI-Sprachmodell; deine Eingaben können dabei vom Modell-Anbieter zu Trainingszwecken verwendet werden – gib daher im Chat keine sensiblen persönlichen Daten ein)</li>
-        </ul>
-
-        <p><strong>5. Deine Rechte</strong><br>
-        Du hast jederzeit das Recht auf Auskunft, Berichtigung, Löschung und Einschränkung der Verarbeitung deiner Daten. Wende dich dazu an die oben genannte Kontakt-E-Mail. Dein Konto kannst du zudem jederzeit selbst löschen lassen, indem du uns kontaktierst.</p>
-
-        <p><strong>6. Speicherdauer</strong><br>
-        Deine Daten werden gespeichert, solange dein Konto besteht. Nach Löschung deines Kontos werden deine Daten zeitnah entfernt.</p>
-
-        <p class="legal-note">Stand: Oktober 2026. Diese Datenschutzerklärung wird bei Änderungen an der App entsprechend angepasst.</p>
-      </div>
-    </section>
-
-    <section class="view" id="nachschlagen">
-      <h2 class="section-title">Themen-Bibliothek</h2>
-      <p class="section-sub">Gezielt nachlesen, wenn eine Frage akut ist.</p>
-
-      <div class="hex-grid">
-        <div class="hex-card" id="topicCard-schwarmzeit" onclick="showView('topic-schwarmzeit')">
-          <div class="icon">🐝</div>
-          <div class="t">Schwarmzeit</div>
-          <div class="s">Anzeichen erkennen und vorbeugen</div>
-        </div>
-        <div class="hex-card" id="topicCard-krankheiten" onclick="showView('topic-krankheiten')">
-          <div class="icon">🩺</div>
-          <div class="t">Krankheiten</div>
-          <div class="s">Varroa, Faulbrut & Co. erkennen</div>
-        </div>
-        <div class="hex-card" id="topicCard-ueberwinterung" onclick="showView('topic-ueberwinterung')">
-          <div class="icon">❄️</div>
-          <div class="t">Überwinterung</div>
-          <div class="s">Volk sicher durch den Winter bringen</div>
-        </div>
-        <div class="hex-card" id="topicCard-honigernte" onclick="showView('topic-honigernte')">
-          <div class="icon">🍯</div>
-          <div class="t">Honigernte</div>
-          <div class="s">Zeitpunkt, Schleudern, Abfüllen</div>
-        </div>
-        <div class="hex-card" id="topicCard-koenigin" onclick="showView('topic-koenigin')">
-          <div class="icon">👑</div>
-          <div class="t">Königin</div>
-          <div class="s">Erkennen, zeichnen, ersetzen</div>
-        </div>
-        <div class="hex-card" id="topicCard-trachtpflanzen" onclick="showView('topic-trachtpflanzen')">
-          <div class="icon">🌸</div>
-          <div class="t">Trachtpflanzen</div>
-          <div class="s">Was in deiner Region blüht</div>
-        </div>
-      </div>
-      <div id="nachschlagenLockNote"></div>
-    </section>
-
-    <section class="view" id="topic-schwarmzeit">
-      <button class="back-btn" onclick="showView('nachschlagen')">← Zurück zur Themen-Bibliothek</button>
-      <h2 class="section-title">🐝 Schwarmzeit</h2>
-      <p class="lesson-intro">Kurzreferenz zum Nachschlagen. Die ausführliche Version mit Kurzcheck findest du im Kurs unter <span style="text-decoration:underline; cursor:pointer;" onclick="showView('lesson-schritt5')">Schritt 5</span>.</p>
-      <div class="lesson-block">
-        <div class="num">!</div>
-        <div>
-          <div class="lb-title">Sicherstes Warnzeichen</div>
-          <div class="lb-text">Weiselzellen an der Wabenunterkante. Kontrolliere während der Hauptschwarmzeit (Mai/Juni) alle 7 bis 9 Tage gezielt danach.</div>
-        </div>
-      </div>
-      <div class="lesson-block">
-        <div class="num">!</div>
-        <div>
-          <div class="lb-text">Weitere Anzeichen: das Volk bärtelt vermehrt vor dem Flugloch, die Königin legt spürbar weniger Eier, das Volk wirkt insgesamt unruhiger als sonst.</div>
-        </div>
-      </div>
-      <div class="lesson-block">
-        <div class="num">!</div>
-        <div>
-          <div class="lb-text">Weiselzellen gefunden? Ruhig bleiben, nicht selbst experimentieren. Wende dich an einen erfahrenen Imker oder deinen örtlichen Imkerverein für die passende Technik (z. B. Ablegerbildung).</div>
-        </div>
-      </div>
-    </section>
-
-    <section class="view" id="topic-krankheiten">
-      <button class="back-btn" onclick="showView('nachschlagen')">← Zurück zur Themen-Bibliothek</button>
-      <h2 class="section-title">🩺 Krankheiten</h2>
-      <p class="lesson-intro">Die häufigsten Gesundheitsprobleme im Überblick, mit Erkennung, Kontrolle und Behandlungszeitpunkten. Bei Verdacht auf eine anzeigepflichtige Krankheit immer das zuständige Veterinäramt informieren.</p>
-
-      <div class="lesson-block">
-        <div class="num">1</div>
-        <div>
-          <div class="lb-title">Varroamilbe – die häufigste Bedrohung</div>
-          <div class="lb-text">Die rötlich-braune Milbe vermehrt sich in der Brut, schwächt Bienen und überträgt Viren. Unbehandelt bricht ein Volk meist innerhalb von 1 bis 3 Jahren zusammen. Bei starkem Befall erkennst du sie an deformierten Flügeln schlüpfender Bienen.</div>
+        <div class="bg-white rounded-2xl border-2 border-slate-500 p-6">
+          <p class="text-sm font-semibold text-slate-600 uppercase mb-4">Mit klima-protokoll.de</p>
+          <ul class="space-y-3 text-sm text-slate-700">
+            <li class="flex gap-2"><span class="text-emerald-600">✓</span> Direkt am Tablet ausfüllen, fertig vor Ort</li>
+            <li class="flex gap-2"><span class="text-emerald-600">✓</span> Automatisch gespeichert, jederzeit im Archiv abrufbar</li>
+            <li class="flex gap-2"><span class="text-emerald-600">✓</span> Saubere digitale Unterschrift von Kunde & Techniker</li>
+            <li class="flex gap-2"><span class="text-emerald-600">✓</span> CO₂e-Berechnung und Prüfintervall automatisch berechnet</li>
+          </ul>
         </div>
       </div>
 
-      <div class="lesson-block">
-        <div class="num">2</div>
-        <div>
-          <div class="lb-title">Varroa: Befall messen</div>
-          <div class="lb-text">Am gängigsten ist die Gemülldiagnose: Eine Windel (beschichtete Einlage) wird für 3 Tage unter dem Gitterboden platziert und der natürliche Milbenfall ausgezählt. Faustregel zur Hochrechnung: täglicher Milbenfall × 120 im Sommer (mit Brut), × 300 bis 400 im brutfreien Winter. Ab Mitte Juni (Sommersonnenwende) solltest du monatlich kontrollieren.</div>
+      <div class="mt-6 bg-slate-800 text-white rounded-2xl p-6 text-center">
+        <p class="text-sm text-slate-300 mb-1">Beispielrechnung Zeitersparnis</p>
+        <p class="text-lg font-semibold">
+          Ca. 15 Minuten weniger Verwaltungsaufwand pro Protokoll –
+          bei 20 Protokollen im Monat über 5 Stunden weniger Büroarbeit.
+        </p>
+        <p class="text-xs text-slate-400 mt-2">Individuelle Ersparnis abhängig von Betrieb und Arbeitsweise.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FEATURES ===================== -->
+  <section id="features" class="max-w-5xl mx-auto px-4 sm:px-6 py-16">
+    <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 text-center mb-12">Alles, was du auf der Baustelle brauchst</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="text-center">
+        <div class="w-14 h-14 mx-auto rounded-2xl bg-slate-100 text-slate-700 flex items-center justify-center text-2xl mb-4">📋</div>
+        <h3 class="font-semibold text-slate-900 mb-1">Normkonforme F-Gas-Vorlagen</h3>
+        <p class="text-sm text-slate-500">Nach Verordnung (EU) 2024/573, für Inbetriebnahme und Dichtigkeitsprüfung.</p>
+      </div>
+      <div class="text-center">
+        <div class="w-14 h-14 mx-auto rounded-2xl bg-slate-100 text-slate-700 flex items-center justify-center text-2xl mb-4">✍️</div>
+        <h3 class="font-semibold text-slate-900 mb-1">Digitale Unterschrift</h3>
+        <p class="text-sm text-slate-500">Kunde und Techniker unterschreiben direkt auf dem Tablet – rechtssicher dokumentiert.</p>
+      </div>
+      <div class="text-center">
+        <div class="w-14 h-14 mx-auto rounded-2xl bg-slate-100 text-slate-700 flex items-center justify-center text-2xl mb-4">🏢</div>
+        <h3 class="font-semibold text-slate-900 mb-1">Eigenes Firmenlogo</h3>
+        <p class="text-sm text-slate-500">Jedes PDF trägt automatisch dein Logo und deine Firmendaten im Header.</p>
+      </div>
+      <div class="text-center">
+        <div class="w-14 h-14 mx-auto rounded-2xl bg-slate-100 text-slate-700 flex items-center justify-center text-2xl mb-4">⚡</div>
+        <h3 class="font-semibold text-slate-900 mb-1">Schnelle Erfassung</h3>
+        <p class="text-sm text-slate-500">Ausfüllen, Foto machen, unterschreiben, PDF fertig – in wenigen Minuten.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PRICING ===================== -->
+  <section id="pricing" class="bg-slate-50 py-16">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6">
+      <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 text-center mb-2">Preise</h2>
+      <p class="text-slate-500 text-center mb-10">14 Tage kostenlos testen, danach monatlich kündbar.</p>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex flex-col">
+          <h3 class="text-lg font-semibold text-slate-800">Solo</h3>
+          <p class="text-3xl font-bold text-slate-900 mt-2">29 € <span class="text-sm font-normal text-slate-400">/ Monat</span></p>
+          <p class="text-sm text-slate-500 mt-2 flex-1">Für Einzelunternehmer:innen (1 Techniker).</p>
+          <a href="app.html?plan=solo" class="mt-6 w-full text-center bg-slate-800 hover:bg-slate-900 text-white font-medium py-3 rounded-xl transition">
+            14 Tage kostenlos testen
+          </a>
+          <p class="text-xs text-slate-400 text-center mt-2">Jederzeit monatlich kündbar</p>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-md border-2 border-slate-600 p-6 flex flex-col relative">
+          <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-slate-600 text-white text-xs font-semibold px-3 py-1 rounded-full">Beliebt</span>
+          <h3 class="text-lg font-semibold text-slate-800">Kleine Betriebe</h3>
+          <p class="text-3xl font-bold text-slate-900 mt-2">59 € <span class="text-sm font-normal text-slate-400">/ Monat</span></p>
+          <p class="text-sm text-slate-500 mt-2 flex-1">Für Betriebe mit 2–5 Technikern.</p>
+          <a href="app.html?plan=klein" class="mt-6 w-full text-center bg-slate-600 hover:bg-slate-700 text-white font-medium py-3 rounded-xl transition">
+            14 Tage kostenlos testen
+          </a>
+          <p class="text-xs text-slate-400 text-center mt-2">Jederzeit monatlich kündbar</p>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex flex-col">
+          <h3 class="text-lg font-semibold text-slate-800">Mittelstand</h3>
+          <p class="text-3xl font-bold text-slate-900 mt-2">99 € <span class="text-sm font-normal text-slate-400">/ Monat</span></p>
+          <p class="text-sm text-slate-500 mt-2 flex-1">Für Betriebe mit 6–9 Technikern.</p>
+          <a href="app.html?plan=mittelstand" class="mt-6 w-full text-center bg-slate-800 hover:bg-slate-900 text-white font-medium py-3 rounded-xl transition">
+            14 Tage kostenlos testen
+          </a>
+          <p class="text-xs text-slate-400 text-center mt-2">Jederzeit monatlich kündbar</p>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex flex-col">
+          <h3 class="text-lg font-semibold text-slate-800">Großbetriebe</h3>
+          <p class="text-3xl font-bold text-slate-900 mt-2">165 € <span class="text-sm font-normal text-slate-400">/ Monat</span></p>
+          <p class="text-sm text-slate-500 mt-2 flex-1">Für Betriebe ab 10 Technikern.</p>
+          <a href="app.html?plan=gross" class="mt-6 w-full text-center bg-slate-800 hover:bg-slate-900 text-white font-medium py-3 rounded-xl transition">
+            14 Tage kostenlos testen
+          </a>
+          <p class="text-xs text-slate-400 text-center mt-2">Jederzeit monatlich kündbar</p>
         </div>
       </div>
 
-      <div class="lesson-block">
-        <div class="num">3</div>
-        <div>
-          <div class="lb-title">Varroa: Behandlungskonzept im Jahresverlauf</div>
-          <div class="lb-text">
-            <strong>Frühjahr/Sommer:</strong> Biotechnische Maßnahmen wie Drohnenbrutentnahme (Varroa vermehrt sich bevorzugt dort) und Ablegerbildung, um den Befall ohne Medikamente zu senken.<br><br>
-            <strong>Sommer (ab Schadschwelle von ca. 5–10 Milben/Tag):</strong> Behandlung mit Ameisensäure, meist zwei- bis dreimalige Wiederholung, direkt nach der letzten Honigernte.<br><br>
-            <strong>Winter:</strong> Die entscheidende Restentmilbung erfolgt mit Oxalsäure im brutfreien Zustand des Volkes (meist Dezember), da Oxalsäure dann am wirksamsten ist.
-          </div>
-        </div>
+      <div class="text-center mt-8 space-y-1">
+        <p class="text-xs text-slate-400">Alle Preise sind Endpreise. Gemäß § 19 UStG wird keine Umsatzsteuer erhoben und ausgewiesen.</p>
+        <p class="text-xs text-slate-400">Zahlung bequem per Kreditkarte, SEPA-Lastschrift oder PayPal.</p>
       </div>
+    </div>
+  </section>
 
-      <div class="lesson-block">
-        <div class="num">4</div>
-        <div>
-          <div class="lb-title">Amerikanische Faulbrut (AFB)</div>
-          <div class="lb-text">Eine anzeigepflichtige, hoch ansteckende bakterielle Brutkrankheit – bei Verdacht besteht gesetzliche Meldepflicht beim zuständigen Veterinäramt. Typische Anzeichen: eingesunkene, rissige Brutdeckel und ein lückenhaftes Brutbild. Zur Erstprüfung dient die Streichholzprobe: Ein Streichholz wird in die zersetzte Brut getaucht – zieht sich beim Herausziehen ein schleimiger, fadenziehender Faden, besteht ein anzeigepflichtiger Verdacht. Die endgültige Bestätigung erfolgt im Labor. Bei einem bestätigten Fall richtet das Veterinäramt einen Sperrbezirk mit mindestens 1 km Radius ein.</div>
-        </div>
-      </div>
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="border-t border-slate-100 py-8">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 text-center text-xs text-slate-400">
+      <p class="mb-2">© 2026 klima-protokoll.de</p>
+      <a href="impressum.html" class="hover:underline">Impressum</a> ·
+      <a href="datenschutz.html" class="hover:underline">Datenschutz</a> ·
+      <a href="avv.html" class="hover:underline">AVV</a>
+    </div>
+  </footer>
 
-      <div class="lesson-block">
-        <div class="num">5</div>
-        <div>
-          <div class="lb-title">Nosemose</div>
-          <div class="lb-text">Eine Darmerkrankung erwachsener Bienen durch die Einzeller Nosema apis oder Nosema ceranae, auch "Frühjahrsschwindsucht" genannt. Anders als AFB ist sie nicht anzeigepflichtig – die Verantwortung liegt vollständig beim Imker. Typische Anzeichen: braune bis gelbliche Kotspuren am Flugloch und an der Beute, flugunfähige, ziellos krabbelnde Bienen, ein geschwächtes Volk. Eine sichere Diagnose liefert nur eine Laboruntersuchung. Vorbeugung ist wichtiger als Behandlung: trockener, sonniger Standort, regelmäßiger Wabenaustausch, starke und stressfreie Völker, kein Flüssigfutter im Winter (fördert Durchfall).</div>
-        </div>
-      </div>
-
-      <div class="frame-note">Grundsatz für alle drei Krankheiten: Regelmäßige, ruhige Durchsichten sind dein wichtigstes Frühwarnsystem. Bei jeder Unsicherheit lieber einmal zu viel einen erfahrenen Imker, deinen Imkerverein oder das Veterinäramt kontaktieren als zu spät zu reagieren.</div>
-    </section>
-
-
-    <section class="view" id="topic-ueberwinterung">
-      <button class="back-btn" onclick="showView('nachschlagen')">← Zurück zur Themen-Bibliothek</button>
-      <h2 class="section-title">❄️ Überwinterung</h2>
-      <p class="lesson-intro">Von der Futterberechnung bis zur Winterruhe – die wichtigsten Zahlen und Zeitpunkte für eine sichere Einwinterung.</p>
-
-      <div class="lesson-block">
-        <div class="num">1</div>
-        <div>
-          <div class="lb-title">Futtermenge berechnen</div>
-          <div class="lb-text">Als Faustregel brauchen einzargig eingewinterte Völker etwa 15 kg Winterfutter, zweizargige Völker oder Großraumbeuten eher 20 kg. Wichtig: Zu wenig Futter lässt das Volk verhungern, zu viel Futter kann im Sommer die Legetätigkeit der Königin einschränken (das Volk "schnürt sich ein") – die Menge sollte also möglichst genau passen.</div>
-        </div>
-      </div>
-
-      <div class="lesson-block">
-        <div class="num">2</div>
-        <div>
-          <div class="lb-title">Zuckerlösung richtig ansetzen</div>
-          <div class="lb-text">Für die Wintereinfütterung wird meist eine konzentrierte Lösung im Verhältnis 3 Teile Zucker zu 2 Teilen Wasser verwendet, damit die Bienen weniger Energie fürs Eindicken aufwenden müssen. Nur reinen, weißen Haushaltszucker verwenden (keine Ballaststoffe) und die Lösung in lauwarmem Wasser auflösen. Als grobe Umrechnung gilt: 1 kg zugefügter Zucker entspricht ungefähr 1 kg eingelagertem Futter.</div>
-        </div>
-      </div>
-
-      <div class="lesson-block">
-        <div class="num">3</div>
-        <div>
-          <div class="lb-title">Der richtige Zeitpunkt</div>
-          <div class="lb-text">Die Fütterung beginnt direkt nach der letzten Honigernte, meist Ende Juli bis September. Bei Temperaturen unter 10 °C nehmen die Bienen kaum noch Futter an – ein rechtzeitiger Start ist deshalb entscheidend. Füttere möglichst nur abends, wenn weniger fremde Wespen und Bienen unterwegs sind, das senkt die Räubereigefahr.</div>
-        </div>
-      </div>
-
-      <div class="lesson-block">
-        <div class="num">4</div>
-        <div>
-          <div class="lb-title">Fütterung und Varroa-Behandlung abstimmen</div>
-          <div class="lb-text">Fütterst du mit Ameisensäure gegen Varroa, sollte nicht zeitgleich flüssig eingefüttert werden – das Futter verdünnt die Säure und macht die Behandlung wirkungslos. Halte hier einen zeitlichen Abstand von etwa 5 Tagen zwischen Fütterung und Säurebehandlung ein.</div>
-        </div>
-      </div>
-
-      <div class="lesson-block">
-        <div class="num">5</div>
-        <div>
-          <div class="lb-title">Räuberschutz</div>
-          <div class="lb-text">Ab Mitte August lohnt sich eine Fluglochverkleinerung, damit ein geschwächtes Volk sein Flugloch leichter gegen eindringende Wespen oder fremde Bienen verteidigen kann. Verschüttete Zuckerlösung immer sofort und gründlich wegwischen – der Geruch lockt sonst Räuber an.</div>
-        </div>
-      </div>
-
-      <div class="lesson-block">
-        <div class="num">6</div>
-        <div>
-          <div class="lb-text">Während des eigentlichen Winters gilt: Beute möglichst geschlossen und ungestört lassen. Eine kurze Kontrolle des Fluglochs auf Verstopfung durch tote Bienen oder Schnee reicht völlig aus.</div>
-        </div>
-      </div>
-    </section>
-
-    <section class="view" id="topic-honigernte">
-      <button class="back-btn" onclick="showView('nachschlagen')">← Zurück zur Themen-Bibliothek</button>
-      <h2 class="section-title">🍯 Honigernte</h2>
-      <p class="lesson-intro">Vom Erkennen der Erntereife bis zum fertig abgefüllten Glas – mit den wichtigsten Zahlen und rechtlichen Grenzwerten.</p>
-
-
-      <div class="lesson-block">
-        <div class="num">1</div>
-        <div>
-          <div class="lb-title">Erntereife prüfen</div>
-          <div class="lb-text">Sind die Honigwaben zu mindestens zwei Dritteln verdeckelt, ist der Honig in der Regel reif genug zum Ernten. Ein "Klopftest" (Wabe kräftig schütteln, es darf nichts heraustropfen) gibt zusätzliche Sicherheit. Verdeckelter Honig ist von den Bienen selbst schon getrocknet und "fertig" – unreifer Honig enthält noch zu viel Wasser und ist nicht lagerfähig.</div>
-        </div>
-      </div>
-
-      <div class="lesson-block">
-        <div class="num">2</div>
-        <div>
-          <div class="lb-title">Wassergehalt – die wichtigste Kennzahl</div>
-          <div class="lb-text">Die deutsche Honigverordnung erlaubt für die meisten Honige maximal 20 % Wassergehalt, ab diesem Wert gilt Honig als nicht mehr ohne Weiteres verkehrsfähig. Willst du deinen Honig im Glas des Deutschen Imkerbundes (DIB) verkaufen, gilt eine strengere Grenze von maximal 18 %. In der Praxis empfiehlt sich ein Zielbereich von 15–17 % für gute Lagerstabilität und geringes Gärungsrisiko. Gemessen wird mit einem Refraktometer, am besten schon vor der Ernte an Stichproben aus verschiedenen Waben.</div>
-        </div>
-      </div>
-
-      <div class="lesson-block">
-        <div class="num">3</div>
-        <div>
-          <div class="lb-title">Entdeckeln</div>
-          <div class="lb-text">Vor dem Schleudern werden die Wachsdeckel der Zellen entfernt, damit der Honig herausfließen kann – klassisch mit einer Entdeckelungsgabel oder einem beheizten Entdeckelungsmesser. Das abgeschabte Wachs (Entdeckelungswachs) lässt sich später separat einschmelzen und weiterverwenden.</div>
-        </div>
-      </div>
-
-      <div class="lesson-block">
-        <div class="num">4</div>
-        <div>
-          <div class="lb-title">Schleudern</div>
-          <div class="lb-text">Die entdeckelten Waben kommen in die Honigschleuder, die den Honig durch Zentrifugalkraft aus den Zellen löst, ohne die Wabenstruktur selbst zu zerstören. So können die Waben oft direkt wieder ins Volk zurückgehängt werden.</div>
-        </div>
-      </div>
-
-      <div class="lesson-block">
-        <div class="num">5</div>
-        <div>
-          <div class="lb-title">Sieben und Klären</div>
-          <div class="lb-text">Der geschleuderte Honig läuft durch ein grobes und ein feines Sieb, um Wachsreste und Luftblasen herauszufiltern. Danach ruht er einige Tage in einem Klärbehälter (Abschäumen), damit feine Verunreinigungen und Schaum an die Oberfläche steigen und abgeschöpft werden können.</div>
-        </div>
-      </div>
-
-      <div class="lesson-block">
-        <div class="num">6</div>
-        <div>
-          <div class="lb-title">Abfüllen und Lagern</div>
-          <div class="lb-text">Fülle den Honig zügig nach der Klärung ab, solange er noch cremig-flüssig ist. Lagere fertig abgefüllte Gläser danach kühl, trocken, dunkel und geruchsfrei – im Idealfall bei maximal 15 °C und unter 55 % Luftfeuchtigkeit, da Honig Feuchtigkeit aus der Luft ziehen kann.</div>
-        </div>
-      </div>
-
-      <div class="lesson-block">
-        <div class="num">7</div>
-        <div>
-          <div class="lb-title">Genug für das Volk zurücklassen</div>
-          <div class="lb-text">Lass immer einen halb gefüllten Futterkranz im untersten Honigraum als Reserve für das Volk zurück – nicht alles abernten, besonders nicht bei der letzten Ernte der Saison vor der Einwinterung.</div>
-        </div>
-      </div>
-
-      <div class="frame-note">Rechtlicher Hinweis: Wer Honig verkauft, muss zusätzlich Kennzeichnungspflichten beachten (u. a. Erzeugerangabe, Mindesthaltbarkeitsdatum, Losnummer). Die genauen Vorgaben findest du in der deutschen Honigverordnung bzw. beim Deutschen Imkerbund.</div>
-    </section>
-
-    <section class="view" id="topic-koenigin">
-      <button class="back-btn" onclick="showView('nachschlagen')">← Zurück zur Themen-Bibliothek</button>
-      <h2 class="section-title">👑 Königin</h2>
-      <p class="lesson-intro">Erkennen, markieren und wissen, wann ein Wechsel ansteht.</p>
-
-      <div class="lesson-block">
-        <div class="num">1</div>
-        <div>
-          <div class="lb-title">Erkennen</div>
-          <div class="lb-text">Größer und länglicher als Arbeiterinnen, bewegt sich meist ruhiger, oft von einem "Hofstaat" umgeben. Einfacher für Einsteiger: frische Eier (eines pro Zelle, senkrecht stehend am Zellgrund) zeigen zuverlässig, dass eine Königin aktiv legt, auch wenn du sie selbst nicht findest. Die beste Zeit zum gezielten Suchen ist das Frühjahr, wenn noch nicht zu viele Bienen im Volk sind.</div>
-        </div>
-      </div>
-
-      <div class="lesson-block">
-        <div class="num">2</div>
-        <div>
-          <div class="lb-title">Markieren – warum und wie</div>
-          <div class="lb-text">Ein farbiger Punkt auf dem Rücken (Thorax) macht die Königin auf einen Blick auffindbar und verrät zugleich ihr Alter. Gefangen wird sie meist sanft mit einem Zeichenröhrchen oder -käfig, das sie fixiert, ohne sie zu verletzen. Der Punkt kommt mittig auf den Rücken zwischen die Flügelansätze, mit einem speziellen, für Bienen ungiftigen Lackstift. Tipp für den Einstieg: Das Fixieren und Markieren lässt sich gefahrlos an Drohnen üben, da sie nicht stechen können.</div>
-        </div>
-      </div>
-
-      <div class="lesson-block">
-        <div class="num">3</div>
-        <div>
-          <div class="lb-title">Der internationale Farbcode</div>
-          <div class="lb-text">Weltweit einheitlich, wiederholt sich alle 5 Jahre nach der Endziffer des Jahres:
-            <ul>
-              <li><strong>Weiß</strong> – Endziffer 1 oder 6 (z. B. 2026, 2031)</li>
-              <li><strong>Gelb</strong> – Endziffer 2 oder 7 (z. B. 2027, 2032)</li>
-              <li><strong>Rot</strong> – Endziffer 3 oder 8 (z. B. 2028, 2033)</li>
-              <li><strong>Grün</strong> – Endziffer 4 oder 9 (z. B. 2029, 2034)</li>
-              <li><strong>Blau</strong> – Endziffer 5 oder 0 (z. B. 2030, 2035)</li>
-            </ul>
-            Da Königinnen selten älter als 5 Jahre werden, reicht dieser Fünf-Farben-Zyklus für ein ganzes "Königinnenleben".
-          </div>
-        </div>
-      </div>
-
-      <div class="lesson-block">
-        <div class="num">4</div>
-        <div>
-          <div class="lb-title">Wann ersetzen?</div>
-          <div class="lb-text">Typische Gründe für einen Königinnenwechsel: sie ist zu alt (ab dem 2.–3. Jahr lässt die Legeleistung meist spürbar nach), das Brutbild wird lückenhaft statt kompakt, oder das Volk verhält sich auffällig aggressiv. Ein nützlicher Nebeneffekt der Markierung: Findest du irgendwann eine unmarkierte Königin im Volk, weißt du sofort, dass sich die Bienen selbst eine neue "stille" Königin nachgezogen haben (stille Umweiselung).</div>
-        </div>
-      </div>
-    </section>
-
-    <section class="view" id="topic-trachtpflanzen">
-      <button class="back-btn" onclick="showView('nachschlagen')">← Zurück zur Themen-Bibliothek</button>
-      <h2 class="section-title">🌸 Trachtpflanzen</h2>
-      <p class="lesson-intro">Überblick über typische Blühzeiten in Mitteleuropa – lokal kann es abweichen.</p>
-
-      <div class="lesson-block">
-        <div class="num">1</div>
-        <div>
-          <div class="lb-title">Nektar und Pollen – zwei verschiedene Dinge</div>
-          <div class="lb-text">Nektar ist die Energiequelle: Aus ihm entsteht Honig, der vor allem als "Treibstoff" fürs Volk dient. Pollen liefert dagegen Eiweiß und wird für die Aufzucht von Larven und Winterbienen gebraucht. Ein Volk sammelt pro Jahr grob 70–80 kg Honig als Wintervorrat und 25–30 kg Pollen. Manche Pflanzen liefern viel von beidem, andere nur eins – Fachleute bewerten das mit dem sogenannten Trachtwert von 0 bis 4 für Nektar (N) und Pollen (P) getrennt.</div>
-        </div>
-      </div>
-
-      <div class="lesson-block">
-        <div class="num">2</div>
-        <div>
-          <div class="lb-title">Frühtracht (März–Mai)</div>
-          <div class="lb-text">Weidenkätzchen, Obstbaumblüte (Apfel, Kirsche), Raps – wichtig für den ersten Wachstumsschub des Volkes. Raps zählt zu den ergiebigsten Trachten überhaupt, kristallisiert aber sehr schnell in der Wabe – nicht zu spät nach der Blüte schleudern.</div>
-        </div>
-      </div>
-
-      <div class="lesson-block">
-        <div class="num">3</div>
-        <div>
-          <div class="lb-title">Das "Juniloch"</div>
-          <div class="lb-text">Zwischen Frühtracht und Haupttracht entsteht oft eine Versorgungslücke, wenn z. B. der Raps verblüht ist und Linde oder Wald noch nicht tragen. In dieser Zeit müssen die Völker von ihren Reserven leben – ein Grund, warum Fütterungskontrollen auch mitten im Bienenjahr sinnvoll sein können, nicht nur im Herbst.</div>
-        </div>
-      </div>
-
-      <div class="lesson-block">
-        <div class="num">4</div>
-        <div>
-          <div class="lb-title">Haupttracht (Juni–Juli)</div>
-          <div class="lb-text">Linde, Klee, Robinie (im Handel oft "Akazienhonig" genannt, botanisch aber keine echte Akazie) sowie Waldtracht (Honigtau) – hier entsteht meist der Großteil des Honigertrags. Waldtracht entsteht nicht aus Blüten, sondern aus den zuckerhaltigen Ausscheidungen von Blatt- und Rindenläusen auf Nadelbäumen wie Fichte und Tanne, verarbeitet zum dunkleren, mineralreicheren Waldhonig.</div>
-        </div>
-      </div>
-
-      <div class="lesson-block">
-        <div class="num">5</div>
-        <div>
-          <div class="lb-title">Spättracht (August–September)</div>
-          <div class="lb-text">Heidekraut, Goldrute, Springkraut und vor allem Efeu (blüht bis in den Oktober) liefern wichtige letzte Pollen- und Nektarquellen vor dem Winter. Genau in dieser Phase werden die langlebigen Winterbienen aufgezogen – ihre Qualität hängt direkt von einer guten Pollenversorgung in dieser Zeit ab.</div>
-        </div>
-      </div>
-
-      <div class="frame-note">Praxistipp: Beobachte, was in deiner unmittelbaren Umgebung (im Flugradius der Bienen von ca. 2–3 km) tatsächlich blüht – die genaue Trachtsituation ist immer sehr standortabhängig und kann sich von Jahr zu Jahr auch witterungsbedingt verschieben.</div>
-    </section>
-
-    <section class="view" id="chat">
-      <h2 class="section-title">Frag mich</h2>
-      <p class="section-sub">Für akute Probleme – jederzeit erreichbar.</p>
-
-      <div id="chatContent">
-        <div class="chat-thread" id="chatThread">
-          <div class="msg bot">Hallo! Was ist bei deinem Volk gerade los? Beschreib mir kurz, was du beobachtest.</div>
-        </div>
-
-        <div class="suggestion-row">
-          <button class="suggestion-chip" onclick="sendSuggestion('Meine Bienen stechen viel mehr als sonst, woran kann das liegen?')">Meine Bienen stechen viel</button>
-          <button class="suggestion-chip" onclick="sendSuggestion('Ich sehe kaum Bruttätigkeit im Volk, ist das normal?')">Wenig Bruttätigkeit</button>
-          <button class="suggestion-chip" onclick="sendSuggestion('Mein Volk wirkt insgesamt schwach und wenig aktiv, was kann ich tun?')">Volk wirkt schwach</button>
-        </div>
-
-        <div class="chat-input-row">
-          <input type="text" id="chatInput" placeholder="Beschreibe dein Problem …" onkeydown="if(event.key==='Enter'){sendChatMessage();}" />
-          <button id="chatSendBtn" onclick="sendChatMessage()">Senden</button>
-        </div>
-      </div>
-    </section>
-
-  </main>
-</div>
 
 <script>
-  // --- Konto / Supabase Auth ---
-  const SUPABASE_URL = 'https://tyxruqhrntztcezcskxw.supabase.co';
-  const SUPABASE_KEY = 'sb_publishable_NimDRFLC_EQoIJZvEc6-TA_luG105UM';
-  const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  const demoCaptions = ['Registrieren', 'Firma anlegen', 'Formular ausfüllen', 'Digital unterschreiben', 'PDF fertig'];
+  const demoSlides = document.querySelectorAll('.demo-slide');
+  const demoDots = document.querySelectorAll('.demo-dot');
+  const demoCaption = document.getElementById('demo-caption');
+  let demoIndex = 0;
 
-  let authMode = 'login';
-
-  function switchAuthTab(mode) {
-    authMode = mode;
-    document.getElementById('tabLogin').classList.toggle('active', mode === 'login');
-    document.getElementById('tabSignup').classList.toggle('active', mode === 'signup');
-    document.getElementById('authSubmitBtn').textContent = mode === 'login' ? 'Anmelden' : 'Konto erstellen';
-    document.getElementById('authMsg').innerHTML = '';
-  }
-
-  function showAuthMessage(text, type) {
-    document.getElementById('authMsg').innerHTML = '<div class="auth-msg ' + type + '">' + text + '</div>';
-  }
-
-  async function handleAuthSubmit() {
-    const email = document.getElementById('authEmail').value.trim();
-    const password = document.getElementById('authPassword').value;
-    const btn = document.getElementById('authSubmitBtn');
-    if (!email || !password) { showAuthMessage('Bitte E-Mail und Passwort ausfüllen.', 'error'); return; }
-
-    btn.disabled = true;
-    btn.textContent = '…';
-
-    try {
-      if (authMode === 'signup') {
-        const { data, error } = await sb.auth.signUp({ email, password });
-        if (error) throw error;
-        showAuthMessage('Konto erstellt! Falls eine Bestätigungs-E-Mail nötig ist, prüfe dein Postfach.', 'success');
-      } else {
-        const { data, error } = await sb.auth.signInWithPassword({ email, password });
-        if (error) throw error;
-      }
-      await updateAuthUI();
-    } catch (err) {
-      showAuthMessage(err.message || 'Etwas ist schiefgelaufen. Versuch es nochmal.', 'error');
-    } finally {
-      btn.disabled = false;
-      btn.textContent = authMode === 'login' ? 'Anmelden' : 'Konto erstellen';
-    }
-  }
-
-  async function handleLogout() {
-    await sb.auth.signOut();
-    await updateAuthUI();
-    showView('uebersicht');
-  }
-
-  async function updateAuthUI() {
-    const { data: { session } } = await sb.auth.getSession();
-    const accountBtn = document.getElementById('accountBtn');
-    const authForm = document.getElementById('authForm');
-    const loggedInView = document.getElementById('accountLoggedIn');
-
-    const isOwner = !!(session && session.user && session.user.email && session.user.email.trim().toLowerCase() === OWNER_EMAIL.toLowerCase());
-    currentUser = session && session.user ? session.user : null;
-    hasPaid = false;
-    if (currentUser && !isOwner) {
-      try {
-        const { data: acc } = await sb.from('user_access').select('paid_until').eq('user_id', currentUser.id).maybeSingle();
-        hasPaid = !!(acc && acc.paid_until && new Date(acc.paid_until) > new Date());
-      } catch (e) { console.error('Zugriffsstatus laden fehlgeschlagen:', e); }
-    }
-    const isPremium = isOwner || hasPaid;
-    updateFreemiumUI(isPremium);
-    const statusEl = document.getElementById('accountPremiumStatus');
-    if (statusEl) {
-      if (isPremium) {
-        statusEl.innerHTML = '<span class="premium-badge">⭐ Saisonpass aktiv</span>';
-      } else if (currentUser) {
-        statusEl.innerHTML = '<button class="auth-submit" onclick="openUpgradeModal()">Saisonpass freischalten</button><p class="section-sub" style="font-size:12px;margin-top:8px;">Gerade bezahlt? <a href="#" onclick="updateAuthUI();return false;">Status aktualisieren</a></p>';
-      } else {
-        statusEl.innerHTML = '';
-      }
-    }
-
-    if (session && session.user) {
-      const email = session.user.email;
-      accountBtn.textContent = '👤 ' + email.split('@')[0];
-      authForm.style.display = 'none';
-      loggedInView.style.display = 'block';
-      document.getElementById('loggedInEmail').textContent = email;
-      document.getElementById('avatarInitial').textContent = email.charAt(0).toUpperCase();
-      await loadProgress();
-    } else {
-      accountBtn.textContent = '👤 Anmelden';
-      authForm.style.display = 'block';
-      loggedInView.style.display = 'none';
-      completedSteps = [];
-      updateProgressUI();
-    }
-  }
-
-  updateAuthUI();
-
-  // --- Fortschritt speichern/laden ---
-  const ALL_STEPS = ['schritt1', 'schritt2', 'schritt3', 'schritt4', 'schritt5'];
-  let completedSteps = [];
-
-  async function loadProgress() {
-    const { data: { session } } = await sb.auth.getSession();
-    if (!session) return;
-    try {
-      const { data, error } = await sb.from('user_progress').select('completed_steps').eq('user_id', session.user.id).maybeSingle();
-      if (error) throw error;
-      completedSteps = (data && data.completed_steps) || [];
-    } catch (err) {
-      console.error('Fortschritt laden fehlgeschlagen:', err);
-      completedSteps = [];
-    }
-    updateProgressUI();
-  }
-
-  async function markStepComplete(stepId) {
-    const { data: { session } } = await sb.auth.getSession();
-    if (!session) {
-      alert('Bitte melde dich zuerst an (oben rechts über "👤 Anmelden"), damit dein Fortschritt gespeichert wird.');
-      showView('account');
-      return;
-    }
-    if (!completedSteps.includes(stepId)) {
-      completedSteps.push(stepId);
-    }
-    updateProgressUI();
-    try {
-      const { error } = await sb.from('user_progress').upsert({
-        user_id: session.user.id,
-        completed_steps: completedSteps,
-        updated_at: new Date().toISOString()
-      });
-      if (error) throw error;
-    } catch (err) {
-      console.error('Fortschritt speichern fehlgeschlagen:', err);
-    }
-  }
-
-  function updateProgressUI() {
-    const count = completedSteps.length;
-    const total = ALL_STEPS.length;
-    const progressText = document.getElementById('progressText');
-    const progressBarFill = document.getElementById('progressBarFill');
-    if (progressText) progressText.textContent = 'Schritt ' + count + ' von ' + total;
-    if (progressBarFill) progressBarFill.style.width = Math.round((count / total) * 100) + '%';
-
-    ALL_STEPS.forEach(stepId => {
-      const isDone = completedSteps.includes(stepId);
-      const card = document.getElementById('stepCard-' + stepId);
-      const marker = document.getElementById('stepMarker-' + stepId);
-      const btn = document.getElementById('completeBtn-' + stepId);
-      if (card) card.classList.toggle('done', isDone);
-      if (marker) marker.textContent = isDone ? '✓' : stepId.replace('schritt', '');
-      if (btn) {
-        btn.classList.toggle('done', isDone);
-        btn.textContent = isDone ? '✓ Abgeschlossen' : 'Als abgeschlossen markieren';
-      }
+  function showDemoSlide(i) {
+    demoSlides.forEach(s => s.classList.toggle('active', Number(s.dataset.slide) === i));
+    demoDots.forEach(d => {
+      const isActive = Number(d.dataset.dot) === i;
+      d.classList.toggle('bg-slate-600', isActive);
+      d.classList.toggle('bg-slate-300', !isActive);
     });
+    demoCaption.textContent = demoCaptions[i];
   }
 
-  // --- Freemium-Sperrsystem ---
-  // OWNER_EMAIL bekommt immer vollen Zugriff (zum eigenen Testen/Nutzen).
-  // Sobald ein echtes Bezahlsystem angebunden ist, wird der Premium-Status
-  // zusätzlich vom echten Abo-Status anderer Nutzer abhängen.
-  const OWNER_EMAIL = 'an.ha@etik.com';
-  let currentUser = null;
-  let hasPaid = false;
-  const PAYMENT_LINK_NORMAL = 'https://buy.stripe.com/8x2eVe3EYfg2gCp7nxdZ600';
-  const PAYMENT_LINK_EARLY = 'https://buy.stripe.com/14AeVe4J2fg24THazJdZ601';
-  const EARLY_DAYS = 7;
-  const FREE_STEP = 'schritt1';
-  const LOCKED_STEPS = ['schritt2', 'schritt3', 'schritt4', 'schritt5'];
-  const FREE_TOPIC = 'schwarmzeit';
-  const LOCKED_TOPICS = ['krankheiten', 'ueberwinterung', 'honigernte', 'koenigin', 'trachtpflanzen'];
-  const STEP_VIEW_MAP = {
-    schritt1: 'lesson-schritt1',
-    schritt2: 'lesson-woche2',
-    schritt3: 'lesson-schritt3',
-    schritt4: 'lesson-schritt4',
-    schritt5: 'lesson-schritt5'
-  };
-  let ORIGINAL_CHAT_HTML = null;
-
-  function isEarlyBird() {
-    if (!currentUser || !currentUser.created_at) return false;
-    return (Date.now() - new Date(currentUser.created_at).getTime()) <= EARLY_DAYS * 24 * 3600 * 1000;
-  }
-
-  function showLockedInfo(label) { openUpgradeModal(); }
-
-  function closeUpgradeModal() {
-    document.getElementById('upgradeModal').classList.remove('open');
-  }
-
-  function openUpgradeModal() {
-    const box = document.getElementById('upgradeContent');
-    const modal = document.getElementById('upgradeModal');
-    const perks = '<ul><li>Alle Kursschritte 2 bis 5</li><li>Komplette Themen-Bibliothek</li><li>KI-Chat „Frag mich“</li><li>Einmalzahlung, keine automatische Verlängerung</li></ul>';
-    if (!currentUser) {
-      box.innerHTML = '<h3>🐝 Saisonpass</h3>' + perks +
-        '<p style="font-size:14px;">Bitte registriere dich zuerst kostenlos. In den ersten 7 Tagen nach der Registrierung zahlst du nur <strong>18,95 €</strong> statt 24,95 €.</p>' +
-        '<button class="up-btn" onclick="closeUpgradeModal();showView(\'account\')">Jetzt registrieren</button>';
-    } else {
-      const early = isEarlyBird();
-      const link = (early ? PAYMENT_LINK_EARLY : PAYMENT_LINK_NORMAL) + '?client_reference_id=' + encodeURIComponent(currentUser.id) + '&prefilled_email=' + encodeURIComponent(currentUser.email);
-      const price = early ? '18,95 € <s>24,95 €</s>' : '24,95 €';
-      box.innerHTML = '<h3>🐝 Bienenkompass Saisonpass</h3>' +
-        '<div class="up-price">' + price + '</div>' +
-        '<div style="font-size:13px;opacity:.75;">' + (early ? 'Frühstarter-Preis, noch 7 Tage nach deiner Registrierung gültig' : 'Zugang für eine Imkersaison (bis 31. Oktober)') + '</div>' +
-        perks +
-        '<label style="display:flex;gap:8px;font-size:12.5px;line-height:1.45;margin-top:10px;"><input type="checkbox" id="upgradeConsent" style="margin-top:3px;"><span>Ich stimme ausdrücklich zu, dass der Zugang sofort freigeschaltet wird, und bestätige, dass ich dadurch mein <a href="#" onclick="closeUpgradeModal();showView(\'agb\');return false;">Widerrufsrecht</a> verliere, sobald der Zugang freigeschaltet ist.</span></label>' +
-        '<button class="up-btn" onclick="startCheckout(\'' + link + '\')">Sicher bezahlen mit Stripe</button>' +
-        '<div class="up-small">Kleinunternehmer gemäß § 19 UStG, keine Umsatzsteuer. Bezahlung über Stripe (Karte, SEPA u. a.). Nach der Zahlung wird dein Konto automatisch freigeschaltet. <a href="#" onclick="closeUpgradeModal();showView(\'agb\');return false;">AGB &amp; Widerruf</a></div>';
-    }
-    modal.classList.add('open');
-  }
-
-  function startCheckout(link) {
-    const c = document.getElementById('upgradeConsent');
-    if (!c || !c.checked) { alert('Bitte bestätige zuerst das Häkchen zur sofortigen Freischaltung.'); return; }
-    window.location.href = link;
-  }
-
-  function updateFreemiumUI(isPremiumNow) {
-    const chatContentEl = document.getElementById('chatContent');
-    if (ORIGINAL_CHAT_HTML === null && chatContentEl) {
-      ORIGINAL_CHAT_HTML = chatContentEl.innerHTML;
-    }
-
-    const LOCKED_EQUIP_ITEMS = ['2', '3', '4', '5', '6', '7'];
-    LOCKED_EQUIP_ITEMS.forEach(num => {
-      const item = document.getElementById('equipItem-' + num);
-      if (!item) return;
-      const existingBadge = item.querySelector('.lock-badge');
-      if (isPremiumNow) {
-        item.classList.remove('locked');
-        item.querySelectorAll('.equip-tier a').forEach(a => { a.onclick = null; });
-        if (existingBadge) existingBadge.remove();
-      } else {
-        item.classList.add('locked');
-        item.querySelectorAll('.equip-tier a').forEach(a => {
-          a.onclick = (e) => { e.preventDefault(); showLockedInfo('Dieses Ausrüstungsteil'); };
-        });
-        if (!existingBadge) {
-          const badge = document.createElement('div');
-          badge.className = 'lock-badge';
-          badge.textContent = '🔒';
-          item.appendChild(badge);
-        }
-      }
-    });
-
-    LOCKED_STEPS.forEach(stepId => {
-      const card = document.getElementById('stepCard-' + stepId);
-      if (!card) return;
-      const existingBadge = card.querySelector('.lock-badge');
-      if (isPremiumNow) {
-        card.classList.remove('locked');
-        card.onclick = () => showView(STEP_VIEW_MAP[stepId]);
-        if (existingBadge) existingBadge.remove();
-      } else {
-        card.classList.add('locked');
-        card.onclick = () => showLockedInfo('Dieser Kursschritt');
-        if (!existingBadge) {
-          const badge = document.createElement('div');
-          badge.className = 'lock-badge';
-          badge.textContent = '🔒';
-          card.appendChild(badge);
-        }
-      }
-    });
-
-    LOCKED_TOPICS.forEach(topicId => {
-      const card = document.getElementById('topicCard-' + topicId);
-      if (!card) return;
-      const existingBadge = card.querySelector('.lock-badge');
-      if (isPremiumNow) {
-        card.classList.remove('locked');
-        card.onclick = () => showView('topic-' + topicId);
-        if (existingBadge) existingBadge.remove();
-      } else {
-        card.classList.add('locked');
-        card.onclick = () => showLockedInfo('Dieses Thema');
-        if (!existingBadge) {
-          const badge = document.createElement('div');
-          badge.className = 'lock-badge';
-          badge.textContent = '🔒';
-          card.appendChild(badge);
-        }
-      }
-    });
-
-    const chatNavBtn = document.getElementById('chatNavBtn');
-    if (chatNavBtn) {
-      if (isPremiumNow) {
-        chatNavBtn.classList.remove('locked-nav-tab');
-        chatNavBtn.textContent = 'Frag mich';
-        chatNavBtn.onclick = null;
-      } else {
-        chatNavBtn.classList.add('locked-nav-tab');
-        chatNavBtn.textContent = '🔒 Frag mich';
-        chatNavBtn.onclick = () => showView('chat');
-      }
-    }
-
-    if (chatContentEl) {
-      if (isPremiumNow) {
-        chatContentEl.innerHTML = ORIGINAL_CHAT_HTML;
-      } else {
-        chatContentEl.innerHTML = '<div class="locked-overlay-msg"><div class="lock-icon">🔒</div><div class="title">Noch nicht freigeschaltet</div><div class="desc">Der KI-Chat ist Teil des vollständigen Zugangs und nicht kostenlos verfügbar. Mit dem Saisonpass öffnet sich dieser Bereich sofort.</div><button class="auth-submit" style="margin-top:14px;" onclick="openUpgradeModal()">Saisonpass freischalten</button></div>';
-      }
-    }
-
-    const nachschlagenNote = document.getElementById('nachschlagenLockNote');
-    if (nachschlagenNote) {
-      nachschlagenNote.innerHTML = isPremiumNow ? '' : '<p class="section-sub" style="margin-top:16px;">🔒 Weitere Themen gibt es mit dem Saisonpass. <a href="#" onclick="openUpgradeModal();return false;">Freischalten</a></p>';
-    }
-  }
-
-  updateFreemiumUI(false);
-
-  // --- Cookie-Hinweis ---
-  function acceptCookieNotice() {
-    try { localStorage.setItem('bienenkompass_cookie_notice_accepted', 'true'); } catch (e) {}
-    document.getElementById('cookieBanner').style.display = 'none';
-  }
-  (function initCookieNotice() {
-    let alreadyAccepted = false;
-    try { alreadyAccepted = localStorage.getItem('bienenkompass_cookie_notice_accepted') === 'true'; } catch (e) {}
-    if (!alreadyAccepted) {
-      setTimeout(() => {
-        const banner = document.getElementById('cookieBanner');
-        if (banner) banner.style.display = 'flex';
-      }, 5500);
-    }
-  })();
-
-  function closeIntro() {
-    const intro = document.getElementById('introSplash');
-    if (!intro) return;
-    intro.classList.add('closing');
-    setTimeout(() => { intro.style.display = 'none'; }, 550);
-  }
-  setTimeout(() => {
-    const intro = document.getElementById('introSplash');
-    if (intro) intro.style.display = 'none';
-  }, 6000);
-
-  // --- Imkerbegleiter (Maskottchen) ---
-  const MASCOT_MESSAGES = {
-    'kurs': 'Wähle einen Schritt aus – am besten der Reihe nach, wenn du gerade erst startest.',
-    'lesson-schritt1': 'Grundausstattung ist die Basis. Schau dir Anfänger- und Profi-Optionen in Ruhe an.',
-    'lesson-woche2': 'Verstehe den Jahreskreislauf – so weißt du immer, welche Arbeit gerade dran ist.',
-    'frames-fruehjahr': 'So sieht ein typischer Brutraum im Frühjahr aus – die Brut wächst schnell!',
-    'frames-fruehsommer': 'Höchste Vorsicht: Jetzt ist Schwarmzeit. Kontrolliere regelmäßig auf Weiselzellen.',
-    'frames-sommer': 'Zeit für die Ernte – prüfe, ob deine Honigwaben schon verdeckelt sind.',
-    'frames-herbst': 'Jetzt wird eingefüttert und gegen Varroa behandelt – wichtig für den Winter.',
-    'frames-winter': 'Lass dein Volk jetzt in Ruhe – die Wintertraube braucht wenig Störung.',
-    'lesson-schritt3': 'Bereit für die erste Durchsicht? Wähle einen warmen, windstillen Tag.',
-    'lesson-schritt4': 'Behalte im Blick, ob dein Volk bald mehr Platz braucht.',
-    'lesson-schritt5': 'Schwarmzeit ist kritisch – alle 7-9 Tage auf Weiselzellen kontrollieren.',
-    'nachschlagen': 'Hier findest du schnelle Antworten, wenn mal eine akute Frage aufkommt.',
-    'topic-schwarmzeit': 'Weiselzellen an der Wabenunterkante sind das sicherste Warnzeichen.',
-    'topic-krankheiten': 'Regelmäßige Kontrolle ist dein bestes Frühwarnsystem gegen Krankheiten.',
-    'topic-ueberwinterung': 'Rund 15-20 kg Winterfutter sind eine gute Faustregel.',
-    'topic-honigernte': 'Zwei Drittel verdeckelt? Dann ist der Honig reif zum Ernten!',
-    'topic-koenigin': 'Frische Eier verraten dir, dass die Königin aktiv legt, auch ohne sie zu sehen.',
-    'topic-trachtpflanzen': 'Schau, was in deiner Umgebung gerade blüht – das zeigt dir die Tracht-Lage.',
-    'chat': 'Akute Frage? Frag mich einfach direkt hier!',
-    'account': 'Melde dich an, damit dein Fortschritt gespeichert wird.',
-    'impressum': 'Hier findest du alle rechtlichen Angaben.',
-    'datenschutz': 'Transparenz ist uns wichtig – hier steht, welche Daten wie verwendet werden.'
-  };
-
-  // Saisonale Erinnerungen fürs Bienenjahr, je nach echtem aktuellem Monat (0 = Januar).
-  // Wird auf der Übersicht angezeigt, klickbar zum jeweils passenden Bereich.
-  const SEASONAL_TIPS = {
-    0:  { text: 'Januar: Volk in Ruhe lassen, nur das Flugloch im Blick behalten.', link: 'topic-ueberwinterung' },
-    1:  { text: 'Februar: Bald startet die Legetätigkeit wieder – noch Geduld bewahren.', link: 'topic-ueberwinterung' },
-    2:  { text: 'März: Wenn es warm genug ist, steht die erste Durchsicht an.', link: 'lesson-schritt3' },
-    3:  { text: 'April: Volk wächst schnell – hat es schon genug Platz?', link: 'lesson-schritt4' },
-    4:  { text: 'Mai: Schwarmzeit beginnt – jetzt auf Weiselzellen kontrollieren!', link: 'topic-schwarmzeit' },
-    5:  { text: 'Juni: Höchste Schwarmgefahr – weiter regelmäßig kontrollieren.', link: 'topic-schwarmzeit' },
-    6:  { text: 'Juli: Haupttracht läuft – bald ist Erntezeit!', link: 'topic-honigernte' },
-    7:  { text: 'August: Jetzt an die Varroa-Kontrolle denken!', link: 'topic-krankheiten' },
-    8:  { text: 'September: Einfüttern fürs Winterfutter nicht vergessen.', link: 'topic-ueberwinterung' },
-    9:  { text: 'Oktober: Volk startklar für den Winter machen.', link: 'topic-ueberwinterung' },
-    10: { text: 'November: Winterbehandlung gegen Varroa im Blick behalten.', link: 'topic-krankheiten' },
-    11: { text: 'Dezember: Ruhezeit – dein Volk braucht jetzt vor allem wenig Störung.', link: 'topic-ueberwinterung' }
-  };
-
-  function getSeasonalTip() {
-    const month = new Date().getMonth();
-    return SEASONAL_TIPS[month];
-  }
-
-  function updateMascotMessage(viewId) {
-    const textEl = document.getElementById('mascotText');
-    if (!textEl) return;
-
-    let entry;
-    if (viewId === 'uebersicht') {
-      entry = getSeasonalTip();
-    } else if (MASCOT_MESSAGES[viewId]) {
-      entry = { text: MASCOT_MESSAGES[viewId], link: null };
-    } else {
-      entry = { text: 'Weiter so, du machst das gut! 🐝', link: null };
-    }
-
-    textEl.textContent = entry.text + (entry.link ? ' →' : '');
-    if (entry.link) {
-      textEl.classList.add('mascot-clickable');
-      textEl.onclick = () => showView(entry.link);
-    } else {
-      textEl.classList.remove('mascot-clickable');
-      textEl.onclick = null;
-    }
-  }
-
-  function toggleMascot() {
-    const wrap = document.getElementById('mascotWrap');
-    if (wrap) wrap.classList.toggle('collapsed');
-  }
-
-  function showView(name) {
-    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-    document.querySelectorAll('nav.tabs button').forEach(b => b.classList.remove('active'));
-    document.getElementById(name).classList.add('active');
-    var navBtn = document.querySelector('nav.tabs button[data-view="' + name + '"]');
-    if (navBtn) {
-      navBtn.classList.add('active');
-    } else {
-      var kursBtn = document.querySelector('nav.tabs button[data-view="kurs"]');
-      if (kursBtn) kursBtn.classList.add('active');
-    }
-    updateMascotMessage(name);
-    window.scrollTo(0, 0);
-  }
-  document.querySelectorAll('nav.tabs button').forEach(btn => {
-    btn.addEventListener('click', () => showView(btn.dataset.view));
-  });
-
-  // --- Chat / KI-Beratung (läuft über eine sichere Vercel Function, kein Key im Frontend) ---
-  const OPENROUTER_MODEL = 'openrouter/free';
-
-  const BIENENKOMPASS_SYSTEM_PROMPT = `Du bist der KI-Assistent von "Bienenkompass", einer App für Imker-Neulinge in Deutschland/Mitteleuropa.
-Du hilfst bei akuten Fragen und Problemen rund um ein Bienenvolk. Antworte auf Deutsch, freundlich, ruhig und in einfachen, klaren Sätzen ohne Fachjargon-Überladung.
-Struktur deiner Antworten: 1) kurze Einordnung, was das Beobachtete wahrscheinlich bedeutet, 2) konkrete nächste Schritte, 3) bei allem, was riskant ist (z.B. starker Krankheitsverdacht, große Schwarmgefahr, unklare Vergiftungssymptome), rate klar dazu, einen erfahrenen Imker, den örtlichen Imkerverein oder im Zweifel den Bienengesundheitsdienst hinzuzuziehen.
-Halte Antworten kurz (max. 120 Wörter), außer der Nutzer bittet ausdrücklich um mehr Details. Erfinde keine falschen Fakten und gib bei Unsicherheit ehrlich zu, dass eine Vor-Ort-Einschätzung durch einen erfahrenen Imker wichtig ist.`;
-
-  let chatHistory = []; // { role: 'user'|'assistant', content: text }
-
-  function appendMessage(role, text) {
-    const thread = document.getElementById('chatThread');
-    const div = document.createElement('div');
-    div.className = 'msg ' + (role === 'user' ? 'user' : 'bot');
-    div.textContent = text;
-    thread.appendChild(div);
-    thread.scrollTop = thread.scrollHeight;
-    return div;
-  }
-
-  function sendSuggestion(text) {
-    document.getElementById('chatInput').value = text;
-    sendChatMessage();
-  }
-
-  async function sendChatMessage() {
-    const input = document.getElementById('chatInput');
-    const btn = document.getElementById('chatSendBtn');
-    const text = input.value.trim();
-    if (!text) return;
-
-    appendMessage('user', text);
-    chatHistory.push({ role: 'user', content: text });
-    input.value = '';
-    btn.disabled = true;
-    btn.textContent = '…';
-
-    const loadingDiv = appendMessage('bot', 'Ich schaue mir das an …');
-
-    try {
-      const url = '/api/chat';
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          model: OPENROUTER_MODEL,
-          messages: [{ role: 'system', content: BIENENKOMPASS_SYSTEM_PROMPT }].concat(chatHistory)
-        })
-      });
-
-      if (!response.ok) {
-        let detail = '';
-        try {
-          const errData = await response.json();
-          detail = (errData.error && errData.error.message) || JSON.stringify(errData);
-        } catch (e) {
-          detail = await response.text().catch(() => '');
-        }
-        throw new Error('HTTP ' + response.status + ' – ' + detail);
-      }
-
-      const data = await response.json();
-      const replyText = (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) || '';
-
-      loadingDiv.textContent = replyText || 'Entschuldige, ich konnte gerade keine Antwort erzeugen. Versuch es noch einmal.';
-      chatHistory.push({ role: 'assistant', content: replyText });
-    } catch (err) {
-      loadingDiv.textContent = 'Fehler-Detail (für Fehlersuche): ' + (err && err.message ? err.message : String(err));
-      console.error(err);
-    } finally {
-      btn.disabled = false;
-      btn.textContent = 'Senden';
-    }
-  }
+  showDemoSlide(0);
+  setInterval(() => {
+    demoIndex = (demoIndex + 1) % demoSlides.length;
+    showDemoSlide(demoIndex);
+  }, 2800);
 </script>
 </body>
 </html>
