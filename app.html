@@ -956,11 +956,34 @@
       return;
     }
 
+    const payNow = localStorage.getItem('klimaprotokoll_pay_now') === '1';
     localStorage.removeItem('klimaprotokoll_selected_plan');
+    localStorage.removeItem('klimaprotokoll_pay_now');
 
-    // Die Firma startet mit 30 Tagen kostenloser Testphase (ohne Karte, wird
-    // in der Datenbank gesetzt). Danach geht es direkt in die App.
-    await loadCurrentUserContext();
+    // Normalfall: Die Firma startet mit 30 Tagen kostenloser Testphase (ohne
+    // Karte, wird in der Datenbank gesetzt) und geht direkt in die App.
+    if (!payNow) {
+      await loadCurrentUserContext();
+      return;
+    }
+
+    // Wer auf der Startseite einen Tarif zum direkten Bezahlen gewählt hat,
+    // geht gleich zu Stripe. Klappt das nicht, bleibt die Testphase bestehen.
+    const priceId = PLAN_PRICE_IDS[selectedPlan] || PLAN_PRICE_IDS.solo;
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    try {
+      const res = await fetch('/api/create-checkout-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ priceId, companyId, customerEmail: session.user.email }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.url) throw new Error(data.error || 'Checkout konnte nicht gestartet werden.');
+      window.location.href = data.url;
+    } catch (err) {
+      console.error('Checkout-Start fehlgeschlagen:', err.message);
+      await loadCurrentUserContext();
+    }
   }
 
   function setOnboardMode(mode) {
@@ -1155,8 +1178,20 @@
   (function rememberSelectedPlan() {
     const urlParams = new URLSearchParams(window.location.search);
     const plan = urlParams.get('plan');
+    // ?trial=1 (Button "30 Tage kostenlos testen"): immer die kostenlose Testphase,
+    // alte Merkzettel aus früheren Besuchen werden gelöscht.
+    if (urlParams.get('trial') === '1') {
+      localStorage.removeItem('klimaprotokoll_selected_plan');
+      localStorage.removeItem('klimaprotokoll_pay_now');
+    }
+    // ?plan=...&pay=1 (Tarifbutton bei den Preisen): direkt zum Bezahlen.
     if (plan) {
       localStorage.setItem('klimaprotokoll_selected_plan', plan);
+      if (urlParams.get('pay') === '1') {
+        localStorage.setItem('klimaprotokoll_pay_now', '1');
+      } else {
+        localStorage.removeItem('klimaprotokoll_pay_now');
+      }
     }
   })();
 
